@@ -6,22 +6,18 @@
   <meta name="description" content="India's Critical Minerals Risk Dashboard — interactive analysis of 34 strategic minerals across supply, demand, and geopolitical dimensions." />
   <title>India Critical Minerals Risk Dashboard</title>
 
-  <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-  <!-- Chart.js CDN -->
+  <!-- Chart.js CDN (radar/compare charts only) -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 
-  <!-- Application styles -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════
-     HEADER / NAVIGATION
-═══════════════════════════════════════════════════════ -->
+<!-- HEADER -->
 <header id="header">
   <div class="header-inner">
     <div class="logo">
@@ -31,6 +27,7 @@
     <nav id="main-nav">
       <button class="nav-btn active" data-page="overview">Overview</button>
       <button class="nav-btn" data-page="explorer">Explorer</button>
+      <button class="nav-btn" data-page="criteria">Criteria</button>
       <button class="nav-btn" data-page="compare">Compare</button>
       <button class="nav-btn" data-page="about">About</button>
     </nav>
@@ -38,51 +35,40 @@
   </div>
 </header>
 
+<main>
+
 <!-- ═══════════════════════════════════════════════════════
      PAGE: OVERVIEW
 ═══════════════════════════════════════════════════════ -->
-<main>
 <div id="page-overview" class="page active">
   <div class="container">
 
-    <!-- Hero -->
     <section class="hero">
       <div class="hero-bg-gradient"></div>
       <div class="hero-eyebrow">
-        <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+        <svg width="7" height="7" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
         Geopolitical Risk Intelligence
       </div>
       <h1>India's Critical Minerals<br/>Risk Dashboard</h1>
       <p class="hero-sub">
-        Scoring 34 strategic minerals across 14 dimensions of supply risk, demand pressure, and
-        India's geopolitical exposure — from rare earths to battery metals.
+        Scoring 34 strategic minerals across 14 dimensions of supply risk, demand pressure,
+        and India's geopolitical exposure — from rare earths to battery metals.
       </p>
-      <div class="hero-stats" id="hero-stats">
-        <!-- Populated by JS -->
-      </div>
+      <div class="hero-stats" id="hero-stats"></div>
     </section>
 
-    <!-- Main overview grid: ranked list + sidebar -->
     <div class="overview-grid">
       <div class="overview-main">
 
-        <!-- Ranked Bar Chart -->
+        <!-- Criticality Ranking -->
         <section class="section">
           <div class="section-header">
             <h2 class="section-title">Criticality Ranking</h2>
             <div class="risk-legend">
-              <div class="risk-legend-item">
-                <div class="risk-dot" style="background:var(--risk-critical)"></div> Critical (&gt;55)
-              </div>
-              <div class="risk-legend-item">
-                <div class="risk-dot" style="background:var(--risk-high)"></div> High (50–55)
-              </div>
-              <div class="risk-legend-item">
-                <div class="risk-dot" style="background:var(--risk-moderate)"></div> Moderate (44–50)
-              </div>
-              <div class="risk-legend-item">
-                <div class="risk-dot" style="background:var(--risk-low)"></div> Low (&lt;44)
-              </div>
+              <div class="risk-legend-item"><div class="risk-dot" style="background:var(--risk-critical)"></div>Critical (&ge;7.5)</div>
+              <div class="risk-legend-item"><div class="risk-dot" style="background:var(--risk-high)"></div>High (6.5–7.5)</div>
+              <div class="risk-legend-item"><div class="risk-dot" style="background:var(--risk-moderate)"></div>Moderate (5.5–6.5)</div>
+              <div class="risk-legend-item"><div class="risk-dot" style="background:var(--risk-low)"></div>Low (&lt;5.5)</div>
             </div>
           </div>
           <div class="card">
@@ -97,27 +83,32 @@
             <span class="text-muted text-sm">Bubble size = annual demand (log scale) · Color = China share</span>
           </div>
           <div class="card" style="padding:16px;">
-            <svg id="bubble-chart-svg"></svg>
+            <svg id="bubble-chart-svg" height="420"></svg>
             <div class="bubble-legend" id="bubble-legend">
-              <span class="bubble-legend-item" style="color:var(--china-high)">
-                <span class="bubble-legend-circle" style="width:10px;height:10px;display:inline-block;background:var(--china-high)"></span>
+              <span class="bubble-legend-item">
+                <span class="bubble-legend-circle" style="background:#f85149"></span>
                 China &gt;70%
               </span>
-              <span class="bubble-legend-item" style="color:var(--china-med)">
-                <span class="bubble-legend-circle" style="width:10px;height:10px;display:inline-block;background:var(--china-med)"></span>
+              <span class="bubble-legend-item">
+                <span class="bubble-legend-circle" style="background:#e3693a"></span>
                 China 30–70%
               </span>
-              <span class="bubble-legend-item" style="color:var(--china-low)">
-                <span class="bubble-legend-circle" style="width:10px;height:10px;display:inline-block;background:var(--china-low)"></span>
+              <span class="bubble-legend-item">
+                <span class="bubble-legend-circle" style="background:#3fb950"></span>
                 China &lt;30%
               </span>
-              <span class="bubble-legend-item" style="color:var(--text-muted);margin-left:12px;">
-                ↕ Y-axis: Demand Growth (1–5)
-              </span>
-              <span class="bubble-legend-item" style="color:var(--text-muted);">
-                ↔ X-axis: Supply Concentration (avg mining+refining)
-              </span>
             </div>
+          </div>
+        </section>
+
+        <!-- Geopolitical 2x2 -->
+        <section class="section">
+          <div class="section-header">
+            <h2 class="section-title">China Weaponization Risk Matrix</h2>
+            <span class="text-muted text-sm">X = China supply dominance · Y = India preparedness</span>
+          </div>
+          <div class="card" style="padding:16px;">
+            <svg id="geopolitical-svg" height="400"></svg>
           </div>
         </section>
 
@@ -127,7 +118,7 @@
       <aside class="weight-sidebar">
         <div class="card">
           <div class="weight-title">Weight Customizer</div>
-          <div class="weight-subtitle">Adjust dimension weights to recalculate scores in real-time</div>
+          <div class="weight-subtitle">Adjust dimension weights to recalculate Risk Index in real-time</div>
 
           <div class="preset-btns" id="preset-btns">
             <button class="preset-btn" data-preset="equal">Equal</button>
@@ -136,12 +127,10 @@
             <button class="preset-btn" data-preset="demandShock">Demand</button>
           </div>
 
-          <div class="weight-sliders" id="weight-sliders">
-            <!-- Populated by JS -->
-          </div>
+          <div class="weight-sliders" id="weight-sliders"></div>
         </div>
       </aside>
-    </div><!-- /overview-grid -->
+    </div>
 
   </div>
 </div><!-- /page-overview -->
@@ -151,9 +140,9 @@
 ═══════════════════════════════════════════════════════ -->
 <div id="page-explorer" class="page">
   <div class="container">
-    <section class="hero" style="padding:40px 0 28px;">
+    <section class="hero" style="padding:40px 0 24px;">
       <div class="hero-eyebrow">Mineral Explorer</div>
-      <h1 style="font-size:clamp(1.5rem,3vw,2.5rem)">Browse All 34 Minerals</h1>
+      <h1 style="font-size:clamp(1.4rem,3vw,2.2rem)">Browse All 34 Minerals</h1>
     </section>
 
     <div class="explorer-controls">
@@ -168,75 +157,123 @@
         <button class="filter-chip" data-sector="construction">Construction</button>
       </div>
       <select class="sort-select" id="explorer-sort">
-        <option value="composite">Sort: Composite Score</option>
+        <option value="riskIndex">Sort: Risk Index</option>
         <option value="growth">Sort: Demand Growth</option>
         <option value="china">Sort: China Risk</option>
         <option value="importDep">Sort: India Vulnerability</option>
       </select>
     </div>
 
-    <div class="minerals-grid" id="minerals-grid">
-      <!-- Cards populated by JS -->
+    <div class="minerals-grid" id="minerals-grid"></div>
+
+    <!-- Sector Dependency Matrix -->
+    <div class="sector-matrix">
+      <div class="section-header">
+        <h2 class="section-title">Sector Dependency Matrix</h2>
+        <span class="text-muted text-sm">Which sectors depend on which minerals · Color = Risk Index tier</span>
+      </div>
+      <div class="card" style="padding:16px 20px;">
+        <div id="sector-matrix-content"></div>
+      </div>
     </div>
+
   </div>
 </div><!-- /page-explorer -->
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE: CRITERIA
+═══════════════════════════════════════════════════════ -->
+<div id="page-criteria" class="page">
+  <div class="container">
+    <section class="hero" style="padding:40px 0 24px;">
+      <div class="hero-eyebrow">Scoring Framework</div>
+      <h1 style="font-size:clamp(1.4rem,3vw,2.2rem)">How We Assess Criticality</h1>
+    </section>
+
+    <div class="criteria-intro">
+      <p>Each mineral is evaluated across 10 criteria, producing 14 scored dimensions. Higher scores indicate greater risk or strategic importance. The Risk Index is a normalized weighted composite of all dimensions on a 0–10 scale.</p>
+    </div>
+
+    <!-- Section A: Framework Overview Grid -->
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">Assessment Criteria</h2>
+      </div>
+      <div class="criteria-grid" id="criteria-grid"></div>
+    </div>
+
+    <!-- Section B: Scoring Rubrics -->
+    <div class="rubric-section" id="rubric-section">
+      <div class="section-header">
+        <h2 class="section-title">Scoring Rubrics</h2>
+        <span class="text-muted text-sm">Click any criterion to expand the scoring guide</span>
+      </div>
+      <div class="rubric-accordion" id="rubric-accordion"></div>
+    </div>
+
+    <!-- Section C: Risk Heatmap -->
+    <div class="heatmap-section" id="heatmap-section">
+      <div class="section-header">
+        <h2 class="section-title">Risk Matrix — All Minerals × All Dimensions</h2>
+        <span class="text-muted text-sm">Click mineral name to open profile · Click column header to sort</span>
+      </div>
+      <div class="card" style="padding:16px;">
+        <div class="heatmap-wrap">
+          <table class="heatmap-table" id="heatmap-table"></table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /page-criteria -->
 
 <!-- ═══════════════════════════════════════════════════════
      PAGE: COMPARE
 ═══════════════════════════════════════════════════════ -->
 <div id="page-compare" class="page">
   <div class="container">
-    <section class="hero" style="padding:40px 0 28px;">
+    <section class="hero" style="padding:40px 0 24px;">
       <div class="hero-eyebrow">Compare Minerals</div>
-      <h1 style="font-size:clamp(1.5rem,3vw,2.5rem)">Side-by-Side Analysis</h1>
+      <h1 style="font-size:clamp(1.4rem,3vw,2.2rem)">Side-by-Side Analysis</h1>
     </section>
 
     <div class="compare-selectors" id="compare-selectors">
       <div class="compare-selector-wrap">
         <label class="compare-selector-label">Mineral A</label>
-        <select class="compare-select" id="compare-a">
-          <option value="">— Select mineral —</option>
-        </select>
+        <select class="compare-select" id="compare-a"><option value="">— Select mineral —</option></select>
       </div>
       <div class="compare-selector-wrap">
         <label class="compare-selector-label">Mineral B</label>
-        <select class="compare-select" id="compare-b">
-          <option value="">— Select mineral —</option>
-        </select>
+        <select class="compare-select" id="compare-b"><option value="">— Select mineral —</option></select>
       </div>
       <div class="compare-selector-wrap">
         <label class="compare-selector-label">Mineral C (optional)</label>
-        <select class="compare-select" id="compare-c">
-          <option value="">— Select mineral —</option>
-        </select>
+        <select class="compare-select" id="compare-c"><option value="">— Select mineral —</option></select>
       </div>
     </div>
 
     <div id="compare-empty" class="empty-state">
-      <div class="empty-state-icon">⚖️</div>
+      <div class="empty-state-icon">⚖</div>
       <div class="empty-state-text">Select at least two minerals above to compare</div>
     </div>
 
     <div id="compare-content" class="hidden">
       <div class="compare-layout">
         <div class="compare-radar-box card">
-          <div class="modal-chart-title">Overlaid Radar — Risk Dimensions</div>
-          <div class="chart-canvas-wrap" style="max-height:380px;">
+          <div class="modal-chart-title">Overlaid 14-Vector Radar</div>
+          <div class="chart-canvas-wrap" style="max-height:400px;">
             <canvas id="compare-radar-canvas"></canvas>
           </div>
         </div>
         <div class="card">
-          <div class="modal-chart-title" style="margin-bottom:12px;">Metric Comparison</div>
+          <div class="modal-chart-title" style="margin-bottom:10px;">Metric Comparison</div>
           <div class="compare-table-wrap">
-            <table class="compare-table" id="compare-table">
-              <!-- Populated by JS -->
-            </table>
+            <table class="compare-table" id="compare-table"></table>
           </div>
         </div>
       </div>
-
       <div class="card sector-overlap mt-16">
-        <div class="modal-chart-title" style="margin-bottom:16px;">Sector Overlap</div>
+        <div class="modal-chart-title" style="margin-bottom:14px;">Sector Overlap</div>
         <div id="compare-sectors"></div>
       </div>
     </div>
@@ -249,32 +286,30 @@
 ═══════════════════════════════════════════════════════ -->
 <div id="page-about" class="page">
   <div class="container">
-    <section class="hero" style="padding:40px 0 28px;">
+    <section class="hero" style="padding:40px 0 24px;">
       <div class="hero-eyebrow">Methodology</div>
-      <h1 style="font-size:clamp(1.5rem,3vw,2.5rem)">About This Dashboard</h1>
+      <h1 style="font-size:clamp(1.4rem,3vw,2.2rem)">About This Dashboard</h1>
     </section>
 
     <div class="about-grid">
       <div class="card about-card">
         <h3>Scoring Framework</h3>
         <p>Each mineral is scored across 14 dimensions derived from a comprehensive critical minerals research framework. Scores reflect supply-side concentration, demand-side pressure, India's specific vulnerability, and price volatility.</p>
-        <p style="margin-top:12px;">The composite score aggregates all dimensions with framework-defined weights. The Weight Customizer on the Overview page lets you apply custom weights to reflect your own analytical priorities.</p>
+        <p style="margin-top:10px;">The Risk Index is a normalized weighted score on a 0–10 scale, computed from 10 weight categories mapped to the 14 raw dimensions. The Weight Customizer on the Overview page lets you apply custom weights to reflect your analytical priorities.</p>
       </div>
 
       <div class="card about-card">
         <h3>Dimension Definitions</h3>
-        <table class="dim-table" id="about-dim-table">
-          <!-- Populated by JS -->
-        </table>
+        <table class="dim-table" id="about-dim-table"></table>
       </div>
 
       <div class="card about-card">
-        <h3>Risk Tier Thresholds</h3>
+        <h3>Risk Tier Thresholds (Risk Index 0–10)</h3>
         <ul>
-          <li><strong style="color:var(--risk-critical)">Critical (&gt;55):</strong> Severe supply concentration, active export controls, no substitutes, high India exposure. Immediate strategic concern.</li>
-          <li style="margin-top:8px;"><strong style="color:var(--risk-high)">High (50–55):</strong> Significant concentration or fast-growing demand, elevated import dependence.</li>
-          <li style="margin-top:8px;"><strong style="color:var(--risk-moderate)">Moderate (44–50):</strong> Meaningful risks in select dimensions; manageable with proactive policy.</li>
-          <li style="margin-top:8px;"><strong style="color:var(--risk-low)">Low (&lt;44):</strong> Distributed supply, lower criticality, or structural oversupply.</li>
+          <li><strong style="color:var(--risk-critical)">Critical (&ge;7.5):</strong> Severe supply concentration, active export controls, no substitutes, high India exposure. Immediate strategic concern.</li>
+          <li style="margin-top:7px;"><strong style="color:var(--risk-high)">High (6.5–7.5):</strong> Significant concentration or fast-growing demand, elevated import dependence.</li>
+          <li style="margin-top:7px;"><strong style="color:var(--risk-moderate)">Moderate (5.5–6.5):</strong> Meaningful risks in select dimensions; manageable with proactive policy.</li>
+          <li style="margin-top:7px;"><strong style="color:var(--risk-low)">Low (&lt;5.5):</strong> Distributed supply, lower criticality, or structural oversupply.</li>
         </ul>
       </div>
 
@@ -289,12 +324,12 @@
           <li>Price data: LME, SHFE, specialist brokers</li>
           <li>Export control announcements: MOFCOM, EU, US DoC</li>
         </ul>
-        <p style="margin-top:12px;font-size:0.75rem;color:var(--text-dim);">Data reflects conditions as of early 2025. Mineral markets evolve rapidly — scores should be updated periodically.</p>
+        <p style="margin-top:10px;font-size:0.72rem;color:var(--text-dim);">Data reflects conditions as of early 2025. Mineral markets evolve rapidly — scores should be updated periodically.</p>
       </div>
     </div>
-
   </div>
 </div><!-- /page-about -->
+
 </main>
 
 <!-- ═══════════════════════════════════════════════════════
@@ -308,10 +343,10 @@
         <div class="modal-symbol" id="modal-mineral-symbol">—</div>
         <div class="sector-chips" id="modal-sectors"></div>
       </div>
-      <div style="display:flex;align-items:flex-start;gap:16px;">
+      <div style="display:flex;align-items:flex-start;gap:14px;">
         <div class="modal-score-wrap">
           <div class="modal-score" id="modal-score">—</div>
-          <div class="modal-score-sub">Composite Score</div>
+          <div class="modal-score-sub">Risk Index</div>
         </div>
         <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
       </div>
@@ -319,18 +354,15 @@
 
     <div class="modal-body">
       <div class="modal-grid">
-        <!-- Radar Chart -->
         <div class="modal-chart-box">
-          <div class="modal-chart-title">Risk Radar</div>
-          <div class="chart-canvas-wrap" style="max-width:300px;width:100%;">
+          <div class="modal-chart-title">14-Vector Risk Radar</div>
+          <div class="chart-canvas-wrap" style="max-width:320px;width:100%;">
             <canvas id="modal-radar-canvas"></canvas>
           </div>
         </div>
-
-        <!-- India Quadrant -->
         <div class="modal-chart-box">
-          <div class="modal-chart-title">India Exposure Quadrant</div>
-          <svg id="modal-quadrant-svg" width="100%" viewBox="0 0 280 240" style="max-width:300px;"></svg>
+          <div class="modal-chart-title">China Weaponization Position</div>
+          <svg id="modal-quadrant-svg" width="100%" viewBox="0 0 280 240" style="max-width:320px;"></svg>
         </div>
       </div>
 
@@ -353,24 +385,21 @@
         <div class="key-narrative" id="kf-narrative">—</div>
       </div>
 
+      <!-- 4-section descriptions -->
+      <div class="modal-descriptions" id="modal-descriptions"></div>
+
       <button class="modal-add-compare" id="modal-add-compare">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
         Add to Compare
       </button>
     </div>
   </div>
 </div>
 
-<!-- Tooltip -->
 <div id="tooltip" role="tooltip"></div>
-
-<!-- Toast notification -->
 <div id="toast"></div>
 
-<!-- Data -->
 <script src="data.js"></script>
-<!-- App logic -->
 <script src="app.js"></script>
-
 </body>
 </html>

@@ -1,19 +1,6 @@
 # India Critical Minerals Risk Dashboard
 
-An interactive, static web dashboard tracking 34 strategic minerals across 14 risk dimensions — built for researchers, policymakers, and strategic analysts focused on India's critical mineral supply security.
-
 **Live demo:** `https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/`
-
----
-
-## Features
-
-- **Criticality Ranking** — all 34 minerals ranked by composite or custom-weighted score with real-time color-coded risk tiers
-- **Bubble Chart** — supply concentration vs. demand growth, sized by demand, colored by China share
-- **Weight Customizer** — 10 real-time sliders to reweight dimensions; 4 preset configurations (India Focus, Supply Security, Demand Shock, Equal)
-- **Mineral Detail Modal** — radar chart, India exposure quadrant, sector tags, key facts
-- **Explorer Grid** — filter by sector (Defense, Energy, Semiconductors, etc.), sort by any metric
-- **Compare Tool** — overlay up to 3 minerals on a single radar chart with side-by-side metric table
 
 ---
 
@@ -53,10 +40,9 @@ Your site will be live at `https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/` with
 
 ### Adding a new mineral
 
-Open `data.js` and copy any existing mineral block. The comment at the top of the file guides you:
+Open `data.js` and copy any existing mineral block:
 
 ```js
-// TO ADD A MINERAL: copy a block below and edit the values.
 {
   name: 'Cobalt',
   symbol: 'Co',
@@ -64,14 +50,21 @@ Open `data.js` and copy any existing mineral block. The comment at the top of th
     demand: 4, growth: 4, miningDiv: 5, refiningDiv: 3,
     resTime: 3, resDiv: 1.5, endUseComp: 4, substitutability: 2,
     recyclability: 2, extraction: 3, projects: 2, importDep: 5,
-    strategic: 2, volatility: 5, composite: 46.5
+    strategic: 2, volatility: 5
   },
   meta: {
     sectors: ['defense', 'energy', 'electrification', 'healthcare'],
     chinaShare: 80,
     topSupplier: 'DRC (76% mining) + China (80% refining)',
+    annualDemandTons: 200000,
     annualDemand: '~200,000 t',
     keyFact: 'Key risk narrative here.',
+  },
+  description: {
+    supply: 'Supply chain narrative.',
+    reserves: 'Reserve situation.',
+    india: "India's position.",
+    priceContext: 'Price history and outlook.',
   }
 },
 ```
@@ -80,9 +73,9 @@ Valid sectors: `defense`, `energy`, `semiconductors`, `electrification`, `health
 
 ### Updating scores
 
-All dimension scores are in the `scores` object inside each mineral entry in `data.js`. Edit the value and refresh your browser — no build step required.
+All dimension scores are in the `scores` object inside each mineral entry in `data.js`. Edit the value and refresh — no build step required.
 
-### Score dimensions (1–5 unless noted, higher = more risky)
+### Score dimensions (higher = more risky)
 
 | Key | Description | Scale |
 |-----|-------------|-------|
@@ -98,9 +91,8 @@ All dimension scores are in the `scores` object inside each mineral entry in `da
 | `extraction` | Processing complexity | 1–5 |
 | `projects` | Pipeline scarcity | 1–5 |
 | `importDep` | India import dependence | 1–5 |
-| `strategic` | Geopolitical risk | 1–3 |
+| `strategic` | India strategic posture (1=best) | 1–3 |
 | `volatility` | Price volatility | 1–5 |
-| `composite` | Composite score from framework | — |
 
 ---
 
@@ -112,7 +104,7 @@ No build step or server required. Simply open `index.html` in a browser:
 # macOS
 open index.html
 
-# Or use a simple local server to avoid CORS issues with some browsers:
+# Or use a simple local server:
 python3 -m http.server 8080
 # Then open http://localhost:8080
 ```
@@ -122,20 +114,10 @@ python3 -m http.server 8080
 ## Tech Stack
 
 - **Pure HTML/CSS/JS** — no framework, no build step
-- **Chart.js 4** (CDN) — radar charts
-- **SVG** — bubble chart and India exposure quadrant
+- **Chart.js 4** (CDN) — 14-axis radar charts on modal and compare page
+- **SVG** — bubble chart, geopolitical 2×2, India quadrant
+- **Canvas API** — mini radar charts on explorer cards (no Chart.js)
 - **Google Fonts** — Inter typeface
-
----
-
-## Risk Tier Thresholds
-
-| Tier | Score | Color |
-|------|-------|-------|
-| Critical | > 55 | Red |
-| High | 50–55 | Orange |
-| Moderate | 44–50 | Amber |
-| Low | < 44 | Green |
 
 ---
 
