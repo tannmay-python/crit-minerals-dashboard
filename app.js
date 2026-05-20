@@ -10,52 +10,17 @@
 const AppState = {
   currentPage: 'overview',
   activeSector: 'all',
-  explorerSort: 'riskIndex',
+  explorerSort: 'china',
   selectedMineral: null,
   compareSelections: { a: '', b: '', c: '' },
-  weights: { ...window.WEIGHT_PRESETS.indiaFocus.weights },
-  activePreset: 'indiaFocus',
-  radarChartModal: null,
+  radarChartMineral: null,
   radarChartCompare: null,
-  riskIndexCache: {},
-  rafPending: false,
   heatmapSortDim: null,
   heatmapSortDir: -1,
 };
 
 /* ── Constants ─────────────────────────────────────────── */
-const RISK_TIERS = [
-  { min: 7.5, label: 'critical', color: '#f85149' },
-  { min: 6.5, label: 'high',     color: '#e3693a' },
-  { min: 5.5, label: 'moderate', color: '#d29922' },
-  { min: 0,   label: 'low',      color: '#3fb950' },
-];
 
-const WEIGHT_KEYS = [
-  { key: 'demand',      label: 'Current Demand' },
-  { key: 'growth',      label: 'Demand Growth' },
-  { key: 'supplyConc',  label: 'Supply Concentration' },
-  { key: 'reserveRisk', label: 'Reserve Risk' },
-  { key: 'endUseComp',  label: 'End-Use Criticality' },
-  { key: 'subRisk',     label: 'Substitution & Recycling' },
-  { key: 'extraction',  label: 'Processing Complexity' },
-  { key: 'projects',    label: 'Pipeline Scarcity' },
-  { key: 'indiaVuln',   label: 'India Vulnerability' },
-  { key: 'volatility',  label: 'Price Volatility' },
-];
-
-const WEIGHT_TO_DIMS = {
-  demand:      { dims: ['demand'],                      max: 5   },
-  growth:      { dims: ['growth'],                      max: 5   },
-  supplyConc:  { dims: ['miningDiv','refiningDiv'],      max: 5   },
-  reserveRisk: { dims: ['resTime','resDiv'],             max: 5.5 },
-  endUseComp:  { dims: ['endUseComp'],                  max: 10  },
-  subRisk:     { dims: ['substitutability','recyclability'], max: 5 },
-  extraction:  { dims: ['extraction'],                  max: 5   },
-  projects:    { dims: ['projects'],                    max: 5   },
-  indiaVuln:   { dims: ['importDep','strategic'],        max: 5   },
-  volatility:  { dims: ['volatility'],                  max: 5   },
-};
 
 const SECTOR_COLORS = {
   defense:        '#f85149',
@@ -70,7 +35,6 @@ const SECTOR_COLORS = {
 /* ── Chart Builder ─────────────────────────────────────── */
 
 const CB_AXES = [
-  { key: 'riskIndex',    label: 'Risk Index (0–10)',             getValue: m => getRiskIndex(m),                                min: 0,  max: 10 },
   { key: 'chinaShare',   label: 'China Supply Share (%)',         getValue: m => m.meta.chinaShare,                             min: 0,  max: 100 },
   { key: 'demandLog',    label: 'Annual Demand (log scale)',       getValue: m => Math.log10((m.annualDemandTons||1)+1),         min: 0,  max: 8   },
   { key: 'demand',       label: 'Current Demand (1–5)',           getValue: m => m.scores.demand,                               min: 1,  max: 5   },
@@ -94,7 +58,7 @@ const CBState = {
   type:    'scatter',
   xKey:    'supplyConc',
   yKey:    'growth',
-  colorBy: 'riskTier',
+  colorBy: 'sector',
   sizeBy:  'equal',
   sector:  'all',
 };
@@ -103,10 +67,7 @@ const RADAR_LABELS = window.RADAR_14.map(d => d.label);
 
 /* ── Utility ───────────────────────────────────────────── */
 
-function getRiskTier(score) {
-  for (const t of RISK_TIERS) { if (score >= t.min) return t; }
-  return RISK_TIERS[RISK_TIERS.length - 1];
-}
+function getRiskTier() { return { label: 'moderate', color: '#58a6ff' }; }
 
 function chinaColor(pct) {
   if (pct >= 70) return '#f85149';
@@ -154,28 +115,16 @@ function heatmapColor(score, max) {
 
 function computeRiskIndex(mineral) {
   const s = mineral.scores;
-  let totalWeight = 0, weightedSum = 0;
-  for (const key of Object.keys(WEIGHT_TO_DIMS)) {
-    const w = (AppState.weights[key] ?? 50) / 100;
-    const { dims, max } = WEIGHT_TO_DIMS[key];
-    const avg = dims.reduce((sum, d) => sum + (s[d] || 0), 0) / dims.length;
-    const norm = Math.min(avg / max, 1);
-    weightedSum += w * norm;
-    totalWeight += w;
-  }
-  if (totalWeight === 0) return 0;
-  return (weightedSum / totalWeight) * 10;
+  const dims = [
+    [s.demand,5],[s.growth,5],[s.miningDiv,5],[s.refiningDiv,5],
+    [s.resTime,6],[s.resDiv,5],[s.endUseComp,10],
+    [s.substitutability,5],[s.recyclability,5],[s.extraction,5],
+    [s.projects,5],[s.importDep,5],[s.strategic,5],[s.volatility,5]
+  ];
+  return (dims.reduce((sum,[v,max]) => sum + Math.min((v||0)/max,1), 0) / dims.length) * 10;
 }
 
-function recomputeRiskIndex() {
-  for (const m of window.MINERALS) {
-    AppState.riskIndexCache[m.name] = computeRiskIndex(m);
-  }
-}
-
-function getRiskIndex(mineral) {
-  return AppState.riskIndexCache[mineral.name] ?? computeRiskIndex(mineral);
-}
+function getRiskIndex(mineral) { return computeRiskIndex(mineral); }
 
 /* ── Navigation ────────────────────────────────────────── */
 
@@ -188,96 +137,11 @@ function navigate(page) {
   if (page === 'criteria') renderCriteria();
   if (page === 'compare')  renderComparePage();
   if (page === 'builder')  renderBuilderPage();
-}
-
-/* ── Hero Stats ────────────────────────────────────────── */
-
-function renderHeroStats() {
-  const critical  = window.MINERALS.filter(m => getRiskIndex(m) >= 7.5).length;
-  const high      = window.MINERALS.filter(m => { const r = getRiskIndex(m); return r >= 6.5 && r < 7.5; }).length;
-  const chinaHigh = window.MINERALS.filter(m => m.meta.chinaShare >= 70).length;
-
-  const el = document.getElementById('hero-stats');
-  if (!el) return;
-  el.innerHTML = `
-    <div class="problem-stat">
-      <span class="problem-stat-value">${window.MINERALS.length}</span>
-      <span class="problem-stat-label">Minerals Tracked</span>
-    </div>
-    <div class="problem-stat">
-      <span class="problem-stat-value" style="color:var(--risk-critical)">${critical}</span>
-      <span class="problem-stat-label">Critical Risk Tier</span>
-    </div>
-    <div class="problem-stat">
-      <span class="problem-stat-value" style="color:var(--risk-high)">${high}</span>
-      <span class="problem-stat-label">High Risk Tier</span>
-    </div>
-    <div class="problem-stat">
-      <span class="problem-stat-value" style="color:var(--china-high)">${chinaHigh}</span>
-      <span class="problem-stat-label">China &gt;70% Share</span>
-    </div>
-  `;
-}
-
-/* ── Weight Sliders ────────────────────────────────────── */
-
-function renderWeightSliders() {
-  const container = document.getElementById('weight-sliders');
-  container.innerHTML = WEIGHT_KEYS.map(({ key, label }) => {
-    const val = AppState.weights[key] ?? 50;
-    return `
-      <div class="slider-row">
-        <div class="slider-label-row">
-          <span class="slider-label">${label}</span>
-          <span class="slider-value" id="wval-${key}">${val}</span>
-        </div>
-        <input type="range" min="0" max="100" value="${val}"
-               id="wslider-${key}" data-key="${key}"
-               style="--pct:${val}%"
-               aria-label="${label} weight" />
-      </div>`;
-  }).join('');
-
-  container.querySelectorAll('input[type=range]').forEach(sl => {
-    sl.addEventListener('input', onSliderInput);
-  });
-}
-
-function onSliderInput(e) {
-  const key = e.target.dataset.key;
-  const val = parseInt(e.target.value, 10);
-  AppState.weights[key] = val;
-  AppState.activePreset = null;
-  document.getElementById(`wval-${key}`).textContent = val;
-  e.target.style.setProperty('--pct', val + '%');
-  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-  if (!AppState.rafPending) {
-    AppState.rafPending = true;
-    requestAnimationFrame(() => {
-      recomputeRiskIndex();
-      renderRankedChart();
-      renderHeroStats();
-      AppState.rafPending = false;
-    });
+  if (page === 'mineral')  renderMineralPage(window.MINERALS.find(m => m.name === AppState.selectedMineral));
+  if (AppState.radarChartMineral && page !== 'mineral') {
+    AppState.radarChartMineral.destroy();
+    AppState.radarChartMineral = null;
   }
-}
-
-function applyPreset(presetKey) {
-  const preset = window.WEIGHT_PRESETS[presetKey];
-  if (!preset) return;
-  AppState.weights = { ...preset.weights };
-  AppState.activePreset = presetKey;
-  WEIGHT_KEYS.forEach(({ key }) => {
-    const val = AppState.weights[key] ?? 50;
-    const sl  = document.getElementById(`wslider-${key}`);
-    const ve  = document.getElementById(`wval-${key}`);
-    if (sl) { sl.value = val; sl.style.setProperty('--pct', val + '%'); }
-    if (ve) ve.textContent = val;
-  });
-  document.querySelectorAll('.preset-btn').forEach(b => b.classList.toggle('active', b.dataset.preset === presetKey));
-  recomputeRiskIndex();
-  renderRankedChart();
-  renderHeroStats();
 }
 
 /* ── Ranked Bar Chart ──────────────────────────────────── */
@@ -285,26 +149,22 @@ function applyPreset(presetKey) {
 function renderRankedChart() {
   const container = document.getElementById('ranked-chart');
   if (!container) return;
-  const sorted   = [...window.MINERALS].sort((a, b) => getRiskIndex(b) - getRiskIndex(a));
-  const maxScore = Math.max(...sorted.map(m => getRiskIndex(m)));
-
+  const sorted = [...window.MINERALS].sort((a, b) => b.scores.importDep - a.scores.importDep);
   container.innerHTML = sorted.map(mineral => {
-    const score = getRiskIndex(mineral);
-    const pct   = (score / 10) * 100;
-    const tier  = getRiskTier(score);
+    const pct = (mineral.scores.importDep / 5) * 100;
+    const cc  = chinaColor(mineral.meta.chinaShare);
     return `
       <div class="rank-row" data-mineral="${mineral.name}" role="button" tabindex="0">
         <div class="rank-name" title="${mineral.name}">${mineral.name}</div>
         <div class="rank-bar-wrap">
-          <div class="rank-bar" style="width:${pct}%;background:${tier.color}"></div>
+          <div class="rank-bar" style="width:${pct}%;background:${cc}"></div>
         </div>
-        <div class="rank-score" style="color:${tier.color}">${score.toFixed(1)}</div>
+        <div class="rank-score" style="color:${cc}">${mineral.scores.importDep}/5</div>
       </div>`;
   }).join('');
-
   container.querySelectorAll('.rank-row').forEach(row => {
-    row.addEventListener('click', () => openMineralModal(row.dataset.mineral));
-    row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openMineralModal(row.dataset.mineral); });
+    row.addEventListener('click', () => openMineralPage(row.dataset.mineral));
+    row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openMineralPage(row.dataset.mineral); });
   });
 }
 
@@ -364,7 +224,7 @@ function renderBubbleChart() {
   svg.querySelectorAll('.bubble').forEach(el => {
     el.addEventListener('mouseenter', e => showBubbleTooltip(e, el.dataset.mineral));
     el.addEventListener('mouseleave', hideTooltip);
-    el.addEventListener('click', () => openMineralModal(el.dataset.mineral));
+    el.addEventListener('click', () => openMineralPage(el.dataset.mineral));
   });
 }
 
@@ -425,12 +285,12 @@ function renderGeopoliticalChart() {
     const preparedness = clamp(6 - m.scores.strategic, 1, 5);
     const xVal = m.meta.chinaShare + ((idx * 6271 % 7) - 3) * 0.5;
     const yVal = preparedness + ((idx * 7919 % 7) - 3) * 0.03;
-    const cx   = xS(clamp(xVal, 0, 100));
-    const cy   = yS(clamp(yVal, 1, 5));
-    const tier = getRiskTier(getRiskIndex(m));
+    const cx  = xS(clamp(xVal, 0, 100));
+    const cy  = yS(clamp(yVal, 1, 5));
+    const col = chinaColor(m.meta.chinaShare);
 
     html += `<g class="bubble" data-mineral="${m.name}">`;
-    html += `<circle cx="${cx}" cy="${cy}" r="8" fill="${tier.color}" fill-opacity="0.7" stroke="${tier.color}" stroke-width="1.5"/>`;
+    html += `<circle cx="${cx}" cy="${cy}" r="8" fill="${col}" fill-opacity="0.7" stroke="${col}" stroke-width="1.5"/>`;
     html += `<text x="${cx}" y="${cy+3.5}" text-anchor="middle" font-size="8" font-family="Inter,sans-serif" fill="white" font-weight="700">${m.symbol}</text>`;
     html += `</g>`;
   });
@@ -440,7 +300,7 @@ function renderGeopoliticalChart() {
   svg.querySelectorAll('.bubble').forEach(el => {
     el.addEventListener('mouseenter', e => showGeoTooltip(e, el.dataset.mineral));
     el.addEventListener('mouseleave', hideTooltip);
-    el.addEventListener('click', () => openMineralModal(el.dataset.mineral));
+    el.addEventListener('click', () => openMineralPage(el.dataset.mineral));
   });
 }
 
@@ -603,7 +463,7 @@ function renderCBScatter(svg, minerals, is2x2) {
   svg.querySelectorAll('.cb-dot').forEach(el => {
     el.addEventListener('mouseenter', e => showCBTooltip(e, el.dataset.mineral, xAx, yAx));
     el.addEventListener('mouseleave', hideTooltip);
-    el.addEventListener('click', () => openMineralModal(el.dataset.mineral));
+    el.addEventListener('click', () => openMineralPage(el.dataset.mineral));
     el.style.cursor = 'pointer';
   });
 }
@@ -644,7 +504,7 @@ function renderCBBar(svg, minerals) {
   svg.innerHTML = html2;
 
   svg.querySelectorAll('.cb-dot').forEach(el => {
-    el.addEventListener('click', () => openMineralModal(el.dataset.mineral));
+    el.addEventListener('click', () => openMineralPage(el.dataset.mineral));
     el.addEventListener('mouseenter', e => showCBBarTooltip(e, el.dataset.mineral, xAx));
     el.addEventListener('mouseleave', hideTooltip);
     el.style.cursor = 'pointer';
@@ -654,13 +514,11 @@ function renderCBBar(svg, minerals) {
 function showCBTooltip(e, name, xAx, yAx) {
   const m = window.MINERALS.find(x => x.name === name);
   if (!m) return;
-  const ri   = getRiskIndex(m);
-  const tier = getRiskTier(ri);
   document.getElementById('tooltip').innerHTML = `
     <div class="tooltip-name">${m.name} <span style="font-weight:400;color:var(--text-muted)">${m.symbol}</span></div>
     <div class="tooltip-row"><span>${xAx.label.split('(')[0].trim()}</span><span>${xAx.getValue(m).toFixed(2)}</span></div>
     <div class="tooltip-row"><span>${yAx.label.split('(')[0].trim()}</span><span>${yAx.getValue(m).toFixed(2)}</span></div>
-    <div class="tooltip-row"><span>Risk Index</span><span style="color:${tier.color}">${ri.toFixed(1)}</span></div>`;
+    <div class="tooltip-row"><span>China Share</span><span style="color:${chinaColor(m.meta.chinaShare)}">${m.meta.chinaShare}%</span></div>`;
   positionTooltip(e);
   document.getElementById('tooltip').classList.add('visible');
 }
@@ -668,12 +526,10 @@ function showCBTooltip(e, name, xAx, yAx) {
 function showCBBarTooltip(e, name, xAx) {
   const m = window.MINERALS.find(x => x.name === name);
   if (!m) return;
-  const ri   = getRiskIndex(m);
-  const tier = getRiskTier(ri);
   document.getElementById('tooltip').innerHTML = `
     <div class="tooltip-name">${m.name}</div>
     <div class="tooltip-row"><span>${xAx.label.split('(')[0].trim()}</span><span>${xAx.getValue(m).toFixed(2)}</span></div>
-    <div class="tooltip-row"><span>Risk Index</span><span style="color:${tier.color}">${ri.toFixed(1)}</span></div>`;
+    <div class="tooltip-row"><span>China Share</span><span style="color:${chinaColor(m.meta.chinaShare)}">${m.meta.chinaShare}%</span></div>`;
   positionTooltip(e);
   document.getElementById('tooltip').classList.add('visible');
 }
@@ -683,12 +539,9 @@ function showCBBarTooltip(e, name, xAx) {
 function showBubbleTooltip(e, name) {
   const m = window.MINERALS.find(x => x.name === name);
   if (!m) return;
-  const ri   = getRiskIndex(m);
-  const tier = getRiskTier(ri);
   const conc = ((m.scores.miningDiv + m.scores.refiningDiv) / 2).toFixed(1);
   document.getElementById('tooltip').innerHTML = `
     <div class="tooltip-name">${m.name} <span style="font-weight:400;color:var(--text-muted);font-family:monospace">${m.symbol}</span></div>
-    <div class="tooltip-row"><span>Risk Index</span><span style="color:${tier.color}">${ri.toFixed(1)}</span></div>
     <div class="tooltip-row"><span>China Share</span><span style="color:${chinaColor(m.meta.chinaShare)}">${m.meta.chinaShare}%</span></div>
     <div class="tooltip-row"><span>Demand Growth</span><span>${m.scores.growth}/5</span></div>
     <div class="tooltip-row"><span>Supply Conc.</span><span>${conc}/5</span></div>
@@ -700,14 +553,12 @@ function showBubbleTooltip(e, name) {
 function showGeoTooltip(e, name) {
   const m = window.MINERALS.find(x => x.name === name);
   if (!m) return;
-  const ri   = getRiskIndex(m);
-  const tier = getRiskTier(ri);
   const prep = clamp(6 - m.scores.strategic, 1, 5);
   const prepLabel = ['','Very Prepared','Prepared','Moderate','Low','Very Low'][prep] || prep;
   document.getElementById('tooltip').innerHTML = `
     <div class="tooltip-name">${m.name} <span style="font-weight:400;color:var(--text-muted);font-family:monospace">${m.symbol}</span></div>
-    <div class="tooltip-row"><span>Risk Index</span><span style="color:${tier.color}">${ri.toFixed(1)}</span></div>
     <div class="tooltip-row"><span>China Share</span><span style="color:${chinaColor(m.meta.chinaShare)}">${m.meta.chinaShare}%</span></div>
+    <div class="tooltip-row"><span>Import Dependence</span><span>${m.scores.importDep}/5</span></div>
     <div class="tooltip-row"><span>India Preparedness</span><span>${prepLabel}</span></div>`;
   positionTooltip(e);
   document.getElementById('tooltip').classList.add('visible');
@@ -729,17 +580,7 @@ function positionTooltip(e) {
 
 /* ── Overview ──────────────────────────────────────────── */
 
-function renderOverview() {
-  recomputeRiskIndex();
-  renderHeroStats();
-}
-
-function initPresetButtons() {
-  document.querySelectorAll('.preset-btn').forEach(btn => {
-    btn.addEventListener('click', () => applyPreset(btn.dataset.preset));
-  });
-  applyPreset(AppState.activePreset || 'indiaFocus');
-}
+function renderOverview() {}
 
 /* ── Explorer ──────────────────────────────────────────── */
 
@@ -748,8 +589,6 @@ function renderExplorer() {
   initFilterChips();
   initExplorerSort();
   renderSectorMatrix();
-  renderWeightSliders();
-  initPresetButtons();
 }
 
 function initFilterChips() {
@@ -780,10 +619,9 @@ function filterAndSortMinerals() {
     list = list.filter(m => m.meta.sectors.includes(AppState.activeSector));
   }
   switch (AppState.explorerSort) {
-    case 'riskIndex':  list.sort((a, b) => getRiskIndex(b) - getRiskIndex(a)); break;
-    case 'growth':     list.sort((a, b) => b.scores.growth - a.scores.growth); break;
-    case 'china':      list.sort((a, b) => b.meta.chinaShare - a.meta.chinaShare); break;
-    case 'importDep':  list.sort((a, b) => b.scores.importDep - a.scores.importDep); break;
+    case 'growth':    list.sort((a, b) => b.scores.growth - a.scores.growth); break;
+    case 'china':     list.sort((a, b) => b.meta.chinaShare - a.meta.chinaShare); break;
+    case 'importDep': list.sort((a, b) => b.scores.importDep - a.scores.importDep); break;
   }
   return list;
 }
@@ -804,26 +642,23 @@ function renderMineralGrid() {
     const m    = window.MINERALS.find(x => x.name === name);
     if (m) {
       drawMiniRadar(card.querySelector('.mini-radar'), m.scores);
-      card.addEventListener('click', () => openMineralModal(name));
+      card.addEventListener('click', () => openMineralPage(name));
     }
   });
 }
 
 function buildMineralCard(mineral) {
-  const ri   = getRiskIndex(mineral);
-  const tier = getRiskTier(ri);
-  const cc   = chinaColor(mineral.meta.chinaShare);
-
+  const cc = chinaColor(mineral.meta.chinaShare);
   return `
-    <div class="mineral-card risk-${tier.label}" data-mineral="${mineral.name}" role="button" tabindex="0">
+    <div class="mineral-card" data-mineral="${mineral.name}" role="button" tabindex="0">
       <div class="card-header">
         <div>
           <div class="card-name">${mineral.name}</div>
           <div class="card-symbol">${mineral.symbol}</div>
         </div>
-        <div class="score-badge">
-          <div class="score-num score-${tier.label}">${ri.toFixed(1)}</div>
-          <div class="score-label">Risk Index</div>
+        <div class="card-china-badge" style="color:${cc}">
+          <div class="card-china-pct">${mineral.meta.chinaShare}%</div>
+          <div class="card-china-lbl">China</div>
         </div>
       </div>
       <canvas class="mini-radar" width="120" height="120"></canvas>
@@ -831,7 +666,7 @@ function buildMineralCard(mineral) {
         ${mineral.meta.sectors.slice(0,4).map(s => `<span class="sector-chip ${s}">${s}</span>`).join('')}
       </div>
       <div class="china-bar-wrap">
-        <span class="china-bar-label">China</span>
+        <span class="china-bar-label">China Supply</span>
         <div class="china-bar-track"><div class="china-bar-fill" style="width:${mineral.meta.chinaShare}%;background:${cc}"></div></div>
         <span class="china-val" style="color:${cc}">${mineral.meta.chinaShare}%</span>
       </div>
@@ -914,11 +749,11 @@ function renderSectorMatrix() {
   container.innerHTML = window.ALL_SECTORS.map(sector => {
     const minerals = window.MINERALS
       .filter(m => m.meta.sectors.includes(sector))
-      .sort((a, b) => getRiskIndex(b) - getRiskIndex(a));
+      .sort((a, b) => b.meta.chinaShare - a.meta.chinaShare);
 
     const chips = minerals.map(m => {
-      const tier = getRiskTier(getRiskIndex(m));
-      return `<span class="sector-mineral-chip tier-${tier.label}" data-mineral="${m.name}" title="${m.name} — Risk Index ${getRiskIndex(m).toFixed(1)}">${m.symbol}</span>`;
+      const cc = chinaColor(m.meta.chinaShare);
+      return `<span class="sector-mineral-chip" data-mineral="${m.name}" title="${m.name} — China: ${m.meta.chinaShare}%" style="border-color:${cc}30;color:${cc}">${m.symbol}</span>`;
     }).join('');
 
     const color = SECTOR_COLORS[sector] || '#848d97';
@@ -933,69 +768,66 @@ function renderSectorMatrix() {
   }).join('');
 
   container.querySelectorAll('.sector-mineral-chip').forEach(chip => {
-    chip.addEventListener('click', () => openMineralModal(chip.dataset.mineral));
+    chip.addEventListener('click', () => openMineralPage(chip.dataset.mineral));
   });
 }
 
-/* ── Modal ─────────────────────────────────────────────── */
+/* ── Mineral Page ──────────────────────────────────────── */
 
-function openMineralModal(name) {
-  const mineral = window.MINERALS.find(m => m.name === name);
-  if (!mineral) return;
+function openMineralPage(name) {
   AppState.selectedMineral = name;
+  navigate('mineral');
+}
 
-  const ri   = getRiskIndex(mineral);
-  const tier = getRiskTier(ri);
+const MP_GROUPS = [
+  { title: 'Demand Dynamics',     dims: ['demand', 'growth'],                 group: 'demand' },
+  { title: 'Supply Chain',        dims: ['miningDiv', 'refiningDiv'],          group: 'diversity' },
+  { title: 'Reserves',            dims: ['resTime', 'resDiv'],                 group: 'reserves' },
+  { title: 'End-Use Criticality', dims: ['endUseComp'],                        group: 'enduse' },
+  { title: 'Substitutability',    dims: ['substitutability', 'recyclability'], group: 'subst' },
+  { title: 'Processing',          dims: ['extraction'],                        group: 'extraction' },
+  { title: 'Pipeline',            dims: ['projects'],                          group: 'projects' },
+  { title: "India's Position",    dims: ['importDep', 'strategic'],            group: 'india' },
+  { title: 'Price Volatility',    dims: ['volatility'],                        group: 'volatility' },
+];
 
-  document.getElementById('modal-mineral-name').textContent   = mineral.name;
-  document.getElementById('modal-mineral-symbol').textContent = `${mineral.symbol} · ${mineral.meta.annualDemand}`;
-  document.getElementById('modal-score').textContent          = ri.toFixed(1);
-  document.getElementById('modal-score').style.color          = tier.color;
+function renderMineralPage(mineral) {
+  if (!mineral) return;
 
-  document.getElementById('modal-sectors').innerHTML =
+  // Header
+  document.getElementById('mp-symbol').textContent  = mineral.symbol;
+  document.getElementById('mp-name').textContent    = mineral.name;
+  document.getElementById('mp-sub').textContent     = mineral.meta.annualDemand + ' · Top supplier: ' + mineral.meta.topSupplier;
+  document.getElementById('mp-sectors').innerHTML   =
     mineral.meta.sectors.map(s => `<span class="sector-chip ${s}">${s}</span>`).join('');
 
-  document.getElementById('kf-demand').textContent    = mineral.meta.annualDemand;
-  document.getElementById('kf-supplier').textContent  = mineral.meta.topSupplier;
-  document.getElementById('kf-china').textContent     = `${mineral.meta.chinaShare}%`;
-  document.getElementById('kf-china').style.color     = chinaColor(mineral.meta.chinaShare);
-  document.getElementById('kf-narrative').textContent = mineral.meta.keyFact;
+  // Facts card
+  const cc = chinaColor(mineral.meta.chinaShare);
+  document.getElementById('mp-china').textContent    = mineral.meta.chinaShare + '%';
+  document.getElementById('mp-china').style.color    = cc;
+  document.getElementById('mp-narrative').textContent = mineral.meta.keyFact;
 
-  renderModalRadar(mineral);
-  renderModalScorecard(mineral);
+  // Add-to-compare button
+  document.getElementById('mp-add-compare').onclick = () => addToCompare(mineral.name);
 
-  document.getElementById('modal-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  document.getElementById('modal-add-compare').onclick = () => addToCompare(name);
-}
-
-function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('open');
-  document.body.style.overflow = '';
-  if (AppState.radarChartModal) {
-    AppState.radarChartModal.destroy();
-    AppState.radarChartModal = null;
+  // Radar chart
+  if (AppState.radarChartMineral) {
+    AppState.radarChartMineral.destroy();
+    AppState.radarChartMineral = null;
   }
-}
-
-function renderModalRadar(mineral) {
-  if (AppState.radarChartModal) { AppState.radarChartModal.destroy(); AppState.radarChartModal = null; }
-  const ctx    = document.getElementById('modal-radar-canvas').getContext('2d');
+  const ctx    = document.getElementById('mp-radar-canvas').getContext('2d');
   const values = get14Values(mineral);
-  const ri     = getRiskIndex(mineral);
-  const tier   = getRiskTier(ri);
-
-  AppState.radarChartModal = new Chart(ctx, {
+  AppState.radarChartMineral = new Chart(ctx, {
     type: 'radar',
     data: {
       labels: RADAR_LABELS,
       datasets: [{
         label: mineral.name,
         data: values,
-        backgroundColor: hexToRgba(tier.color, 0.12),
-        borderColor: tier.color,
+        backgroundColor: hexToRgba(cc, 0.12),
+        borderColor: cc,
         borderWidth: 1.5,
-        pointBackgroundColor: tier.color,
+        pointBackgroundColor: cc,
         pointRadius: 2.5,
         pointHoverRadius: 4,
       }]
@@ -1015,112 +847,57 @@ function renderModalRadar(mineral) {
         legend: { display: false },
         tooltip: {
           enabled: true,
-          backgroundColor: '#21262d',
-          titleColor: '#e6edf3',
-          bodyColor: '#848d97',
-          borderColor: '#3d444d',
-          borderWidth: 1,
+          backgroundColor: '#21262d', titleColor: '#e6edf3',
+          bodyColor: '#848d97', borderColor: '#3d444d', borderWidth: 1,
           callbacks: { label: ctx => ` ${ctx.raw.toFixed(2)} / 5` }
         }
       }
     }
   });
-}
 
-function renderModalScorecard(mineral) {
-  const container = document.getElementById('modal-scorecard');
-  if (!container) return;
+  // Scorecard
+  const scorecard = document.getElementById('mp-scorecard');
+  if (!scorecard) return;
   const s = mineral.scores;
 
-  container.innerHTML = window.RADAR_14.map(dim => {
-    const val  = s[dim.key] || 0;
-    const pct  = (val / dim.max) * 100;
-    const t    = val / dim.max;
-    const hue  = 120 - t * 120;
-    const barColor = `hsl(${hue.toFixed(0)},65%,50%)`;
+  scorecard.innerHTML = MP_GROUPS.map(grp => {
+    const justFull = (window.MINERAL_JUSTIFICATIONS?.[mineral.name]?.[grp.group]) || '';
 
-    const DIM_TO_GROUP = {
-      demand: 'demand', growth: 'growth',
-      miningDiv: 'diversity', refiningDiv: 'diversity',
-      resTime: 'reserves', resDiv: 'reserves',
-      endUseComp: 'enduse',
-      substitutability: 'subst', recyclability: 'subst',
-      extraction: 'extraction', projects: 'projects',
-      importDep: 'india', strategic: 'india',
-      volatility: 'volatility'
-    };
-    const group = DIM_TO_GROUP[dim.key];
-    const justFull = (window.MINERAL_JUSTIFICATIONS?.[mineral.name]?.[group]) || '';
-    const rubric = RUBRIC_DEFS.find(r => r.key === dim.key);
-    let rubricLine = '';
-    if (rubric) {
-      const numVal = parseFloat(val);
-      let best = rubric.rows[rubric.rows.length - 1];
-      for (const row of rubric.rows) {
-        if (!isNaN(parseFloat(row[0])) && numVal <= parseFloat(row[0]) + 0.5) { best = row; break; }
+    const dimRows = grp.dims.map(key => {
+      const dim = window.RADAR_14.find(d => d.key === key);
+      if (!dim) return '';
+      const val      = s[key] || 0;
+      const pct      = (val / dim.max) * 100;
+      const t        = val / dim.max;
+      const barColor = `hsl(${(120 - t * 120).toFixed(0)},65%,50%)`;
+      const rubric   = RUBRIC_DEFS.find(r => r.key === key);
+      let rubricLine = '';
+      if (rubric) {
+        const numVal = parseFloat(val);
+        let best = rubric.rows[rubric.rows.length - 1];
+        for (const row of rubric.rows) {
+          if (!isNaN(parseFloat(row[0])) && numVal <= parseFloat(row[0]) + 0.5) { best = row; break; }
+        }
+        if (best) rubricLine = `<span class="mp-rubric-hint">${best[1]}</span>`;
       }
-      if (best) rubricLine = `<div class="pop-rubric">${best[1]}</div>`;
-    }
-    const justText = `<span class="pop-score">Score ${val} / ${dim.max}</span>${rubricLine}${justFull ? `<div class="pop-full">${justFull}</div>` : ''}`;
+      return `
+        <div class="mp-dim-row">
+          <div class="mp-dim-label">${dim.label}</div>
+          <div class="mp-dim-bar-wrap">
+            <div class="mp-dim-bar" style="width:${pct}%;background:${barColor}"></div>
+          </div>
+          <div class="mp-dim-score" style="color:${barColor}">${val}<span class="mp-dim-max">/${dim.max}</span></div>
+          ${rubricLine}
+        </div>`;
+    }).join('');
 
     return `
-      <div class="scorecard-row">
-        <div class="scorecard-dim-label">${dim.label}</div>
-        <div class="scorecard-bar-wrap">
-          <div class="scorecard-bar-fill" style="width:${pct}%;background:${barColor}"></div>
-        </div>
-        <div class="scorecard-score" style="color:${barColor}">${val}<span style="color:var(--text-dim);font-weight:400"> /${dim.max}</span></div>
-        <div class="scorecard-popover">${justText}</div>
+      <div class="mp-group">
+        <div class="mp-group-title">${grp.title}</div>
+        ${dimRows}
+        ${justFull ? `<div class="mp-just-text">${justFull}</div>` : ''}
       </div>`;
   }).join('');
-
-  container.querySelectorAll('.scorecard-row').forEach(row => {
-    row.addEventListener('click', e => {
-      const wasOpen = row.classList.contains('pop-open');
-      container.querySelectorAll('.scorecard-row').forEach(r => r.classList.remove('pop-open'));
-      if (!wasOpen) row.classList.add('pop-open');
-    });
-  });
-}
-
-function renderModalQuadrant(currentMineral) {
-  const svg = document.getElementById('modal-quadrant-svg');
-  const W = 280, H = 240;
-  const M = { top: 20, right: 20, bottom: 40, left: 40 };
-  const PW = W - M.left - M.right;
-  const PH = H - M.top - M.bottom;
-
-  const xS = v => M.left + ((v - 1) / 4) * PW;
-  const yS = v => M.top  + PH - ((v - 1) / 4) * PH;
-
-  let html = '';
-  // Quadrant dividers at importDep=3, strategic=2
-  html += `<line x1="${xS(3)}" y1="${M.top}" x2="${xS(3)}" y2="${M.top+PH}" stroke="rgba(31,35,40,0.12)" stroke-width="1" stroke-dasharray="4,4"/>`;
-  html += `<line x1="${M.left}" y1="${yS(2)}" x2="${M.left+PW}" y2="${yS(2)}" stroke="rgba(31,35,40,0.12)" stroke-width="1" stroke-dasharray="4,4"/>`;
-  html += `<text x="${xS(1.3)}" y="${M.top+13}" font-size="7" fill="rgba(26,127,55,0.5)" font-family="Inter,sans-serif">Low Risk</text>`;
-  html += `<text x="${xS(3.2)}" y="${M.top+13}" font-size="7" fill="rgba(154,103,0,0.6)" font-family="Inter,sans-serif">High Import</text>`;
-  html += `<text x="${xS(1.3)}" y="${yS(2)-6}" font-size="7" fill="rgba(188,76,0,0.6)" font-family="Inter,sans-serif">High Geopolit.</text>`;
-  html += `<text x="${xS(3.2)}" y="${yS(2)-6}" font-size="7" fill="rgba(207,34,46,0.8)" font-family="Inter,sans-serif" font-weight="700">Critical Zone</text>`;
-  // Axis labels
-  html += `<text x="${M.left+PW/2}" y="${H-5}" text-anchor="middle" font-size="8" fill="rgba(31,35,40,0.35)" font-family="Inter,sans-serif">Import Dependence →</text>`;
-  html += `<text x="10" y="${M.top+PH/2}" text-anchor="middle" font-size="8" fill="rgba(31,35,40,0.35)" font-family="Inter,sans-serif" transform="rotate(-90,10,${M.top+PH/2})">Geopolit. Risk →</text>`;
-
-  // Background dots
-  for (const m of window.MINERALS) {
-    if (m.name === currentMineral.name) continue;
-    html += `<circle cx="${xS(m.scores.importDep)}" cy="${yS(m.scores.strategic)}" r="3" fill="rgba(31,35,40,0.1)"/>`;
-  }
-  // Highlighted dot
-  const mx = xS(currentMineral.scores.importDep);
-  const my = yS(currentMineral.scores.strategic);
-  const cc = chinaColor(currentMineral.meta.chinaShare);
-  html += `<circle cx="${mx}" cy="${my}" r="9" fill="${cc}" fill-opacity="0.25" stroke="${cc}" stroke-width="2"/>`;
-  html += `<text x="${mx}" y="${my+3.5}" text-anchor="middle" font-size="8" font-weight="700" fill="white" font-family="Inter,sans-serif">${currentMineral.symbol}</text>`;
-  // Tick marks
-  for (let i=1;i<=5;i++) html += `<text x="${xS(i)}" y="${M.top+PH+13}" text-anchor="middle" font-size="7" fill="rgba(31,35,40,0.25)" font-family="Inter,sans-serif">${i}</text>`;
-  for (let i=1;i<=3;i++) html += `<text x="${M.left-5}" y="${yS(i)+3}" text-anchor="end" font-size="7" fill="rgba(31,35,40,0.25)" font-family="Inter,sans-serif">${i}</text>`;
-
-  svg.innerHTML = html;
 }
 
 function addToCompare(name) {
@@ -1130,7 +907,6 @@ function addToCompare(name) {
     if (!AppState.compareSelections[k]) { AppState.compareSelections[k] = name; placed = true; break; }
   }
   if (!placed) AppState.compareSelections.c = name;
-  closeModal();
   navigate('compare');
 }
 
@@ -1358,7 +1134,7 @@ function renderRubricAccordion() {
   });
 
   container.querySelectorAll('.rubric-chip').forEach(chip => {
-    chip.addEventListener('click', () => openMineralModal(chip.dataset.mineral));
+    chip.addEventListener('click', () => openMineralPage(chip.dataset.mineral));
   });
 }
 
@@ -1372,7 +1148,7 @@ function renderHeatmap() {
   let minerals = AppState.heatmapSortDim
     ? [...window.MINERALS].sort((a, b) =>
         AppState.heatmapSortDir * ((b.scores[AppState.heatmapSortDim] || 0) - (a.scores[AppState.heatmapSortDim] || 0)))
-    : [...window.MINERALS].sort((a, b) => getRiskIndex(b) - getRiskIndex(a));
+    : [...window.MINERALS].sort((a, b) => b.meta.chinaShare - a.meta.chinaShare);
 
   // Short labels for column headers
   const shortLabels = {
@@ -1388,17 +1164,13 @@ function renderHeatmap() {
     </th>`).join('');
 
   const bodyRows = minerals.map(m => {
-    const ri   = getRiskIndex(m);
-    const tier = getRiskTier(ri);
     const cells = dims.map(d => {
       const val   = m.scores[d.key] || 0;
       const color = heatmapColor(val, d.max);
       return `<td><span class="hm-cell" style="background:${color}" data-mineral="${m.name}" data-dim="${d.key}" data-val="${val}" data-max="${d.max}" title="${m.name} · ${window.DIMENSIONS[d.key]?.label}: ${val}/${d.max}"></span></td>`;
     }).join('');
     return `<tr>
-      <td data-mineral="${m.name}" style="cursor:pointer;">
-        <span style="color:${tier.color};margin-right:5px;font-size:0.6rem">●</span>${m.name}
-      </td>${cells}
+      <td data-mineral="${m.name}" style="cursor:pointer;">${m.name}</td>${cells}
     </tr>`;
   }).join('');
 
@@ -1423,10 +1195,10 @@ function renderHeatmap() {
     });
   });
 
-  // Click mineral name → open modal
+  // Click mineral name → open mineral page
   table.querySelectorAll('td[data-mineral]').forEach(td => {
     if (!td.dataset.mineral) return;
-    td.addEventListener('click', () => openMineralModal(td.dataset.mineral));
+    td.addEventListener('click', () => openMineralPage(td.dataset.mineral));
   });
 
   // Cell hover tooltip
@@ -1439,7 +1211,7 @@ function renderHeatmap() {
       tt.classList.add('visible');
     });
     cell.addEventListener('mouseleave', hideTooltip);
-    cell.addEventListener('click', () => openMineralModal(cell.dataset.mineral));
+    cell.addEventListener('click', () => openMineralPage(cell.dataset.mineral));
   });
 }
 
@@ -1531,7 +1303,6 @@ function renderCompareRadar(minerals) {
 function renderCompareTable(minerals) {
   const table = document.getElementById('compare-table');
   const rows = [
-    { label: 'Risk Index',      fn: m => getRiskIndex(m).toFixed(2),                          higherWorse: true  },
     { label: 'China Share',     fn: m => m.meta.chinaShare + '%',                             higherWorse: true  },
     { label: 'Annual Demand',   fn: m => m.meta.annualDemand,                                 higherWorse: null  },
     { label: 'Top Supplier',    fn: m => m.meta.topSupplier,                                  higherWorse: null  },
@@ -1595,7 +1366,7 @@ const BuilderState = {
   type:    'scatter',
   xKey:    'supplyConc',
   yKey:    'growth',
-  colorBy: 'riskTier',
+  colorBy: 'sector',
   search:  '',
   preset:  0,
 };
@@ -1630,12 +1401,6 @@ const BUILDER_PRESETS = [
     sub: 'End-use criticality vs. reserve lifetime',
     tag: 'Long-Term',
     xKey: 'endUseComp', yKey: 'resTime',
-  },
-  {
-    title: 'Overall Risk',
-    sub: 'Risk Index vs. China supply share',
-    tag: 'Summary',
-    xKey: 'riskIndex', yKey: 'chinaShare',
   },
 ];
 
@@ -1684,7 +1449,7 @@ function initBuilderControls() {
 
   if (!xSel.options.length) {
     const grouped = [
-      { label: '── Computed ──',   axes: ['riskIndex','chinaShare','demandLog'] },
+      { label: '── Computed ──',   axes: ['chinaShare','demandLog'] },
       { label: '── Demand ──',      axes: ['demand','growth','endUseComp'] },
       { label: '── Supply ──',      axes: ['supplyConc','miningDiv','refiningDiv','resTime','resDiv'] },
       { label: '── Risk Factors ──',axes: ['subst','recycl','extraction','projects','volatility'] },
@@ -1840,7 +1605,7 @@ function renderBuilderScatter(svg, minerals) {
   svg.querySelectorAll('.builder-dot').forEach(el => {
     el.addEventListener('mouseenter', e => showCBTooltip(e, el.dataset.mineral, xAx, yAx));
     el.addEventListener('mouseleave', hideTooltip);
-    el.addEventListener('click', () => openMineralModal(el.dataset.mineral));
+    el.addEventListener('click', () => openMineralPage(el.dataset.mineral));
   });
 }
 
@@ -1890,19 +1655,13 @@ function renderBuilderBar(svg, minerals) {
   svg.innerHTML = html;
 
   svg.querySelectorAll('.builder-dot').forEach(el => {
-    el.addEventListener('click', () => openMineralModal(el.dataset.mineral));
+    el.addEventListener('click', () => openMineralPage(el.dataset.mineral));
     el.addEventListener('mouseenter', e => showCBBarTooltip(e, el.dataset.mineral, xAx));
     el.addEventListener('mouseleave', hideTooltip);
   });
 }
 
 /* ── Event Wiring ──────────────────────────────────────── */
-
-document.getElementById('modal-overlay').addEventListener('click', e => {
-  if (e.target === e.currentTarget) closeModal();
-});
-document.getElementById('modal-close').addEventListener('click', closeModal);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 document.addEventListener('mousemove', e => {
   if (document.getElementById('tooltip').classList.contains('visible')) positionTooltip(e);
@@ -1925,7 +1684,6 @@ window.addEventListener('resize', () => {
 /* ── Init ──────────────────────────────────────────────── */
 
 function init() {
-  recomputeRiskIndex();
   renderOverview();
 }
 

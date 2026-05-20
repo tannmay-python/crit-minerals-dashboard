@@ -71,7 +71,6 @@
           can be targeted at the right minerals.
         </p>
       </div>
-      <div class="problem-stats-row" id="hero-stats"></div>
     </div>
   </section>
 
@@ -102,9 +101,8 @@
             <button class="filter-chip" data-sector="construction">Construction</button>
           </div>
           <select class="sort-select" id="explorer-sort">
-            <option value="riskIndex">Sort: Risk Index</option>
-            <option value="growth">Sort: Demand Growth</option>
             <option value="china">Sort: China Risk</option>
+            <option value="growth">Sort: Demand Growth</option>
             <option value="importDep">Sort: India Vulnerability</option>
           </select>
         </div>
@@ -114,7 +112,7 @@
         <div class="sector-matrix">
           <div class="section-header">
             <h2 class="section-title">Sector Dependency Matrix</h2>
-            <span class="text-muted text-sm">Which sectors depend on which minerals · Color = Risk Index tier</span>
+            <span class="text-muted text-sm">Sector dependencies</span>
           </div>
           <div class="card" style="padding:16px 20px;">
             <div id="sector-matrix-content"></div>
@@ -122,19 +120,6 @@
         </div>
       </div>
 
-      <aside class="weight-sidebar">
-        <div class="card">
-          <div class="weight-title">Weight Customizer</div>
-          <div class="weight-subtitle">Adjust dimension weights to recalculate Risk Index in real-time</div>
-          <div class="preset-btns" id="preset-btns">
-            <button class="preset-btn" data-preset="equal">Equal</button>
-            <button class="preset-btn active" data-preset="indiaFocus">India Focus</button>
-            <button class="preset-btn" data-preset="supplySecure">Supply</button>
-            <button class="preset-btn" data-preset="demandShock">Demand</button>
-          </div>
-          <div class="weight-sliders" id="weight-sliders"></div>
-        </div>
-      </aside>
     </div>
 
   </div>
@@ -297,62 +282,52 @@
 </main>
 
 <!-- ═══════════════════════════════════════════════════════
-     MINERAL DETAIL MODAL
+     PAGE: MINERAL DETAIL
 ═══════════════════════════════════════════════════════ -->
-<div id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-mineral-name">
-  <div class="modal" id="detail-modal">
-    <div class="modal-header">
-      <div class="modal-mineral-info">
-        <div class="modal-name" id="modal-mineral-name">—</div>
-        <div class="modal-symbol" id="modal-mineral-symbol">—</div>
-        <div class="sector-chips" id="modal-sectors"></div>
-      </div>
-      <div style="display:flex;align-items:flex-start;gap:14px;">
-        <div class="modal-score-wrap">
-          <div class="modal-score" id="modal-score">—</div>
-          <div class="modal-score-sub">Risk Index</div>
-        </div>
-        <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
-      </div>
-    </div>
-
-    <div class="modal-body">
-      <div class="modal-grid">
-        <div class="modal-chart-box">
-          <div class="modal-chart-title">14-Vector Risk Radar</div>
-          <div class="chart-canvas-wrap" style="max-width:320px;width:100%;">
-            <canvas id="modal-radar-canvas"></canvas>
-          </div>
-        </div>
-        <div class="modal-chart-box" style="align-items:stretch;width:100%;">
-          <div class="modal-chart-title">Dimension Scorecard <span style="font-weight:400;color:var(--text-dim);font-size:0.62rem;text-transform:none;letter-spacing:0">— click any row for details</span></div>
-          <div class="modal-scorecard" id="modal-scorecard"></div>
-        </div>
-      </div>
-
-      <!-- Key Facts -->
-      <div class="key-facts" id="modal-key-facts">
-        <div class="key-facts-grid">
-          <div class="kf-item">
-            <span class="kf-label">Annual Demand</span>
-            <span class="kf-value" id="kf-demand">—</span>
-          </div>
-          <div class="kf-item">
-            <span class="kf-label">Top Supplier</span>
-            <span class="kf-value" id="kf-supplier">—</span>
-          </div>
-          <div class="kf-item">
-            <span class="kf-label">China Share</span>
-            <span class="kf-value" id="kf-china">—</span>
-          </div>
-        </div>
-        <div class="key-narrative" id="kf-narrative">—</div>
-      </div>
-
-      <button class="modal-add-compare" id="modal-add-compare">
+<div id="page-mineral" class="page">
+  <div class="container">
+    <div class="mp-topbar">
+      <button class="mp-back-btn" onclick="navigate('explorer')">← Explorer</button>
+      <button class="modal-add-compare" id="mp-add-compare">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
         Add to Compare
       </button>
+    </div>
+
+    <div class="mp-header">
+      <div class="mp-symbol-wrap">
+        <span class="mp-symbol" id="mp-symbol">—</span>
+      </div>
+      <div class="mp-title-area">
+        <h1 class="mp-name" id="mp-name">—</h1>
+        <div class="mp-sub" id="mp-sub">—</div>
+        <div class="mp-sectors" id="mp-sectors"></div>
+      </div>
+    </div>
+
+    <div class="mp-body">
+
+      <div class="mp-left">
+        <div class="card mp-radar-card">
+          <div class="mp-card-title">Risk Profile</div>
+          <canvas id="mp-radar-canvas" style="max-width:100%;max-height:320px"></canvas>
+        </div>
+        <div class="card mp-facts-card">
+          <div class="mp-fact-row">
+            <span class="mp-fact-label">China Share</span>
+            <span class="mp-fact-val" id="mp-china">—</span>
+          </div>
+          <div class="mp-fact-narrative" id="mp-narrative">—</div>
+        </div>
+      </div>
+
+      <div class="mp-right">
+        <div class="card mp-scorecard-card">
+          <div class="mp-card-title">Dimension Scorecard</div>
+          <div id="mp-scorecard"></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

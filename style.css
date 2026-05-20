@@ -484,25 +484,16 @@ input[type="range"]::-moz-range-thumb {
   opacity: 0;
   transition: opacity var(--transition);
 }
-.mineral-card:hover { border-color: var(--border-2); transform: translateY(-2px); box-shadow: var(--shadow); }
-.mineral-card:hover::before { opacity: 1; }
-.mineral-card.risk-critical::before { background: var(--risk-critical); }
-.mineral-card.risk-high::before { background: var(--risk-high); }
-.mineral-card.risk-moderate::before { background: var(--risk-moderate); }
-.mineral-card.risk-low::before { background: var(--risk-low); }
+.mineral-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow); }
+.mineral-card:hover::before { opacity: 1; background: var(--accent); }
 
 .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
 .card-name { font-size: 0.9rem; font-weight: 700; margin-bottom: 1px; }
 .card-symbol { font-size: 0.68rem; font-weight: 600; color: var(--text-muted); font-family: 'SF Mono', monospace; }
 
-.score-badge { display: flex; flex-direction: column; align-items: flex-end; }
-.score-num { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
-.score-label { font-size: 0.56rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); margin-top: 2px; }
-
-.score-critical { color: var(--risk-critical); }
-.score-high     { color: var(--risk-high); }
-.score-moderate { color: var(--risk-moderate); }
-.score-low      { color: var(--risk-low); }
+.card-china-badge { display: flex; flex-direction: column; align-items: flex-end; }
+.card-china-pct { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+.card-china-lbl { font-size: 0.56rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); margin-top: 2px; }
 
 /* Mini Radar */
 .mini-radar { display: block; margin: 8px auto; }
@@ -1195,10 +1186,7 @@ input[type="range"]::-moz-range-thumb {
 
 /* ── Explorer Weight Panel ─────────────────────────────── */
 .explorer-layout {
-  display: grid;
-  grid-template-columns: 1fr var(--sidebar-w);
-  gap: 24px;
-  align-items: start;
+  display: block;
 }
 .explorer-main { min-width: 0; }
 
@@ -1432,6 +1420,135 @@ input[type="range"]::-moz-range-thumb {
 .builder-search:focus { border-color: var(--accent); }
 .builder-search::placeholder { color: var(--text-dim); }
 
+/* ── Mineral Detail Page ───────────────────────────────── */
+
+.mp-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0 16px;
+}
+.mp-back-btn {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.mp-back-btn:hover { border-color: var(--border-2); color: var(--text); }
+
+.mp-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+.mp-symbol-wrap {
+  width: 64px; height: 64px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.mp-symbol {
+  font-size: 1.3rem;
+  font-weight: 800;
+  font-family: 'SF Mono', monospace;
+  color: var(--accent);
+}
+.mp-name { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 900; letter-spacing: -0.03em; }
+.mp-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 3px; }
+.mp-sectors { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+
+.mp-body {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 48px;
+}
+
+.mp-left { display: flex; flex-direction: column; gap: 16px; }
+
+.mp-radar-card, .mp-facts-card, .mp-scorecard-card { padding: 18px 20px; }
+
+.mp-card-title {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+.mp-fact-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+.mp-fact-label { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; }
+.mp-fact-val { font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+.mp-fact-narrative { font-size: 0.78rem; color: var(--text-muted); line-height: 1.65; }
+
+/* Scorecard groups */
+.mp-group {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  background: var(--surface-2);
+}
+.mp-group-title {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.mp-dim-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 44px auto;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+}
+.mp-dim-row:last-of-type { border-bottom: none; }
+
+.mp-dim-label { font-size: 0.72rem; color: var(--text-muted); }
+.mp-dim-bar-wrap { height: 5px; background: var(--surface-3); border-radius: 3px; overflow: hidden; }
+.mp-dim-bar { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+.mp-dim-score { font-size: 0.72rem; font-weight: 700; text-align: right; }
+.mp-dim-max { font-size: 0.6rem; font-weight: 400; color: var(--text-dim); }
+
+.mp-rubric-hint {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  grid-column: 1 / -1;
+  padding-top: 3px;
+  padding-bottom: 4px;
+  line-height: 1.5;
+  display: block;
+}
+
+.mp-just-text {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
 /* ── Responsive ────────────────────────────────────────── */
 @media (max-width: 1100px) {
   :root { --sidebar-w: 260px; }
@@ -1443,10 +1560,10 @@ input[type="range"]::-moz-range-thumb {
 
 @media (max-width: 900px) {
   .overview-grid { grid-template-columns: 1fr; }
-  .weight-sidebar { position: relative; top: 0; }
   .about-grid { grid-template-columns: 1fr; }
   .compare-layout { grid-template-columns: 1fr; }
   .hero h1 { font-size: 1.8rem; }
+  .mp-body { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 600px) {
