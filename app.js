@@ -144,10 +144,10 @@ function hexToRgba(hex, alpha) {
 }
 
 function heatmapColor(score, max) {
-  // Green (hsl 120) → Amber (hsl 40) → Red (hsl 0), lightness 48%
+  // Green (hsl 120) → Amber (hsl 40) → Red (hsl 0), lightness 42%
   const t = clamp((score - 1) / (max - 1), 0, 1);
   const hue = lerp(120, 0, t);
-  return `hsl(${hue.toFixed(0)},65%,48%)`;
+  return `hsl(${hue.toFixed(0)},65%,42%)`;
 }
 
 /* ── Risk Index Computation ────────────────────────────── */
@@ -187,7 +187,7 @@ function navigate(page) {
   if (page === 'explorer') renderExplorer();
   if (page === 'criteria') renderCriteria();
   if (page === 'compare')  renderComparePage();
-  if (page === 'about')    renderAboutPage();
+  if (page === 'builder')  renderBuilderPage();
 }
 
 /* ── Hero Stats ────────────────────────────────────────── */
@@ -732,7 +732,6 @@ function positionTooltip(e) {
 function renderOverview() {
   recomputeRiskIndex();
   renderHeroStats();
-  initChartBuilder();
 }
 
 function initPresetButtons() {
@@ -804,6 +803,7 @@ function renderMineralGrid() {
     const name = card.dataset.mineral;
     const m    = window.MINERALS.find(x => x.name === name);
     if (m) {
+      drawMiniRadar(card.querySelector('.mini-radar'), m.scores);
       card.addEventListener('click', () => openMineralModal(name));
     }
   });
@@ -826,10 +826,7 @@ function buildMineralCard(mineral) {
           <div class="score-label">Risk Index</div>
         </div>
       </div>
-      <div class="element-hero">
-        <div class="element-hero-symbol" style="color:${tier.color}">${mineral.symbol}</div>
-        <div class="element-hero-num">${mineral.meta.annualDemand}</div>
-      </div>
+      <canvas class="mini-radar" width="120" height="120"></canvas>
       <div class="sector-chips">
         ${mineral.meta.sectors.slice(0,4).map(s => `<span class="sector-chip ${s}">${s}</span>`).join('')}
       </div>
@@ -973,7 +970,7 @@ function openMineralModal(name) {
     <div class="modal-desc-card"><div class="modal-desc-label">Price Context</div><div class="modal-desc-text">${desc.priceContext || '—'}</div></div>`;
 
   renderModalRadar(mineral);
-  renderModalQuadrant(mineral);
+  renderModalScorecard(mineral);
 
   document.getElementById('modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1017,24 +1014,70 @@ function renderModalRadar(mineral) {
         r: {
           min: 0, max: 5,
           ticks: { display: false, stepSize: 1 },
-          grid: { color: 'rgba(31,35,40,0.08)', lineWidth: 1 },
-          pointLabels: { color: '#57606a', font: { size: 9, family: 'Inter' } },
-          angleLines: { color: 'rgba(31,35,40,0.07)' }
+          grid: { color: 'rgba(255,255,255,0.07)', lineWidth: 1 },
+          pointLabels: { color: '#848d97', font: { size: 9, family: 'Inter' } },
+          angleLines: { color: 'rgba(255,255,255,0.05)' }
         }
       },
       plugins: {
         legend: { display: false },
         tooltip: {
           enabled: true,
-          backgroundColor: '#ffffff',
-          titleColor: '#1f2328',
-          bodyColor: '#57606a',
-          borderColor: '#d0d7de',
+          backgroundColor: '#21262d',
+          titleColor: '#e6edf3',
+          bodyColor: '#848d97',
+          borderColor: '#3d444d',
           borderWidth: 1,
           callbacks: { label: ctx => ` ${ctx.raw.toFixed(2)} / 5` }
         }
       }
     }
+  });
+}
+
+function renderModalScorecard(mineral) {
+  const container = document.getElementById('modal-scorecard');
+  if (!container) return;
+  const s = mineral.scores;
+
+  container.innerHTML = window.RADAR_14.map(dim => {
+    const val  = s[dim.key] || 0;
+    const pct  = (val / dim.max) * 100;
+    const t    = val / dim.max;
+    const hue  = 120 - t * 120;
+    const barColor = `hsl(${hue.toFixed(0)},65%,50%)`;
+
+    const rubric = RUBRIC_DEFS.find(r => r.key === dim.key);
+    let justText = '';
+    if (rubric) {
+      const numVal = parseFloat(val);
+      let best = rubric.rows[rubric.rows.length - 1];
+      for (const row of rubric.rows) {
+        const rowNum = parseFloat(row[0]);
+        if (!isNaN(rowNum) && numVal <= rowNum + 0.5) { best = row; break; }
+      }
+      justText = best ? `<span class="pop-score">Score ${val} / ${dim.max}</span>${best[1]}` : `Score ${val} / ${dim.max}`;
+    } else {
+      justText = `Score ${val} / ${dim.max}`;
+    }
+
+    return `
+      <div class="scorecard-row">
+        <div class="scorecard-dim-label">${dim.label}</div>
+        <div class="scorecard-bar-wrap">
+          <div class="scorecard-bar-fill" style="width:${pct}%;background:${barColor}"></div>
+        </div>
+        <div class="scorecard-score" style="color:${barColor}">${val}<span style="color:var(--text-dim);font-weight:400"> /${dim.max}</span></div>
+        <div class="scorecard-popover">${justText}</div>
+      </div>`;
+  }).join('');
+
+  container.querySelectorAll('.scorecard-row').forEach(row => {
+    row.addEventListener('click', e => {
+      const wasOpen = row.classList.contains('pop-open');
+      container.querySelectorAll('.scorecard-row').forEach(r => r.classList.remove('pop-open'));
+      if (!wasOpen) row.classList.add('pop-open');
+    });
   });
 }
 
@@ -1458,21 +1501,21 @@ function renderCompareRadar(minerals) {
         r: {
           min: 0, max: 5,
           ticks: { display: false, stepSize: 1 },
-          grid: { color: 'rgba(31,35,40,0.08)', lineWidth: 1 },
-          pointLabels: { color: '#57606a', font: { size: 9, family: 'Inter' } },
-          angleLines: { color: 'rgba(31,35,40,0.07)' }
+          grid: { color: 'rgba(255,255,255,0.07)', lineWidth: 1 },
+          pointLabels: { color: '#848d97', font: { size: 9, family: 'Inter' } },
+          angleLines: { color: 'rgba(255,255,255,0.05)' }
         }
       },
       plugins: {
         legend: {
           display: true,
-          labels: { color: '#1f2328', font: { size: 11, family: 'Inter' }, boxWidth: 12, padding: 14 }
+          labels: { color: '#e6edf3', font: { size: 11, family: 'Inter' }, boxWidth: 12, padding: 14 }
         },
         tooltip: {
-          backgroundColor: '#ffffff',
-          titleColor: '#1f2328',
-          bodyColor: '#57606a',
-          borderColor: '#d0d7de',
+          backgroundColor: '#21262d',
+          titleColor: '#e6edf3',
+          bodyColor: '#848d97',
+          borderColor: '#3d444d',
           borderWidth: 1,
           callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw.toFixed(2)} / 5` }
         }
@@ -1543,6 +1586,312 @@ function renderAboutPage() {
     </tbody>`;
 }
 
+/* ── Builder Page State ────────────────────────────────── */
+const BuilderState = {
+  type:    'scatter',
+  xKey:    'supplyConc',
+  yKey:    'growth',
+  colorBy: 'riskTier',
+  search:  '',
+  preset:  0,
+};
+
+const BUILDER_PRESETS = [
+  {
+    title: 'Supply vs. Growth',
+    sub: 'Where concentration meets rising demand',
+    tag: 'Classic Risk',
+    xKey: 'supplyConc', yKey: 'growth',
+  },
+  {
+    title: "India's Exposure",
+    sub: 'Import dependence vs. China supply share',
+    tag: 'India Risk',
+    xKey: 'importDep', yKey: 'chinaShare',
+  },
+  {
+    title: 'Hard to Replace',
+    sub: 'Substitution difficulty vs. demand volume',
+    tag: 'Future Risk',
+    xKey: 'subst', yKey: 'demandLog',
+  },
+  {
+    title: 'Price Weaponization',
+    sub: 'Price volatility vs. supply concentration',
+    tag: 'Market Risk',
+    xKey: 'volatility', yKey: 'supplyConc',
+  },
+  {
+    title: 'Strategic Horizon',
+    sub: 'End-use criticality vs. reserve lifetime',
+    tag: 'Long-Term',
+    xKey: 'endUseComp', yKey: 'resTime',
+  },
+  {
+    title: 'Overall Risk',
+    sub: 'Risk Index vs. China supply share',
+    tag: 'Summary',
+    xKey: 'riskIndex', yKey: 'chinaShare',
+  },
+];
+
+/* ── Builder Page ──────────────────────────────────────── */
+
+function renderBuilderPage() {
+  renderBuilderPresets();
+  initBuilderControls();
+  renderBuilderChart();
+}
+
+function renderBuilderPresets() {
+  const container = document.getElementById('builder-presets');
+  if (!container) return;
+  container.innerHTML = BUILDER_PRESETS.map((p, i) => `
+    <div class="builder-preset-card ${i === BuilderState.preset ? 'active' : ''}" data-preset="${i}">
+      <div class="bp-tag">${p.tag}</div>
+      <div class="bp-title">${p.title}</div>
+      <div class="bp-sub">${p.sub}</div>
+    </div>`).join('');
+
+  container.querySelectorAll('.builder-preset-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const i = parseInt(card.dataset.preset, 10);
+      const p = BUILDER_PRESETS[i];
+      BuilderState.preset = i;
+      BuilderState.xKey   = p.xKey;
+      BuilderState.yKey   = p.yKey;
+      BuilderState.type   = 'scatter';
+      container.querySelectorAll('.builder-preset-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      const xSel = document.getElementById('builder-x-axis');
+      const ySel = document.getElementById('builder-y-axis');
+      if (xSel) xSel.value = BuilderState.xKey;
+      if (ySel) ySel.value = BuilderState.yKey;
+      document.querySelectorAll('.builder-type-btn').forEach(b => b.classList.toggle('active', b.dataset.btype === 'scatter'));
+      renderBuilderChart();
+    });
+  });
+}
+
+function initBuilderControls() {
+  const xSel = document.getElementById('builder-x-axis');
+  const ySel = document.getElementById('builder-y-axis');
+  if (!xSel || !ySel) return;
+
+  if (!xSel.options.length) {
+    const grouped = [
+      { label: '── Computed ──',   axes: ['riskIndex','chinaShare','demandLog'] },
+      { label: '── Demand ──',      axes: ['demand','growth','endUseComp'] },
+      { label: '── Supply ──',      axes: ['supplyConc','miningDiv','refiningDiv','resTime','resDiv'] },
+      { label: '── Risk Factors ──',axes: ['subst','recycl','extraction','projects','volatility'] },
+      { label: '── India ──',       axes: ['importDep','strategic'] },
+    ];
+    grouped.forEach(g => {
+      const xGrp = document.createElement('optgroup');
+      xGrp.label = g.label;
+      const yGrp = document.createElement('optgroup');
+      yGrp.label = g.label;
+      g.axes.forEach(key => {
+        const ax = CB_AXES.find(a => a.key === key);
+        if (!ax) return;
+        xGrp.appendChild(new Option(ax.label, ax.key));
+        yGrp.appendChild(new Option(ax.label, ax.key));
+      });
+      xSel.appendChild(xGrp);
+      ySel.appendChild(yGrp);
+    });
+  }
+
+  xSel.value = BuilderState.xKey;
+  ySel.value = BuilderState.yKey;
+
+  const onAxisChange = () => {
+    BuilderState.xKey = xSel.value;
+    BuilderState.yKey = ySel.value;
+    BuilderState.preset = -1;
+    document.querySelectorAll('.builder-preset-card').forEach(c => c.classList.remove('active'));
+    renderBuilderChart();
+  };
+  xSel.addEventListener('change', onAxisChange);
+  ySel.addEventListener('change', onAxisChange);
+
+  document.querySelectorAll('.builder-type-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.builder-type-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      BuilderState.type = btn.dataset.btype;
+      const yField = document.getElementById('builder-y-field');
+      if (yField) yField.style.display = BuilderState.type === 'bar' ? 'none' : '';
+      renderBuilderChart();
+    });
+  });
+
+  document.querySelectorAll('.builder-color-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.builder-color-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      BuilderState.colorBy = btn.dataset.bcolor;
+      renderBuilderChart();
+    });
+  });
+
+  const searchEl = document.getElementById('builder-search');
+  if (searchEl) {
+    searchEl.value = BuilderState.search;
+    searchEl.addEventListener('input', () => {
+      BuilderState.search = searchEl.value.toLowerCase().trim();
+      renderBuilderChart();
+    });
+  }
+}
+
+function renderBuilderChart() {
+  const svg = document.getElementById('builder-chart-svg');
+  if (!svg) return;
+  const minerals = [...window.MINERALS];
+  if (BuilderState.type === 'bar') {
+    renderBuilderBar(svg, minerals);
+  } else {
+    renderBuilderScatter(svg, minerals);
+  }
+}
+
+function renderBuilderScatter(svg, minerals) {
+  const W = svg.parentElement.clientWidth || 900;
+  const H = 520;
+  const M = { top: 36, right: 60, bottom: 72, left: 72 };
+  const PW = W - M.left - M.right;
+  const PH = H - M.top  - M.bottom;
+
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('height', H);
+
+  const xAx = CB_AXES.find(a => a.key === BuilderState.xKey) || CB_AXES[0];
+  const yAx = CB_AXES.find(a => a.key === BuilderState.yKey) || CB_AXES[1];
+
+  const allX = minerals.map(m => xAx.getValue(m));
+  const allY = minerals.map(m => yAx.getValue(m));
+  const rawXMin = Math.min(...allX), rawXMax = Math.max(...allX);
+  const rawYMin = Math.min(...allY), rawYMax = Math.max(...allY);
+  const xRange = rawXMax - rawXMin || 1;
+  const yRange = rawYMax - rawYMin || 1;
+  const xPad = xRange * 0.08, yPad = yRange * 0.10;
+  const xMin = rawXMin - xPad, xMax = rawXMax + xPad;
+  const yMin = rawYMin - yPad, yMax = rawYMax + yPad;
+
+  const xS = v => M.left + ((v - xMin) / (xMax - xMin)) * PW;
+  const yS = v => M.top  + PH - ((v - yMin) / (yMax - yMin)) * PH;
+
+  let html = `<rect x="0" y="0" width="${W}" height="${H}" fill="#0d1117" rx="0"/>`;
+  html += `<rect x="${M.left}" y="${M.top}" width="${PW}" height="${PH}" fill="rgba(255,255,255,0.01)" rx="4"/>`;
+
+  const xTicks = 6, yTicks = 5;
+  for (let i = 0; i <= xTicks; i++) {
+    const v = rawXMin + (i / xTicks) * xRange;
+    const x = xS(v);
+    html += `<line x1="${x}" y1="${M.top}" x2="${x}" y2="${M.top+PH}" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>`;
+    html += `<text x="${x}" y="${M.top+PH+20}" text-anchor="middle" font-size="10" fill="#545d68" font-family="Inter,sans-serif">${v.toFixed(xRange > 20 ? 0 : 1)}</text>`;
+  }
+  for (let i = 0; i <= yTicks; i++) {
+    const v = rawYMin + (i / yTicks) * yRange;
+    const y = yS(v);
+    html += `<line x1="${M.left}" y1="${y}" x2="${M.left+PW}" y2="${y}" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>`;
+    html += `<text x="${M.left-10}" y="${y+4}" text-anchor="end" font-size="10" fill="#545d68" font-family="Inter,sans-serif">${v.toFixed(yRange > 20 ? 0 : 1)}</text>`;
+  }
+
+  html += `<line x1="${M.left}" y1="${M.top}" x2="${M.left}" y2="${M.top+PH}" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>`;
+  html += `<line x1="${M.left}" y1="${M.top+PH}" x2="${M.left+PW}" y2="${M.top+PH}" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>`;
+
+  html += `<text x="${M.left+PW/2}" y="${H-10}" text-anchor="middle" font-size="12" fill="#848d97" font-family="Inter,sans-serif" font-weight="500">${xAx.label}</text>`;
+  html += `<text x="16" y="${M.top+PH/2}" text-anchor="middle" font-size="12" fill="#848d97" font-family="Inter,sans-serif" font-weight="500" transform="rotate(-90,16,${M.top+PH/2})">${yAx.label}</text>`;
+
+  const search = BuilderState.search;
+  minerals.forEach((m) => {
+    const xVal  = xAx.getValue(m);
+    const yVal  = yAx.getValue(m);
+    const cx    = xS(xVal);
+    const cy    = yS(yVal);
+    const col   = cbGetColor(m, BuilderState.colorBy);
+    const isHit = search && m.name.toLowerCase().includes(search);
+    const isDim = search && !isHit;
+
+    html += `<g class="builder-dot" data-mineral="${m.name}" style="cursor:pointer;">`;
+    if (isDim) {
+      html += `<circle cx="${cx}" cy="${cy}" r="7" fill="${col}" fill-opacity="0.18" stroke="${col}" stroke-width="1" stroke-opacity="0.25"/>`;
+      html += `<text x="${cx}" y="${cy+3}" text-anchor="middle" font-size="6" fill="rgba(255,255,255,0.2)" font-weight="700" pointer-events="none">${m.symbol}</text>`;
+    } else if (isHit) {
+      html += `<circle cx="${cx}" cy="${cy}" r="13" fill="${col}" fill-opacity="0.18" stroke="${col}" stroke-width="2"/>`;
+      html += `<circle cx="${cx}" cy="${cy}" r="9" fill="${col}" fill-opacity="0.85"/>`;
+      html += `<text x="${cx}" y="${cy+3.5}" text-anchor="middle" font-size="8" fill="white" font-weight="800" pointer-events="none">${m.symbol}</text>`;
+      html += `<text x="${cx}" y="${cy+22}" text-anchor="middle" font-size="9" fill="${col}" font-weight="600" pointer-events="none">${m.name}</text>`;
+    } else {
+      html += `<circle cx="${cx}" cy="${cy}" r="9" fill="${col}" fill-opacity="0.78" stroke="${col}" stroke-width="1.5" stroke-opacity="0.9"/>`;
+      html += `<text x="${cx}" y="${cy+3.5}" text-anchor="middle" font-size="7" fill="white" font-weight="700" pointer-events="none">${m.symbol}</text>`;
+    }
+    html += `</g>`;
+  });
+
+  svg.innerHTML = html;
+
+  svg.querySelectorAll('.builder-dot').forEach(el => {
+    el.addEventListener('mouseenter', e => showCBTooltip(e, el.dataset.mineral, xAx, yAx));
+    el.addEventListener('mouseleave', hideTooltip);
+    el.addEventListener('click', () => openMineralModal(el.dataset.mineral));
+  });
+}
+
+function renderBuilderBar(svg, minerals) {
+  const xAx = CB_AXES.find(a => a.key === BuilderState.xKey) || CB_AXES[0];
+  const sorted = [...minerals].sort((a, b) => xAx.getValue(b) - xAx.getValue(a));
+  const search = BuilderState.search;
+
+  const rowH = 24;
+  const nameW = 120;
+  const W = svg.parentElement.clientWidth || 900;
+  const M = { top: 20, right: 60, bottom: 36, left: nameW };
+  const PW = W - M.left - M.right;
+  const H = M.top + sorted.length * rowH + M.bottom;
+
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('height', Math.min(H, 560));
+
+  const maxVal = Math.max(...sorted.map(m => xAx.getValue(m)));
+
+  let html = `<rect x="0" y="0" width="${W}" height="${H}" fill="#0d1117"/>`;
+  html += `<text x="${M.left+PW/2}" y="${H-6}" text-anchor="middle" font-size="11" fill="#848d97" font-family="Inter,sans-serif">${xAx.label}</text>`;
+
+  [0.25,0.5,0.75,1].forEach(t => {
+    const x = M.left + t * PW;
+    html += `<line x1="${x}" y1="${M.top}" x2="${x}" y2="${M.top+sorted.length*rowH}" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>`;
+    html += `<text x="${x}" y="${M.top+sorted.length*rowH+16}" text-anchor="middle" font-size="9" fill="#545d68" font-family="Inter,sans-serif">${(maxVal*t).toFixed(1)}</text>`;
+  });
+
+  sorted.forEach((m, i) => {
+    const val   = xAx.getValue(m);
+    const barW  = (val / maxVal) * PW;
+    const y     = M.top + i * rowH;
+    const col   = cbGetColor(m, BuilderState.colorBy);
+    const isHit = search && m.name.toLowerCase().includes(search);
+    const isDim = search && !isHit;
+    const opacity = isDim ? 0.25 : 0.85;
+
+    if (i % 2 === 0) html += `<rect x="0" y="${y}" width="${W}" height="${rowH}" fill="rgba(255,255,255,0.015)"/>`;
+    html += `<g class="builder-dot" data-mineral="${m.name}" style="cursor:pointer;">`;
+    html += `<rect x="${M.left}" y="${y+5}" width="${Math.max(3,barW)}" height="${rowH-10}" fill="${col}" fill-opacity="${opacity}" rx="3"/>`;
+    html += `<text x="${M.left-6}" y="${y+rowH/2+4}" text-anchor="end" font-size="10" fill="${isHit ? col : '#848d97'}" font-family="Inter,sans-serif" font-weight="${isHit?700:400}">${m.name}</text>`;
+    html += `<text x="${M.left+Math.max(3,barW)+6}" y="${y+rowH/2+4}" font-size="9.5" fill="${col}" font-family="Inter,sans-serif" font-weight="700">${val.toFixed(1)}</text>`;
+    html += `</g>`;
+  });
+
+  svg.innerHTML = html;
+
+  svg.querySelectorAll('.builder-dot').forEach(el => {
+    el.addEventListener('click', () => openMineralModal(el.dataset.mineral));
+    el.addEventListener('mouseenter', e => showCBBarTooltip(e, el.dataset.mineral, xAx));
+    el.addEventListener('mouseleave', hideTooltip);
+  });
+}
+
 /* ── Event Wiring ──────────────────────────────────────── */
 
 document.getElementById('modal-overlay').addEventListener('click', e => {
@@ -1565,6 +1914,7 @@ window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(() => {
     if (AppState.currentPage === 'overview') renderCBChart();
+    if (AppState.currentPage === 'builder')  renderBuilderChart();
   }, 200);
 });
 

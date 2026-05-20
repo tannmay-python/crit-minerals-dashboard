@@ -29,7 +29,7 @@
       <button class="nav-btn" data-page="explorer">Explorer</button>
       <button class="nav-btn" data-page="criteria">Criteria</button>
       <button class="nav-btn" data-page="compare">Compare</button>
-      <button class="nav-btn" data-page="about">About</button>
+      <button class="nav-btn" data-page="builder">Builder</button>
     </nav>
     <span class="header-badge">34 Minerals · 14 Dimensions</span>
   </div>
@@ -75,73 +75,6 @@
     </div>
   </section>
 
-  <!-- Chart Builder -->
-  <div class="container">
-    <section class="section">
-      <div class="section-header">
-        <h2 class="section-title">Chart Builder</h2>
-        <span class="text-muted text-sm">Plot any two dimensions · click any dot to open mineral profile</span>
-      </div>
-      <div class="chart-builder-card">
-        <div class="cb-toolbar">
-          <!-- Chart type -->
-          <div class="cb-field" style="flex:0 0 auto;">
-            <label>Chart Type</label>
-            <div class="cb-type-row">
-              <button class="cb-type-btn active" data-type="scatter">Scatter</button>
-              <button class="cb-type-btn" data-type="2x2">2×2 Matrix</button>
-              <button class="cb-type-btn" data-type="bar">Bar Chart</button>
-            </div>
-          </div>
-          <!-- X Axis -->
-          <div class="cb-field" id="cb-x-wrap">
-            <label>X Axis</label>
-            <select class="cb-select" id="cb-x-axis"></select>
-          </div>
-          <!-- Y Axis -->
-          <div class="cb-field" id="cb-y-wrap">
-            <label>Y Axis</label>
-            <select class="cb-select" id="cb-y-axis"></select>
-          </div>
-          <!-- Color by -->
-          <div class="cb-field">
-            <label>Color By</label>
-            <select class="cb-select" id="cb-color-by">
-              <option value="riskTier">Risk Tier</option>
-              <option value="chinaShare">China Share</option>
-              <option value="sector">Sector</option>
-            </select>
-          </div>
-          <!-- Size by (scatter/2x2 only) -->
-          <div class="cb-field" id="cb-size-wrap">
-            <label>Bubble Size</label>
-            <select class="cb-select" id="cb-size-by">
-              <option value="equal">Equal</option>
-              <option value="demand">Annual Demand</option>
-              <option value="riskIndex">Risk Index</option>
-            </select>
-          </div>
-          <!-- Sector filter -->
-          <div class="cb-field">
-            <label>Filter Sector</label>
-            <select class="cb-select" id="cb-sector-filter">
-              <option value="all">All Sectors</option>
-              <option value="defense">Defense</option>
-              <option value="energy">Energy</option>
-              <option value="semiconductors">Semiconductors</option>
-              <option value="electrification">Electrification</option>
-              <option value="healthcare">Healthcare</option>
-              <option value="agriculture">Agriculture</option>
-              <option value="construction">Construction</option>
-            </select>
-          </div>
-        </div>
-        <div class="cb-chart-area">
-          <svg id="cb-chart-svg" height="440"></svg>
-        </div>
-      </div>
-    </section>
-  </div>
 
 </div><!-- /page-overview -->
 
@@ -309,53 +242,57 @@
 </div><!-- /page-compare -->
 
 <!-- ═══════════════════════════════════════════════════════
-     PAGE: ABOUT
+     PAGE: BUILDER
 ═══════════════════════════════════════════════════════ -->
-<div id="page-about" class="page">
+<div id="page-builder" class="page">
   <div class="container">
     <section class="hero" style="padding:40px 0 24px;">
-      <div class="hero-eyebrow">Methodology</div>
-      <h1 style="font-size:clamp(1.4rem,3vw,2.2rem)">About This Dashboard</h1>
+      <div class="hero-eyebrow">Interactive Analysis</div>
+      <h1 style="font-size:clamp(1.4rem,3vw,2.2rem)">Chart Builder</h1>
+      <p class="hero-sub" style="margin-bottom:0;">Explore relationships across all 18 dimensions. Click a preset to start, or configure your own axes below.</p>
     </section>
 
-    <div class="about-grid">
-      <div class="card about-card">
-        <h3>Scoring Framework</h3>
-        <p>Each mineral is scored across 14 dimensions derived from a comprehensive critical minerals research framework. Scores reflect supply-side concentration, demand-side pressure, India's specific vulnerability, and price volatility.</p>
-        <p style="margin-top:10px;">The Risk Index is a normalized weighted score on a 0–10 scale, computed from 10 weight categories mapped to the 14 raw dimensions. The Weight Customizer on the Overview page lets you apply custom weights to reflect your analytical priorities.</p>
-      </div>
+    <!-- Preset views -->
+    <div class="builder-presets" id="builder-presets"></div>
 
-      <div class="card about-card">
-        <h3>Dimension Definitions</h3>
-        <table class="dim-table" id="about-dim-table"></table>
+    <!-- Controls -->
+    <div class="builder-controls-row">
+      <div class="builder-axis-btn" id="builder-x-field">
+        <label>X Axis</label>
+        <select class="builder-axis-select" id="builder-x-axis"></select>
       </div>
-
-      <div class="card about-card">
-        <h3>Risk Tier Thresholds (Risk Index 0–10)</h3>
-        <ul>
-          <li><strong style="color:var(--risk-critical)">Critical (&ge;7.5):</strong> Severe supply concentration, active export controls, no substitutes, high India exposure. Immediate strategic concern.</li>
-          <li style="margin-top:7px;"><strong style="color:var(--risk-high)">High (6.5–7.5):</strong> Significant concentration or fast-growing demand, elevated import dependence.</li>
-          <li style="margin-top:7px;"><strong style="color:var(--risk-moderate)">Moderate (5.5–6.5):</strong> Meaningful risks in select dimensions; manageable with proactive policy.</li>
-          <li style="margin-top:7px;"><strong style="color:var(--risk-low)">Low (&lt;5.5):</strong> Distributed supply, lower criticality, or structural oversupply.</li>
-        </ul>
+      <div class="builder-axis-btn" id="builder-y-field">
+        <label>Y Axis</label>
+        <select class="builder-axis-select" id="builder-y-axis"></select>
       </div>
-
-      <div class="card about-card">
-        <h3>Data Sources</h3>
-        <ul>
-          <li>USGS Mineral Commodity Summaries 2024</li>
-          <li>IEA Critical Minerals Market Review 2024</li>
-          <li>European Commission Critical Raw Materials Assessment</li>
-          <li>India KABIL strategic mineral reports</li>
-          <li>Trade data: UN Comtrade, India DGCIS</li>
-          <li>Price data: LME, SHFE, specialist brokers</li>
-          <li>Export control announcements: MOFCOM, EU, US DoC</li>
-        </ul>
-        <p style="margin-top:10px;font-size:0.72rem;color:var(--text-dim);">Data reflects conditions as of early 2025. Mineral markets evolve rapidly — scores should be updated periodically.</p>
+      <div style="display:flex;flex-direction:column;gap:4px;align-self:flex-end;">
+        <label style="font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-muted);">Type</label>
+        <div class="builder-type-group">
+          <button class="builder-type-btn active" data-btype="scatter">Scatter</button>
+          <button class="builder-type-btn" data-btype="bar">Bar Chart</button>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;align-self:flex-end;">
+        <label style="font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-muted);">Color By</label>
+        <div class="builder-color-group">
+          <button class="builder-color-btn active" data-bcolor="riskTier">Risk Tier</button>
+          <button class="builder-color-btn" data-bcolor="chinaShare">China</button>
+          <button class="builder-color-btn" data-bcolor="sector">Sector</button>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;align-self:flex-end;">
+        <label style="font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-muted);">Highlight</label>
+        <input class="builder-search" id="builder-search" type="text" placeholder="Type mineral name…" />
       </div>
     </div>
+
+    <!-- Chart -->
+    <div class="card" style="padding:0;overflow:hidden;">
+      <svg id="builder-chart-svg" height="520"></svg>
+    </div>
+
   </div>
-</div><!-- /page-about -->
+</div><!-- /page-builder -->
 
 </main>
 
@@ -387,9 +324,9 @@
             <canvas id="modal-radar-canvas"></canvas>
           </div>
         </div>
-        <div class="modal-chart-box">
-          <div class="modal-chart-title">China Weaponization Position</div>
-          <svg id="modal-quadrant-svg" width="100%" viewBox="0 0 280 240" style="max-width:320px;"></svg>
+        <div class="modal-chart-box" style="align-items:stretch;width:100%;">
+          <div class="modal-chart-title">Dimension Scorecard <span style="font-weight:400;color:var(--text-dim);font-size:0.62rem;text-transform:none;letter-spacing:0">— click any row for details</span></div>
+          <div class="modal-scorecard" id="modal-scorecard"></div>
         </div>
       </div>
 
