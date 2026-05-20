@@ -41,98 +41,108 @@
      PAGE: OVERVIEW
 ═══════════════════════════════════════════════════════ -->
 <div id="page-overview" class="page active">
-  <div class="container">
 
-    <section class="hero">
-      <div class="hero-bg-gradient"></div>
-      <div class="hero-eyebrow">
-        <svg width="7" height="7" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
-        Geopolitical Risk Intelligence
+  <!-- Problem Statement Hero -->
+  <section class="problem-hero">
+    <div class="container">
+      <div class="problem-eyebrow">The Analytical Foundation</div>
+      <h1 class="problem-headline">Nothing is critical<br>if everything is critical.</h1>
+      <div class="problem-body">
+        <p class="problem-para">
+          Criticality lists have proliferated across governments, multilaterals, and research institutions — each more expansive than the last.
+          India's own critical minerals list identifies 30 commodities; count the 17 rare earth elements individually and the tally reaches 47.
+          At that scale, the label "critical" stops meaning anything.
+          Policy attention, diplomatic capital, and strategic investment cannot be distributed equally across four dozen minerals —
+          <em>scarcity of focus is itself a strategic vulnerability.</em>
+        </p>
+        <p class="problem-para">
+          Not all critical minerals are critical in the same way. Terbium — with global demand of roughly 400–600 tonnes per year,
+          a near-monopoly Chinese supply chain, and applications confined to specialist magnetic alloys — is critical through scarcity and
+          geopolitical chokehold. Potassium — consumed in hundreds of millions of tonnes, with a diversified producer base across Canada,
+          Russia, and Belarus — is critical through sheer volume and food-system dependency. The policy response these two minerals require
+          is entirely different: one demands access diplomacy and substitution research; the other demands supply diversification and
+          strategic stockpiling.
+        </p>
+        <p class="problem-para">
+          A one-size-fits-all approach to critical minerals is not good policy design.
+          Understanding <em>what drives</em> criticality for each mineral — whether it is supply concentration, demand trajectory,
+          substitutability, India's specific import exposure, or price weaponization risk — is the analytical foundation for effective strategy.
+          That is what this dashboard is built to provide: a framework for disaggregating criticality, so that the right interventions
+          can be targeted at the right minerals.
+        </p>
       </div>
-      <h1>India's Critical Minerals<br/>Risk Dashboard</h1>
-      <p class="hero-sub">
-        Scoring 34 strategic minerals across 14 dimensions of supply risk, demand pressure,
-        and India's geopolitical exposure — from rare earths to battery metals.
-      </p>
-      <div class="hero-stats" id="hero-stats"></div>
-    </section>
-
-    <div class="overview-grid">
-      <div class="overview-main">
-
-        <!-- Criticality Ranking -->
-        <section class="section">
-          <div class="section-header">
-            <h2 class="section-title">Criticality Ranking</h2>
-            <div class="risk-legend">
-              <div class="risk-legend-item"><div class="risk-dot" style="background:var(--risk-critical)"></div>Critical (&ge;7.5)</div>
-              <div class="risk-legend-item"><div class="risk-dot" style="background:var(--risk-high)"></div>High (6.5–7.5)</div>
-              <div class="risk-legend-item"><div class="risk-dot" style="background:var(--risk-moderate)"></div>Moderate (5.5–6.5)</div>
-              <div class="risk-legend-item"><div class="risk-dot" style="background:var(--risk-low)"></div>Low (&lt;5.5)</div>
-            </div>
-          </div>
-          <div class="card">
-            <div id="ranked-chart" class="ranked-chart"></div>
-          </div>
-        </section>
-
-        <!-- Bubble Chart -->
-        <section class="section">
-          <div class="section-header">
-            <h2 class="section-title">Supply Risk vs. Demand Growth</h2>
-            <span class="text-muted text-sm">Bubble size = annual demand (log scale) · Color = China share</span>
-          </div>
-          <div class="card" style="padding:16px;">
-            <svg id="bubble-chart-svg" height="420"></svg>
-            <div class="bubble-legend" id="bubble-legend">
-              <span class="bubble-legend-item">
-                <span class="bubble-legend-circle" style="background:#f85149"></span>
-                China &gt;70%
-              </span>
-              <span class="bubble-legend-item">
-                <span class="bubble-legend-circle" style="background:#e3693a"></span>
-                China 30–70%
-              </span>
-              <span class="bubble-legend-item">
-                <span class="bubble-legend-circle" style="background:#3fb950"></span>
-                China &lt;30%
-              </span>
-            </div>
-          </div>
-        </section>
-
-        <!-- Geopolitical 2x2 -->
-        <section class="section">
-          <div class="section-header">
-            <h2 class="section-title">China Weaponization Risk Matrix</h2>
-            <span class="text-muted text-sm">X = China supply dominance · Y = India preparedness</span>
-          </div>
-          <div class="card" style="padding:16px;">
-            <svg id="geopolitical-svg" height="400"></svg>
-          </div>
-        </section>
-
-      </div><!-- /overview-main -->
-
-      <!-- Weight Customizer Sidebar -->
-      <aside class="weight-sidebar">
-        <div class="card">
-          <div class="weight-title">Weight Customizer</div>
-          <div class="weight-subtitle">Adjust dimension weights to recalculate Risk Index in real-time</div>
-
-          <div class="preset-btns" id="preset-btns">
-            <button class="preset-btn" data-preset="equal">Equal</button>
-            <button class="preset-btn active" data-preset="indiaFocus">India Focus</button>
-            <button class="preset-btn" data-preset="supplySecure">Supply</button>
-            <button class="preset-btn" data-preset="demandShock">Demand</button>
-          </div>
-
-          <div class="weight-sliders" id="weight-sliders"></div>
-        </div>
-      </aside>
+      <div class="problem-stats-row" id="hero-stats"></div>
     </div>
+  </section>
 
+  <!-- Chart Builder -->
+  <div class="container">
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Chart Builder</h2>
+        <span class="text-muted text-sm">Plot any two dimensions · click any dot to open mineral profile</span>
+      </div>
+      <div class="chart-builder-card">
+        <div class="cb-toolbar">
+          <!-- Chart type -->
+          <div class="cb-field" style="flex:0 0 auto;">
+            <label>Chart Type</label>
+            <div class="cb-type-row">
+              <button class="cb-type-btn active" data-type="scatter">Scatter</button>
+              <button class="cb-type-btn" data-type="2x2">2×2 Matrix</button>
+              <button class="cb-type-btn" data-type="bar">Bar Chart</button>
+            </div>
+          </div>
+          <!-- X Axis -->
+          <div class="cb-field" id="cb-x-wrap">
+            <label>X Axis</label>
+            <select class="cb-select" id="cb-x-axis"></select>
+          </div>
+          <!-- Y Axis -->
+          <div class="cb-field" id="cb-y-wrap">
+            <label>Y Axis</label>
+            <select class="cb-select" id="cb-y-axis"></select>
+          </div>
+          <!-- Color by -->
+          <div class="cb-field">
+            <label>Color By</label>
+            <select class="cb-select" id="cb-color-by">
+              <option value="riskTier">Risk Tier</option>
+              <option value="chinaShare">China Share</option>
+              <option value="sector">Sector</option>
+            </select>
+          </div>
+          <!-- Size by (scatter/2x2 only) -->
+          <div class="cb-field" id="cb-size-wrap">
+            <label>Bubble Size</label>
+            <select class="cb-select" id="cb-size-by">
+              <option value="equal">Equal</option>
+              <option value="demand">Annual Demand</option>
+              <option value="riskIndex">Risk Index</option>
+            </select>
+          </div>
+          <!-- Sector filter -->
+          <div class="cb-field">
+            <label>Filter Sector</label>
+            <select class="cb-select" id="cb-sector-filter">
+              <option value="all">All Sectors</option>
+              <option value="defense">Defense</option>
+              <option value="energy">Energy</option>
+              <option value="semiconductors">Semiconductors</option>
+              <option value="electrification">Electrification</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="agriculture">Agriculture</option>
+              <option value="construction">Construction</option>
+            </select>
+          </div>
+        </div>
+        <div class="cb-chart-area">
+          <svg id="cb-chart-svg" height="440"></svg>
+        </div>
+      </div>
+    </section>
   </div>
+
 </div><!-- /page-overview -->
 
 <!-- ═══════════════════════════════════════════════════════
@@ -145,36 +155,53 @@
       <h1 style="font-size:clamp(1.4rem,3vw,2.2rem)">Browse All 34 Minerals</h1>
     </section>
 
-    <div class="explorer-controls">
-      <div class="filter-chips" id="filter-chips">
-        <button class="filter-chip active" data-sector="all">All</button>
-        <button class="filter-chip" data-sector="defense">Defense</button>
-        <button class="filter-chip" data-sector="energy">Energy</button>
-        <button class="filter-chip" data-sector="semiconductors">Semiconductors</button>
-        <button class="filter-chip" data-sector="electrification">Electrification</button>
-        <button class="filter-chip" data-sector="healthcare">Healthcare</button>
-        <button class="filter-chip" data-sector="agriculture">Agriculture</button>
-        <button class="filter-chip" data-sector="construction">Construction</button>
-      </div>
-      <select class="sort-select" id="explorer-sort">
-        <option value="riskIndex">Sort: Risk Index</option>
-        <option value="growth">Sort: Demand Growth</option>
-        <option value="china">Sort: China Risk</option>
-        <option value="importDep">Sort: India Vulnerability</option>
-      </select>
-    </div>
+    <div class="explorer-layout">
+      <div class="explorer-main">
+        <div class="explorer-controls">
+          <div class="filter-chips" id="filter-chips">
+            <button class="filter-chip active" data-sector="all">All</button>
+            <button class="filter-chip" data-sector="defense">Defense</button>
+            <button class="filter-chip" data-sector="energy">Energy</button>
+            <button class="filter-chip" data-sector="semiconductors">Semiconductors</button>
+            <button class="filter-chip" data-sector="electrification">Electrification</button>
+            <button class="filter-chip" data-sector="healthcare">Healthcare</button>
+            <button class="filter-chip" data-sector="agriculture">Agriculture</button>
+            <button class="filter-chip" data-sector="construction">Construction</button>
+          </div>
+          <select class="sort-select" id="explorer-sort">
+            <option value="riskIndex">Sort: Risk Index</option>
+            <option value="growth">Sort: Demand Growth</option>
+            <option value="china">Sort: China Risk</option>
+            <option value="importDep">Sort: India Vulnerability</option>
+          </select>
+        </div>
 
-    <div class="minerals-grid" id="minerals-grid"></div>
+        <div class="minerals-grid" id="minerals-grid"></div>
 
-    <!-- Sector Dependency Matrix -->
-    <div class="sector-matrix">
-      <div class="section-header">
-        <h2 class="section-title">Sector Dependency Matrix</h2>
-        <span class="text-muted text-sm">Which sectors depend on which minerals · Color = Risk Index tier</span>
+        <div class="sector-matrix">
+          <div class="section-header">
+            <h2 class="section-title">Sector Dependency Matrix</h2>
+            <span class="text-muted text-sm">Which sectors depend on which minerals · Color = Risk Index tier</span>
+          </div>
+          <div class="card" style="padding:16px 20px;">
+            <div id="sector-matrix-content"></div>
+          </div>
+        </div>
       </div>
-      <div class="card" style="padding:16px 20px;">
-        <div id="sector-matrix-content"></div>
-      </div>
+
+      <aside class="weight-sidebar">
+        <div class="card">
+          <div class="weight-title">Weight Customizer</div>
+          <div class="weight-subtitle">Adjust dimension weights to recalculate Risk Index in real-time</div>
+          <div class="preset-btns" id="preset-btns">
+            <button class="preset-btn" data-preset="equal">Equal</button>
+            <button class="preset-btn active" data-preset="indiaFocus">India Focus</button>
+            <button class="preset-btn" data-preset="supplySecure">Supply</button>
+            <button class="preset-btn" data-preset="demandShock">Demand</button>
+          </div>
+          <div class="weight-sliders" id="weight-sliders"></div>
+        </div>
+      </aside>
     </div>
 
   </div>

@@ -67,6 +67,38 @@ const SECTOR_COLORS = {
   construction:   '#848d97',
 };
 
+/* ── Chart Builder ─────────────────────────────────────── */
+
+const CB_AXES = [
+  { key: 'riskIndex',    label: 'Risk Index (0–10)',             getValue: m => getRiskIndex(m),                                min: 0,  max: 10 },
+  { key: 'chinaShare',   label: 'China Supply Share (%)',         getValue: m => m.meta.chinaShare,                             min: 0,  max: 100 },
+  { key: 'demandLog',    label: 'Annual Demand (log scale)',       getValue: m => Math.log10((m.annualDemandTons||1)+1),         min: 0,  max: 8   },
+  { key: 'demand',       label: 'Current Demand (1–5)',           getValue: m => m.scores.demand,                               min: 1,  max: 5   },
+  { key: 'growth',       label: 'Demand Growth (1–5)',            getValue: m => m.scores.growth,                               min: 1,  max: 5   },
+  { key: 'supplyConc',   label: 'Supply Concentration (avg 1–5)', getValue: m => (m.scores.miningDiv+m.scores.refiningDiv)/2,  min: 1,  max: 5   },
+  { key: 'miningDiv',    label: 'Mining Concentration (1–5)',     getValue: m => m.scores.miningDiv,                            min: 1,  max: 5   },
+  { key: 'refiningDiv',  label: 'Refining Concentration (1–5)',   getValue: m => m.scores.refiningDiv,                          min: 1,  max: 5   },
+  { key: 'resTime',      label: 'Reserve Lifetime Risk (1–6)',    getValue: m => m.scores.resTime,                              min: 1,  max: 6   },
+  { key: 'resDiv',       label: 'Reserve Geographic Div. (1–5)',  getValue: m => m.scores.resDiv,                               min: 1,  max: 5   },
+  { key: 'endUseComp',   label: 'End-Use Scope (0–10)',           getValue: m => m.scores.endUseComp,                           min: 0,  max: 10  },
+  { key: 'subst',        label: 'Substitution Risk (1–5)',        getValue: m => m.scores.substitutability,                     min: 1,  max: 5   },
+  { key: 'recycl',       label: 'Recycling Gap (1–5)',            getValue: m => m.scores.recyclability,                        min: 1,  max: 5   },
+  { key: 'extraction',   label: 'Processing Complexity (1–5)',    getValue: m => m.scores.extraction,                           min: 1,  max: 5   },
+  { key: 'projects',     label: 'Pipeline Gap (1–5)',             getValue: m => m.scores.projects,                             min: 1,  max: 5   },
+  { key: 'importDep',    label: 'India Import Dependence (1–5)',  getValue: m => m.scores.importDep,                            min: 1,  max: 5   },
+  { key: 'strategic',    label: 'India Strategic Posture (1–3)',  getValue: m => m.scores.strategic,                            min: 1,  max: 3   },
+  { key: 'volatility',   label: 'Price Volatility (1–5)',         getValue: m => m.scores.volatility,                           min: 1,  max: 5   },
+];
+
+const CBState = {
+  type:    'scatter',
+  xKey:    'supplyConc',
+  yKey:    'growth',
+  colorBy: 'riskTier',
+  sizeBy:  'equal',
+  sector:  'all',
+};
+
 const RADAR_LABELS = window.RADAR_14.map(d => d.label);
 
 /* ── Utility ───────────────────────────────────────────── */
@@ -112,10 +144,10 @@ function hexToRgba(hex, alpha) {
 }
 
 function heatmapColor(score, max) {
-  // Green (hsl 120) → Amber (hsl 40) → Red (hsl 0), lightness 42%
+  // Green (hsl 120) → Amber (hsl 40) → Red (hsl 0), lightness 48%
   const t = clamp((score - 1) / (max - 1), 0, 1);
   const hue = lerp(120, 0, t);
-  return `hsl(${hue.toFixed(0)},65%,42%)`;
+  return `hsl(${hue.toFixed(0)},65%,48%)`;
 }
 
 /* ── Risk Index Computation ────────────────────────────── */
@@ -165,22 +197,24 @@ function renderHeroStats() {
   const high      = window.MINERALS.filter(m => { const r = getRiskIndex(m); return r >= 6.5 && r < 7.5; }).length;
   const chinaHigh = window.MINERALS.filter(m => m.meta.chinaShare >= 70).length;
 
-  document.getElementById('hero-stats').innerHTML = `
-    <div class="hero-stat">
-      <span class="hero-stat-value">${window.MINERALS.length}</span>
-      <span class="hero-stat-label">Minerals Tracked</span>
+  const el = document.getElementById('hero-stats');
+  if (!el) return;
+  el.innerHTML = `
+    <div class="problem-stat">
+      <span class="problem-stat-value">${window.MINERALS.length}</span>
+      <span class="problem-stat-label">Minerals Tracked</span>
     </div>
-    <div class="hero-stat">
-      <span class="hero-stat-value" style="color:var(--risk-critical)">${critical}</span>
-      <span class="hero-stat-label">Critical Risk</span>
+    <div class="problem-stat">
+      <span class="problem-stat-value" style="color:var(--risk-critical)">${critical}</span>
+      <span class="problem-stat-label">Critical Risk Tier</span>
     </div>
-    <div class="hero-stat">
-      <span class="hero-stat-value" style="color:var(--risk-high)">${high}</span>
-      <span class="hero-stat-label">High Risk</span>
+    <div class="problem-stat">
+      <span class="problem-stat-value" style="color:var(--risk-high)">${high}</span>
+      <span class="problem-stat-label">High Risk Tier</span>
     </div>
-    <div class="hero-stat">
-      <span class="hero-stat-value" style="color:var(--china-high)">${chinaHigh}</span>
-      <span class="hero-stat-label">China &gt;70% Share</span>
+    <div class="problem-stat">
+      <span class="problem-stat-value" style="color:var(--china-high)">${chinaHigh}</span>
+      <span class="problem-stat-label">China &gt;70% Share</span>
     </div>
   `;
 }
@@ -291,7 +325,7 @@ function renderBubbleChart() {
   const xS = v => M.left + ((v - 1) / 4) * PW;
   const yS = v => M.top  + PH - ((v - 1) / 4) * PH;
 
-  let html = `<rect x="0" y="0" width="${W}" height="${H}" fill="#0d1117"/>`;
+  let html = `<rect x="0" y="0" width="${W}" height="${H}" fill="#f6f8fa"/>`;
 
   // Grid lines + ticks
   for (let i = 1; i <= 5; i++) {
@@ -301,8 +335,8 @@ function renderBubbleChart() {
     html += `<text class="bubble-axis-label" x="${M.left-8}" y="${yS(i)+4}" text-anchor="end">${i}</text>`;
   }
   // Axis lines
-  html += `<line x1="${M.left}" y1="${M.top}" x2="${M.left}" y2="${M.top+PH}" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>`;
-  html += `<line x1="${M.left}" y1="${M.top+PH}" x2="${M.left+PW}" y2="${M.top+PH}" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>`;
+  html += `<line x1="${M.left}" y1="${M.top}" x2="${M.left}" y2="${M.top+PH}" stroke="rgba(31,35,40,0.18)" stroke-width="1"/>`;
+  html += `<line x1="${M.left}" y1="${M.top+PH}" x2="${M.left+PW}" y2="${M.top+PH}" stroke="rgba(31,35,40,0.18)" stroke-width="1"/>`;
   // Axis titles
   html += `<text class="bubble-axis-label" x="${M.left+PW/2}" y="${H-8}" text-anchor="middle" font-size="10">← Less Concentrated | Supply Concentration | More Concentrated →</text>`;
   html += `<text class="bubble-axis-label" x="14" y="${M.top+PH/2}" text-anchor="middle" font-size="10" transform="rotate(-90,14,${M.top+PH/2})">Demand Growth</text>`;
@@ -321,7 +355,7 @@ function renderBubbleChart() {
     html += `<circle cx="${cx}" cy="${cy}" r="${size}" fill="${color}" fill-opacity="0.6" stroke="${color}" stroke-width="1.5"/>`;
     // Label: symbol below circle if small, inside if large
     const labelY = size >= 18 ? cy + 4 : cy + size + 12;
-    html += `<text x="${cx}" y="${labelY}" text-anchor="middle" font-size="9" font-family="Inter,sans-serif" fill="rgba(230,237,243,0.85)" font-weight="600">${m.symbol}</text>`;
+    html += `<text x="${cx}" y="${labelY}" text-anchor="middle" font-size="9" font-family="Inter,sans-serif" fill="rgba(31,35,40,0.85)" font-weight="600">${m.symbol}</text>`;
     html += `</g>`;
   });
 
@@ -352,17 +386,17 @@ function renderGeopoliticalChart() {
   const xS = v => M.left + (v / 100) * PW;
   const yS = p => M.top  + PH - ((p - 1) / 4) * PH;
 
-  let html = `<rect x="0" y="0" width="${W}" height="${H}" fill="#0d1117"/>`;
+  let html = `<rect x="0" y="0" width="${W}" height="${H}" fill="#f6f8fa"/>`;
 
   // Q4 background (critical: high china, low prep = low y on our scale)
   const qDivX = xS(50);
   const qDivY = yS(3);
   // Critical zone Q4: right + bottom
-  html += `<rect x="${qDivX}" y="${qDivY}" width="${M.left+PW-qDivX}" height="${M.top+PH-qDivY}" fill="rgba(248,81,73,0.05)"/>`;
+  html += `<rect x="${qDivX}" y="${qDivY}" width="${M.left+PW-qDivX}" height="${M.top+PH-qDivY}" fill="rgba(207,34,46,0.05)"/>`;
 
   // Quadrant dividers
-  html += `<line x1="${qDivX}" y1="${M.top}" x2="${qDivX}" y2="${M.top+PH}" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="5,4"/>`;
-  html += `<line x1="${M.left}" y1="${qDivY}" x2="${M.left+PW}" y2="${qDivY}" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="5,4"/>`;
+  html += `<line x1="${qDivX}" y1="${M.top}" x2="${qDivX}" y2="${M.top+PH}" stroke="rgba(31,35,40,0.12)" stroke-width="1" stroke-dasharray="5,4"/>`;
+  html += `<line x1="${M.left}" y1="${qDivY}" x2="${M.left+PW}" y2="${qDivY}" stroke="rgba(31,35,40,0.12)" stroke-width="1" stroke-dasharray="5,4"/>`;
 
   // Quadrant labels
   html += `<text x="${M.left+14}" y="${M.top+18}" font-size="9" fill="rgba(63,185,80,0.5)" font-family="Inter,sans-serif" font-weight="600">MANAGEABLE</text>`;
@@ -372,16 +406,16 @@ function renderGeopoliticalChart() {
 
   // Grid lines x
   [0,25,50,75,100].forEach(v => {
-    html += `<line x1="${xS(v)}" y1="${M.top}" x2="${xS(v)}" y2="${M.top+PH}" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>`;
+    html += `<line x1="${xS(v)}" y1="${M.top}" x2="${xS(v)}" y2="${M.top+PH}" stroke="rgba(31,35,40,0.06)" stroke-width="1"/>`;
     html += `<text class="bubble-axis-label" x="${xS(v)}" y="${M.top+PH+16}" text-anchor="middle">${v}%</text>`;
   });
   // Grid lines y
   [1,2,3,4,5].forEach(p => {
-    html += `<line x1="${M.left}" y1="${yS(p)}" x2="${M.left+PW}" y2="${yS(p)}" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>`;
+    html += `<line x1="${M.left}" y1="${yS(p)}" x2="${M.left+PW}" y2="${yS(p)}" stroke="rgba(31,35,40,0.06)" stroke-width="1"/>`;
   });
   // Axis lines
-  html += `<line x1="${M.left}" y1="${M.top}" x2="${M.left}" y2="${M.top+PH}" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>`;
-  html += `<line x1="${M.left}" y1="${M.top+PH}" x2="${M.left+PW}" y2="${M.top+PH}" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>`;
+  html += `<line x1="${M.left}" y1="${M.top}" x2="${M.left}" y2="${M.top+PH}" stroke="rgba(31,35,40,0.18)" stroke-width="1"/>`;
+  html += `<line x1="${M.left}" y1="${M.top+PH}" x2="${M.left+PW}" y2="${M.top+PH}" stroke="rgba(31,35,40,0.18)" stroke-width="1"/>`;
   // Axis titles
   html += `<text class="bubble-axis-label" x="${M.left+PW/2}" y="${H-8}" text-anchor="middle" font-size="10">China Supply Dominance (%)</text>`;
   html += `<text class="bubble-axis-label" x="14" y="${M.top+PH/2}" text-anchor="middle" font-size="10" transform="rotate(-90,14,${M.top+PH/2})">India Preparedness →</text>`;
@@ -408,6 +442,240 @@ function renderGeopoliticalChart() {
     el.addEventListener('mouseleave', hideTooltip);
     el.addEventListener('click', () => openMineralModal(el.dataset.mineral));
   });
+}
+
+/* ── Chart Builder ─────────────────────────────────────── */
+
+function initChartBuilder() {
+  const xSel  = document.getElementById('cb-x-axis');
+  const ySel  = document.getElementById('cb-y-axis');
+  if (!xSel || !ySel) return;
+
+  if (!xSel.options.length) {
+    CB_AXES.forEach(ax => {
+      xSel.add(new Option(ax.label, ax.key));
+      ySel.add(new Option(ax.label, ax.key));
+    });
+  }
+  xSel.value = CBState.xKey;
+  ySel.value = CBState.yKey;
+  document.getElementById('cb-color-by').value  = CBState.colorBy;
+  document.getElementById('cb-size-by').value   = CBState.sizeBy;
+  document.getElementById('cb-sector-filter').value = CBState.sector;
+
+  const onChange = () => {
+    CBState.xKey    = document.getElementById('cb-x-axis').value;
+    CBState.yKey    = document.getElementById('cb-y-axis').value;
+    CBState.colorBy = document.getElementById('cb-color-by').value;
+    CBState.sizeBy  = document.getElementById('cb-size-by').value;
+    CBState.sector  = document.getElementById('cb-sector-filter').value;
+    updateCBSizeVisibility();
+    renderCBChart();
+  };
+
+  ['cb-x-axis','cb-y-axis','cb-color-by','cb-size-by','cb-sector-filter'].forEach(id => {
+    document.getElementById(id).addEventListener('change', onChange);
+  });
+
+  document.querySelectorAll('.cb-type-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cb-type-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      CBState.type = btn.dataset.type;
+      updateCBSizeVisibility();
+      renderCBChart();
+    });
+  });
+
+  updateCBSizeVisibility();
+  renderCBChart();
+}
+
+function updateCBSizeVisibility() {
+  const wrap = document.getElementById('cb-size-wrap');
+  const yWrap = document.getElementById('cb-y-wrap');
+  if (wrap) wrap.style.display = CBState.type === 'bar' ? 'none' : '';
+  if (yWrap) yWrap.style.display = CBState.type === 'bar' ? 'none' : '';
+}
+
+function renderCBChart() {
+  const svg = document.getElementById('cb-chart-svg');
+  if (!svg) return;
+
+  let minerals = [...window.MINERALS];
+  if (CBState.sector !== 'all') minerals = minerals.filter(m => m.meta.sectors.includes(CBState.sector));
+
+  if (CBState.type === 'bar') {
+    renderCBBar(svg, minerals);
+  } else {
+    renderCBScatter(svg, minerals, CBState.type === '2x2');
+  }
+}
+
+function cbGetColor(m, colorBy) {
+  if (colorBy === 'riskTier') return getRiskTier(getRiskIndex(m)).color;
+  if (colorBy === 'chinaShare') return chinaColor(m.meta.chinaShare);
+  if (colorBy === 'sector') return SECTOR_COLORS[m.meta.sectors[0]] || '#8c959f';
+  return '#0969da';
+}
+
+function renderCBScatter(svg, minerals, is2x2) {
+  const W = svg.parentElement.clientWidth || 800;
+  const H = 440;
+  const M = { top: 30, right: 40, bottom: 64, left: 64 };
+  const PW = W - M.left - M.right;
+  const PH = H - M.top  - M.bottom;
+
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('height', H);
+
+  const xAx = CB_AXES.find(a => a.key === CBState.xKey) || CB_AXES[0];
+  const yAx = CB_AXES.find(a => a.key === CBState.yKey) || CB_AXES[1];
+
+  const xVals = minerals.map(m => xAx.getValue(m));
+  const yVals = minerals.map(m => yAx.getValue(m));
+  const xMin = Math.min(...xVals, xAx.min);
+  const xMax = Math.max(...xVals, xAx.max);
+  const yMin = Math.min(...yVals, yAx.min);
+  const yMax = Math.max(...yVals, yAx.max);
+  const xPad = (xMax - xMin) * 0.06;
+  const yPad = (yMax - yMin) * 0.06;
+
+  const xS = v => M.left + ((v - (xMin - xPad)) / ((xMax + xPad) - (xMin - xPad))) * PW;
+  const yS = v => M.top  + PH - ((v - (yMin - yPad)) / ((yMax + yPad) - (yMin - yPad))) * PH;
+
+  let html = `<rect x="0" y="0" width="${W}" height="${H}" fill="#f6f8fa" rx="8"/>`;
+
+  // Grid
+  const xTicks = 5, yTicks = 5;
+  for (let i = 0; i <= xTicks; i++) {
+    const v = xMin + (i / xTicks) * (xMax - xMin);
+    const x = xS(v);
+    html += `<line x1="${x}" y1="${M.top}" x2="${x}" y2="${M.top+PH}" stroke="rgba(31,35,40,0.07)" stroke-width="1"/>`;
+    html += `<text x="${x}" y="${M.top+PH+18}" text-anchor="middle" font-size="9" fill="#8c959f" font-family="Inter,sans-serif">${v.toFixed(v < 10 ? 1 : 0)}</text>`;
+  }
+  for (let i = 0; i <= yTicks; i++) {
+    const v = yMin + (i / yTicks) * (yMax - yMin);
+    const y = yS(v);
+    html += `<line x1="${M.left}" y1="${y}" x2="${M.left+PW}" y2="${y}" stroke="rgba(31,35,40,0.07)" stroke-width="1"/>`;
+    html += `<text x="${M.left-8}" y="${y+3.5}" text-anchor="end" font-size="9" fill="#8c959f" font-family="Inter,sans-serif">${v.toFixed(v < 10 ? 1 : 0)}</text>`;
+  }
+
+  // Axis lines
+  html += `<line x1="${M.left}" y1="${M.top}" x2="${M.left}" y2="${M.top+PH}" stroke="rgba(31,35,40,0.18)" stroke-width="1.5"/>`;
+  html += `<line x1="${M.left}" y1="${M.top+PH}" x2="${M.left+PW}" y2="${M.top+PH}" stroke="rgba(31,35,40,0.18)" stroke-width="1.5"/>`;
+
+  // 2x2 quadrant lines
+  if (is2x2) {
+    const midX = (xMin + xMax) / 2;
+    const midY = (yMin + yMax) / 2;
+    html += `<line x1="${xS(midX)}" y1="${M.top}" x2="${xS(midX)}" y2="${M.top+PH}" stroke="rgba(31,35,40,0.15)" stroke-width="1" stroke-dasharray="6,4"/>`;
+    html += `<line x1="${M.left}" y1="${yS(midY)}" x2="${M.left+PW}" y2="${yS(midY)}" stroke="rgba(31,35,40,0.15)" stroke-width="1" stroke-dasharray="6,4"/>`;
+  }
+
+  // Axis labels
+  html += `<text x="${M.left+PW/2}" y="${H-6}" text-anchor="middle" font-size="11" fill="#57606a" font-family="Inter,sans-serif" font-weight="500">${xAx.label}</text>`;
+  html += `<text x="14" y="${M.top+PH/2}" text-anchor="middle" font-size="11" fill="#57606a" font-family="Inter,sans-serif" font-weight="500" transform="rotate(-90,14,${M.top+PH/2})">${yAx.label}</text>`;
+
+  // Dots
+  minerals.forEach((m, idx) => {
+    const xVal = xAx.getValue(m);
+    const yVal = yAx.getValue(m);
+    const cx   = xS(xVal);
+    const cy   = yS(yVal);
+    const col  = cbGetColor(m, CBState.colorBy);
+
+    let r = 8;
+    if (CBState.sizeBy === 'demand') {
+      r = Math.max(6, Math.min(16, Math.log10((m.annualDemandTons||1)+1) * 3.2));
+    } else if (CBState.sizeBy === 'riskIndex') {
+      r = Math.max(6, Math.min(16, getRiskIndex(m) * 1.4));
+    }
+
+    html += `<g class="cb-dot" data-mineral="${m.name}">`;
+    html += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${col}" fill-opacity="0.75" stroke="${col}" stroke-width="1.5" stroke-opacity="0.9"/>`;
+    html += `<text x="${cx}" y="${cy+3}" text-anchor="middle" font-size="${r >= 9 ? 7 : 6}" font-family="Inter,sans-serif" fill="white" font-weight="700" pointer-events="none">${m.symbol}</text>`;
+    html += `</g>`;
+  });
+
+  svg.innerHTML = html;
+
+  svg.querySelectorAll('.cb-dot').forEach(el => {
+    el.addEventListener('mouseenter', e => showCBTooltip(e, el.dataset.mineral, xAx, yAx));
+    el.addEventListener('mouseleave', hideTooltip);
+    el.addEventListener('click', () => openMineralModal(el.dataset.mineral));
+    el.style.cursor = 'pointer';
+  });
+}
+
+function renderCBBar(svg, minerals) {
+  const xAx = CB_AXES.find(a => a.key === CBState.xKey) || CB_AXES[0];
+  const sorted = [...minerals].sort((a, b) => xAx.getValue(b) - xAx.getValue(a));
+
+  const rowH = 22;
+  const nameW = 110;
+  const valW = 44;
+  const M = { top: 16, right: valW + 8, bottom: 24, left: nameW };
+  const W = svg.parentElement.clientWidth || 800;
+  const H = M.top + sorted.length * rowH + M.bottom;
+  const PW = W - M.left - M.right;
+  const maxVal = Math.max(...sorted.map(m => xAx.getValue(m)));
+
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('height', Math.min(H, 480));
+  svg.style.overflowY = 'auto';
+
+  let html2 = `<rect x="0" y="0" width="${W}" height="${H}" fill="#f6f8fa"/>`;
+  html2 += `<text x="${M.left + PW/2}" y="${H-6}" text-anchor="middle" font-size="10" fill="#57606a" font-family="Inter,sans-serif">${xAx.label}</text>`;
+
+  sorted.forEach((m, i) => {
+    const val  = xAx.getValue(m);
+    const barW = (val / maxVal) * PW;
+    const y    = M.top + i * rowH;
+    const col  = cbGetColor(m, CBState.colorBy);
+    if (i % 2 === 0) html2 += `<rect x="0" y="${y}" width="${W}" height="${rowH}" fill="rgba(31,35,40,0.025)" rx="0"/>`;
+    html2 += `<g class="cb-dot" data-mineral="${m.name}">`;
+    html2 += `<rect x="${M.left}" y="${y+4}" width="${Math.max(2,barW)}" height="${rowH-8}" fill="${col}" fill-opacity="0.8" rx="3"/>`;
+    html2 += `<text x="${M.left-6}" y="${y+rowH/2+4}" text-anchor="end" font-size="9.5" fill="#1f2328" font-family="Inter,sans-serif" font-weight="500">${m.name}</text>`;
+    html2 += `<text x="${M.left + Math.max(2,barW) + 5}" y="${y+rowH/2+4}" font-size="9.5" fill="${col}" font-family="Inter,sans-serif" font-weight="700">${val.toFixed(1)}</text>`;
+    html2 += `</g>`;
+  });
+
+  svg.innerHTML = html2;
+
+  svg.querySelectorAll('.cb-dot').forEach(el => {
+    el.addEventListener('click', () => openMineralModal(el.dataset.mineral));
+    el.addEventListener('mouseenter', e => showCBBarTooltip(e, el.dataset.mineral, xAx));
+    el.addEventListener('mouseleave', hideTooltip);
+    el.style.cursor = 'pointer';
+  });
+}
+
+function showCBTooltip(e, name, xAx, yAx) {
+  const m = window.MINERALS.find(x => x.name === name);
+  if (!m) return;
+  const ri   = getRiskIndex(m);
+  const tier = getRiskTier(ri);
+  document.getElementById('tooltip').innerHTML = `
+    <div class="tooltip-name">${m.name} <span style="font-weight:400;color:var(--text-muted)">${m.symbol}</span></div>
+    <div class="tooltip-row"><span>${xAx.label.split('(')[0].trim()}</span><span>${xAx.getValue(m).toFixed(2)}</span></div>
+    <div class="tooltip-row"><span>${yAx.label.split('(')[0].trim()}</span><span>${yAx.getValue(m).toFixed(2)}</span></div>
+    <div class="tooltip-row"><span>Risk Index</span><span style="color:${tier.color}">${ri.toFixed(1)}</span></div>`;
+  positionTooltip(e);
+  document.getElementById('tooltip').classList.add('visible');
+}
+
+function showCBBarTooltip(e, name, xAx) {
+  const m = window.MINERALS.find(x => x.name === name);
+  if (!m) return;
+  const ri   = getRiskIndex(m);
+  const tier = getRiskTier(ri);
+  document.getElementById('tooltip').innerHTML = `
+    <div class="tooltip-name">${m.name}</div>
+    <div class="tooltip-row"><span>${xAx.label.split('(')[0].trim()}</span><span>${xAx.getValue(m).toFixed(2)}</span></div>
+    <div class="tooltip-row"><span>Risk Index</span><span style="color:${tier.color}">${ri.toFixed(1)}</span></div>`;
+  positionTooltip(e);
+  document.getElementById('tooltip').classList.add('visible');
 }
 
 /* ── Tooltip helpers ───────────────────────────────────── */
@@ -464,13 +732,7 @@ function positionTooltip(e) {
 function renderOverview() {
   recomputeRiskIndex();
   renderHeroStats();
-  renderWeightSliders();
-  renderRankedChart();
-  initPresetButtons();
-  setTimeout(() => {
-    renderBubbleChart();
-    renderGeopoliticalChart();
-  }, 0);
+  initChartBuilder();
 }
 
 function initPresetButtons() {
@@ -487,6 +749,8 @@ function renderExplorer() {
   initFilterChips();
   initExplorerSort();
   renderSectorMatrix();
+  renderWeightSliders();
+  initPresetButtons();
 }
 
 function initFilterChips() {
@@ -540,7 +804,6 @@ function renderMineralGrid() {
     const name = card.dataset.mineral;
     const m    = window.MINERALS.find(x => x.name === name);
     if (m) {
-      drawMiniRadar(card.querySelector('.mini-radar'), m.scores);
       card.addEventListener('click', () => openMineralModal(name));
     }
   });
@@ -563,7 +826,10 @@ function buildMineralCard(mineral) {
           <div class="score-label">Risk Index</div>
         </div>
       </div>
-      <canvas class="mini-radar" width="120" height="120"></canvas>
+      <div class="element-hero">
+        <div class="element-hero-symbol" style="color:${tier.color}">${mineral.symbol}</div>
+        <div class="element-hero-num">${mineral.meta.annualDemand}</div>
+      </div>
       <div class="sector-chips">
         ${mineral.meta.sectors.slice(0,4).map(s => `<span class="sector-chip ${s}">${s}</span>`).join('')}
       </div>
@@ -751,19 +1017,19 @@ function renderModalRadar(mineral) {
         r: {
           min: 0, max: 5,
           ticks: { display: false, stepSize: 1 },
-          grid: { color: 'rgba(255,255,255,0.07)', lineWidth: 1 },
-          pointLabels: { color: '#848d97', font: { size: 9, family: 'Inter' } },
-          angleLines: { color: 'rgba(255,255,255,0.05)' }
+          grid: { color: 'rgba(31,35,40,0.08)', lineWidth: 1 },
+          pointLabels: { color: '#57606a', font: { size: 9, family: 'Inter' } },
+          angleLines: { color: 'rgba(31,35,40,0.07)' }
         }
       },
       plugins: {
         legend: { display: false },
         tooltip: {
           enabled: true,
-          backgroundColor: '#21262d',
-          titleColor: '#e6edf3',
-          bodyColor: '#848d97',
-          borderColor: '#3d444d',
+          backgroundColor: '#ffffff',
+          titleColor: '#1f2328',
+          bodyColor: '#57606a',
+          borderColor: '#d0d7de',
           borderWidth: 1,
           callbacks: { label: ctx => ` ${ctx.raw.toFixed(2)} / 5` }
         }
@@ -784,20 +1050,20 @@ function renderModalQuadrant(currentMineral) {
 
   let html = '';
   // Quadrant dividers at importDep=3, strategic=2
-  html += `<line x1="${xS(3)}" y1="${M.top}" x2="${xS(3)}" y2="${M.top+PH}" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4,4"/>`;
-  html += `<line x1="${M.left}" y1="${yS(2)}" x2="${M.left+PW}" y2="${yS(2)}" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4,4"/>`;
-  html += `<text x="${xS(1.3)}" y="${M.top+13}" font-size="7" fill="rgba(63,185,80,0.4)" font-family="Inter,sans-serif">Low Risk</text>`;
-  html += `<text x="${xS(3.2)}" y="${M.top+13}" font-size="7" fill="rgba(210,153,34,0.5)" font-family="Inter,sans-serif">High Import</text>`;
-  html += `<text x="${xS(1.3)}" y="${yS(2)-6}" font-size="7" fill="rgba(227,105,58,0.5)" font-family="Inter,sans-serif">High Geopolit.</text>`;
-  html += `<text x="${xS(3.2)}" y="${yS(2)-6}" font-size="7" fill="rgba(248,81,73,0.7)" font-family="Inter,sans-serif" font-weight="700">Critical Zone</text>`;
+  html += `<line x1="${xS(3)}" y1="${M.top}" x2="${xS(3)}" y2="${M.top+PH}" stroke="rgba(31,35,40,0.12)" stroke-width="1" stroke-dasharray="4,4"/>`;
+  html += `<line x1="${M.left}" y1="${yS(2)}" x2="${M.left+PW}" y2="${yS(2)}" stroke="rgba(31,35,40,0.12)" stroke-width="1" stroke-dasharray="4,4"/>`;
+  html += `<text x="${xS(1.3)}" y="${M.top+13}" font-size="7" fill="rgba(26,127,55,0.5)" font-family="Inter,sans-serif">Low Risk</text>`;
+  html += `<text x="${xS(3.2)}" y="${M.top+13}" font-size="7" fill="rgba(154,103,0,0.6)" font-family="Inter,sans-serif">High Import</text>`;
+  html += `<text x="${xS(1.3)}" y="${yS(2)-6}" font-size="7" fill="rgba(188,76,0,0.6)" font-family="Inter,sans-serif">High Geopolit.</text>`;
+  html += `<text x="${xS(3.2)}" y="${yS(2)-6}" font-size="7" fill="rgba(207,34,46,0.8)" font-family="Inter,sans-serif" font-weight="700">Critical Zone</text>`;
   // Axis labels
-  html += `<text x="${M.left+PW/2}" y="${H-5}" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.25)" font-family="Inter,sans-serif">Import Dependence →</text>`;
-  html += `<text x="10" y="${M.top+PH/2}" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.25)" font-family="Inter,sans-serif" transform="rotate(-90,10,${M.top+PH/2})">Geopolit. Risk →</text>`;
+  html += `<text x="${M.left+PW/2}" y="${H-5}" text-anchor="middle" font-size="8" fill="rgba(31,35,40,0.35)" font-family="Inter,sans-serif">Import Dependence →</text>`;
+  html += `<text x="10" y="${M.top+PH/2}" text-anchor="middle" font-size="8" fill="rgba(31,35,40,0.35)" font-family="Inter,sans-serif" transform="rotate(-90,10,${M.top+PH/2})">Geopolit. Risk →</text>`;
 
   // Background dots
   for (const m of window.MINERALS) {
     if (m.name === currentMineral.name) continue;
-    html += `<circle cx="${xS(m.scores.importDep)}" cy="${yS(m.scores.strategic)}" r="3" fill="rgba(255,255,255,0.08)"/>`;
+    html += `<circle cx="${xS(m.scores.importDep)}" cy="${yS(m.scores.strategic)}" r="3" fill="rgba(31,35,40,0.1)"/>`;
   }
   // Highlighted dot
   const mx = xS(currentMineral.scores.importDep);
@@ -806,8 +1072,8 @@ function renderModalQuadrant(currentMineral) {
   html += `<circle cx="${mx}" cy="${my}" r="9" fill="${cc}" fill-opacity="0.25" stroke="${cc}" stroke-width="2"/>`;
   html += `<text x="${mx}" y="${my+3.5}" text-anchor="middle" font-size="8" font-weight="700" fill="white" font-family="Inter,sans-serif">${currentMineral.symbol}</text>`;
   // Tick marks
-  for (let i=1;i<=5;i++) html += `<text x="${xS(i)}" y="${M.top+PH+13}" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.18)" font-family="Inter,sans-serif">${i}</text>`;
-  for (let i=1;i<=3;i++) html += `<text x="${M.left-5}" y="${yS(i)+3}" text-anchor="end" font-size="7" fill="rgba(255,255,255,0.18)" font-family="Inter,sans-serif">${i}</text>`;
+  for (let i=1;i<=5;i++) html += `<text x="${xS(i)}" y="${M.top+PH+13}" text-anchor="middle" font-size="7" fill="rgba(31,35,40,0.25)" font-family="Inter,sans-serif">${i}</text>`;
+  for (let i=1;i<=3;i++) html += `<text x="${M.left-5}" y="${yS(i)+3}" text-anchor="end" font-size="7" fill="rgba(31,35,40,0.25)" font-family="Inter,sans-serif">${i}</text>`;
 
   svg.innerHTML = html;
 }
@@ -1192,21 +1458,21 @@ function renderCompareRadar(minerals) {
         r: {
           min: 0, max: 5,
           ticks: { display: false, stepSize: 1 },
-          grid: { color: 'rgba(255,255,255,0.07)', lineWidth: 1 },
-          pointLabels: { color: '#848d97', font: { size: 9, family: 'Inter' } },
-          angleLines: { color: 'rgba(255,255,255,0.05)' }
+          grid: { color: 'rgba(31,35,40,0.08)', lineWidth: 1 },
+          pointLabels: { color: '#57606a', font: { size: 9, family: 'Inter' } },
+          angleLines: { color: 'rgba(31,35,40,0.07)' }
         }
       },
       plugins: {
         legend: {
           display: true,
-          labels: { color: '#e6edf3', font: { size: 11, family: 'Inter' }, boxWidth: 12, padding: 14 }
+          labels: { color: '#1f2328', font: { size: 11, family: 'Inter' }, boxWidth: 12, padding: 14 }
         },
         tooltip: {
-          backgroundColor: '#21262d',
-          titleColor: '#e6edf3',
-          bodyColor: '#848d97',
-          borderColor: '#3d444d',
+          backgroundColor: '#ffffff',
+          titleColor: '#1f2328',
+          bodyColor: '#57606a',
+          borderColor: '#d0d7de',
           borderWidth: 1,
           callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw.toFixed(2)} / 5` }
         }
@@ -1298,7 +1564,7 @@ let resizeTimer;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(() => {
-    if (AppState.currentPage === 'overview') { renderBubbleChart(); renderGeopoliticalChart(); }
+    if (AppState.currentPage === 'overview') renderCBChart();
   }, 200);
 });
 
