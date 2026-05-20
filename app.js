@@ -53,7 +53,7 @@ const WEIGHT_TO_DIMS = {
   subRisk:     { dims: ['substitutability','recyclability'], max: 5 },
   extraction:  { dims: ['extraction'],                  max: 5   },
   projects:    { dims: ['projects'],                    max: 5   },
-  indiaVuln:   { dims: ['importDep','strategic'],        max: 4   },
+  indiaVuln:   { dims: ['importDep','strategic'],        max: 5   },
   volatility:  { dims: ['volatility'],                  max: 5   },
 };
 
@@ -86,7 +86,7 @@ const CB_AXES = [
   { key: 'extraction',   label: 'Processing Complexity (1–5)',    getValue: m => m.scores.extraction,                           min: 1,  max: 5   },
   { key: 'projects',     label: 'Pipeline Gap (1–5)',             getValue: m => m.scores.projects,                             min: 1,  max: 5   },
   { key: 'importDep',    label: 'India Import Dependence (1–5)',  getValue: m => m.scores.importDep,                            min: 1,  max: 5   },
-  { key: 'strategic',    label: 'India Strategic Posture (1–3)',  getValue: m => m.scores.strategic,                            min: 1,  max: 3   },
+  { key: 'strategic',    label: 'India Strategic Posture (1–5)',  getValue: m => m.scores.strategic,                            min: 1,  max: 5   },
   { key: 'volatility',   label: 'Price Volatility (1–5)',         getValue: m => m.scores.volatility,                           min: 1,  max: 5   },
 ];
 
@@ -961,14 +961,6 @@ function openMineralModal(name) {
   document.getElementById('kf-china').style.color     = chinaColor(mineral.meta.chinaShare);
   document.getElementById('kf-narrative').textContent = mineral.meta.keyFact;
 
-  // 4-section descriptions
-  const desc = mineral.description || {};
-  document.getElementById('modal-descriptions').innerHTML = `
-    <div class="modal-desc-card"><div class="modal-desc-label">Supply Chain</div><div class="modal-desc-text">${desc.supply || '—'}</div></div>
-    <div class="modal-desc-card"><div class="modal-desc-label">Reserves</div><div class="modal-desc-text">${desc.reserves || '—'}</div></div>
-    <div class="modal-desc-card"><div class="modal-desc-label">India's Position</div><div class="modal-desc-text">${desc.india || '—'}</div></div>
-    <div class="modal-desc-card"><div class="modal-desc-label">Price Context</div><div class="modal-desc-text">${desc.priceContext || '—'}</div></div>`;
-
   renderModalRadar(mineral);
   renderModalScorecard(mineral);
 
@@ -1047,19 +1039,29 @@ function renderModalScorecard(mineral) {
     const hue  = 120 - t * 120;
     const barColor = `hsl(${hue.toFixed(0)},65%,50%)`;
 
+    const DIM_TO_GROUP = {
+      demand: 'demand', growth: 'growth',
+      miningDiv: 'diversity', refiningDiv: 'diversity',
+      resTime: 'reserves', resDiv: 'reserves',
+      endUseComp: 'enduse',
+      substitutability: 'subst', recyclability: 'subst',
+      extraction: 'extraction', projects: 'projects',
+      importDep: 'india', strategic: 'india',
+      volatility: 'volatility'
+    };
+    const group = DIM_TO_GROUP[dim.key];
+    const justFull = (window.MINERAL_JUSTIFICATIONS?.[mineral.name]?.[group]) || '';
     const rubric = RUBRIC_DEFS.find(r => r.key === dim.key);
-    let justText = '';
+    let rubricLine = '';
     if (rubric) {
       const numVal = parseFloat(val);
       let best = rubric.rows[rubric.rows.length - 1];
       for (const row of rubric.rows) {
-        const rowNum = parseFloat(row[0]);
-        if (!isNaN(rowNum) && numVal <= rowNum + 0.5) { best = row; break; }
+        if (!isNaN(parseFloat(row[0])) && numVal <= parseFloat(row[0]) + 0.5) { best = row; break; }
       }
-      justText = best ? `<span class="pop-score">Score ${val} / ${dim.max}</span>${best[1]}` : `Score ${val} / ${dim.max}`;
-    } else {
-      justText = `Score ${val} / ${dim.max}`;
+      if (best) rubricLine = `<div class="pop-rubric">${best[1]}</div>`;
     }
+    const justText = `<span class="pop-score">Score ${val} / ${dim.max}</span>${rubricLine}${justFull ? `<div class="pop-full">${justFull}</div>` : ''}`;
 
     return `
       <div class="scorecard-row">
@@ -1267,11 +1269,13 @@ const RUBRIC_DEFS = [
     ]
   },
   {
-    key: 'strategic', title: 'India Strategic Posture', subtitle: 'Scale 1–3',
+    key: 'strategic', title: 'India Strategic Posture', subtitle: 'Scale 1–5',
     rows: [
-      ['1', 'Binding offtake, equity stakes, operational JVs'],
-      ['2', 'Active plans, exploration blocks, MOUs signed'],
-      ['3', 'Passive — intent declared or no policy action'],
+      ['1', 'Binding offtake agreements, equity stakes, operational JVs — active control of supply'],
+      ['2', 'Advanced plans: exploration blocks awarded, KABIL mandates active, bilateral deals signed'],
+      ['3', 'Moderate action: MOUs signed, customs duty exemptions, MMDR reforms, no equity stakes'],
+      ['4', 'Early-stage: intent declared, one-off diplomatic mentions, no concrete program'],
+      ['5', 'Passive or absent — no policy action, no diplomatic engagement, 100% spot-market dependent'],
     ]
   },
   {

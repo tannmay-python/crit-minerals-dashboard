@@ -1275,7 +1275,9 @@ input[type="range"]::-moz-range-thumb {
   line-height: 1.5;
   box-shadow: var(--shadow);
 }
-.scorecard-popover .pop-score { font-size: 0.8rem; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+.scorecard-popover .pop-score { font-size: 0.8rem; font-weight: 700; color: var(--accent); margin-bottom: 6px; display: block; }
+.scorecard-popover .pop-rubric { font-size: 0.73rem; color: var(--text-muted); font-style: italic; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.scorecard-popover .pop-full { font-size: 0.73rem; color: var(--text-muted); line-height: 1.6; max-height: 220px; overflow-y: auto; }
 .scorecard-row.pop-open .scorecard-popover { display: block; }
 
 /* ── Builder Page ────────────────────────────────────────── */

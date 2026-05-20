@@ -30,7 +30,7 @@ window.DIMENSIONS = {
   extraction:       { label: 'Processing Complexity',   description: 'Technical difficulty of extraction/processing', min: 1, max: 5, higherMeans: 'More complex processing' },
   projects:         { label: 'Pipeline Scarcity',       description: 'Lack of upcoming supply projects', min: 1, max: 5, higherMeans: 'Fewer new projects' },
   importDep:        { label: 'India Import Dependence', description: "India's reliance on imports", min: 1, max: 5, higherMeans: 'More import dependent' },
-  strategic:        { label: 'India Strategic Posture', description: 'India strategic response quality', min: 1, max: 3, higherMeans: 'Weaker strategic posture' },
+  strategic:        { label: 'India Strategic Posture', description: 'India strategic response quality', min: 1, max: 5, higherMeans: 'Weaker strategic posture' },
   volatility:       { label: 'Price Volatility',        description: 'Historical and expected price swings', min: 1, max: 5, higherMeans: 'More volatile prices' },
 };
 
@@ -48,7 +48,7 @@ window.RADAR_14 = [
   { key: 'extraction',       label: 'Process\nComplex.',  max: 5  },
   { key: 'projects',         label: 'Pipeline\nGap',      max: 5  },
   { key: 'importDep',        label: 'Import\nDepend.',    max: 5  },
-  { key: 'strategic',        label: 'Strategic\nRisk',    max: 3  },
+  { key: 'strategic',        label: 'Strategic\nRisk',    max: 5  },
   { key: 'volatility',       label: 'Price\nVolatility',  max: 5  },
 ];
 
