@@ -67,7 +67,7 @@ const RADAR_LABELS = window.RADAR_14.map(d => d.label);
 
 /* ── Utility ───────────────────────────────────────────── */
 
-function getRiskTier() { return { label: 'moderate', color: '#58a6ff' }; }
+function getRiskTier() { return { label: 'moderate', color: '#f1a222' }; }
 
 function chinaColor(pct) {
   if (pct >= 70) return '#f85149';
@@ -706,7 +706,7 @@ function drawMiniRadar(canvas, scores) {
       i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
     }
     ctx.closePath();
-    ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+    ctx.strokeStyle = 'rgba(98,13,60,0.08)';
     ctx.lineWidth   = 0.5;
     ctx.stroke();
   }
@@ -717,7 +717,7 @@ function drawMiniRadar(canvas, scores) {
     ctx.beginPath();
     ctx.moveTo(cx, cy);
     ctx.lineTo(cx + r * Math.cos(angle), cy + r * Math.sin(angle));
-    ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+    ctx.strokeStyle = 'rgba(98,13,60,0.06)';
     ctx.lineWidth   = 0.5;
     ctx.stroke();
   }
@@ -733,9 +733,9 @@ function drawMiniRadar(canvas, scores) {
     i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
   });
   ctx.closePath();
-  ctx.fillStyle   = 'rgba(88,166,255,0.18)';
+  ctx.fillStyle   = 'rgba(98,13,60,0.10)';
   ctx.fill();
-  ctx.strokeStyle = '#58a6ff';
+  ctx.strokeStyle = '#620d3c';
   ctx.lineWidth   = 1.5;
   ctx.stroke();
 }
@@ -779,16 +779,27 @@ function openMineralPage(name) {
   navigate('mineral');
 }
 
+// Strip trailing PDF score artifacts from justification text
+// e.g. "annually.3", "growth. 3 4 7", "China46.5", "supply.3 4"
+function cleanJust(text) {
+  if (!text) return '';
+  return text
+    .replace(/\s+\d+(\s+\d+)*\s*$/g, '')   // trailing digit sequences like " 3 4 7"
+    .replace(/(\.)(\d+(\s+\d+)*)\s*$/g, '$1') // "annually.3" or "annually.3 4"
+    .replace(/([a-zA-Z])(\d+\.?\d*)\s*$/g, '$1') // "China46.5" style
+    .trim();
+}
+
 const MP_GROUPS = [
-  { title: 'Demand Dynamics',     dims: ['demand', 'growth'],                 group: 'demand' },
-  { title: 'Supply Chain',        dims: ['miningDiv', 'refiningDiv'],          group: 'diversity' },
-  { title: 'Reserves',            dims: ['resTime', 'resDiv'],                 group: 'reserves' },
-  { title: 'End-Use Criticality', dims: ['endUseComp'],                        group: 'enduse' },
-  { title: 'Substitutability',    dims: ['substitutability', 'recyclability'], group: 'subst' },
-  { title: 'Processing',          dims: ['extraction'],                        group: 'extraction' },
-  { title: 'Pipeline',            dims: ['projects'],                          group: 'projects' },
-  { title: "India's Position",    dims: ['importDep', 'strategic'],            group: 'india' },
-  { title: 'Price Volatility',    dims: ['volatility'],                        group: 'volatility' },
+  { title: 'Demand Dynamics',     dims: ['demand', 'growth'],                 groups: ['demand', 'growth'] },
+  { title: 'Supply Chain',        dims: ['miningDiv', 'refiningDiv'],          groups: ['diversity'] },
+  { title: 'Reserves',            dims: ['resTime', 'resDiv'],                 groups: ['reserves'] },
+  { title: 'End-Use Criticality', dims: ['endUseComp'],                        groups: ['enduse'] },
+  { title: 'Substitutability',    dims: ['substitutability', 'recyclability'], groups: ['subst'] },
+  { title: 'Processing',          dims: ['extraction'],                        groups: ['extraction'] },
+  { title: 'Pipeline',            dims: ['projects'],                          groups: ['projects'] },
+  { title: "India's Position",    dims: ['importDep', 'strategic'],            groups: ['india'] },
+  { title: 'Price Volatility',    dims: ['volatility'],                        groups: ['volatility'] },
 ];
 
 function renderMineralPage(mineral) {
@@ -838,17 +849,17 @@ function renderMineralPage(mineral) {
         r: {
           min: 0, max: 5,
           ticks: { display: false, stepSize: 1 },
-          grid: { color: 'rgba(255,255,255,0.07)', lineWidth: 1 },
-          pointLabels: { color: '#848d97', font: { size: 9, family: 'Inter' } },
-          angleLines: { color: 'rgba(255,255,255,0.05)' }
+          grid: { color: 'rgba(98,13,60,0.08)', lineWidth: 1 },
+          pointLabels: { color: '#6b4020', font: { size: 9, family: 'Inter' } },
+          angleLines: { color: 'rgba(98,13,60,0.06)' }
         }
       },
       plugins: {
         legend: { display: false },
         tooltip: {
           enabled: true,
-          backgroundColor: '#21262d', titleColor: '#e6edf3',
-          bodyColor: '#848d97', borderColor: '#3d444d', borderWidth: 1,
+          backgroundColor: '#ffffff', titleColor: '#1a0804',
+          bodyColor: '#6b4020', borderColor: '#e4d49c', borderWidth: 1,
           callbacks: { label: ctx => ` ${ctx.raw.toFixed(2)} / 5` }
         }
       }
@@ -860,8 +871,13 @@ function renderMineralPage(mineral) {
   if (!scorecard) return;
   const s = mineral.scores;
 
+  renderPolicyPane(mineral);
+
   scorecard.innerHTML = MP_GROUPS.map(grp => {
-    const justFull = (window.MINERAL_JUSTIFICATIONS?.[mineral.name]?.[grp.group]) || '';
+    const justs = (grp.groups || [grp.group || '']).map(g =>
+      cleanJust((window.MINERAL_JUSTIFICATIONS?.[mineral.name]?.[g]) || '')
+    ).filter(Boolean);
+    const justFull = justs.join(' ');
 
     const dimRows = grp.dims.map(key => {
       const dim = window.RADAR_14.find(d => d.key === key);
@@ -898,6 +914,56 @@ function renderMineralPage(mineral) {
         ${justFull ? `<div class="mp-just-text">${justFull}</div>` : ''}
       </div>`;
   }).join('');
+}
+
+function renderPolicyPane(mineral) {
+  const pane = document.getElementById('mp-policy');
+  if (!pane) return;
+
+  const levers = [
+    {
+      tag:   'Supply Security',
+      title: 'Strategic Partner & Import Diversification',
+      desc:  `Bilateral agreements and import diversification strategies to reduce concentration risk for ${mineral.name}. Frameworks with resource-rich partner nations are yet to be defined.`,
+    },
+    {
+      tag:   'Domestic Development',
+      title: 'Exploration, Mining & Processing Investment',
+      desc:  `Domestic deposit identification and mining promotion policies specific to ${mineral.name} supply chains. Investment frameworks and production targets are pending formulation.`,
+    },
+    {
+      tag:   'Demand Management',
+      title: 'Efficiency Standards & Substitution R&D',
+      desc:  `Efficiency standards and substitution research programmes to moderate ${mineral.name} demand intensity. Technology roadmaps and subsidy structures are under deliberation.`,
+    },
+    {
+      tag:   'Stockpiling',
+      title: 'Strategic Reserve & Buffer Stock Policy',
+      desc:  `National strategic stockpile targets and buffer stock norms for ${mineral.name}. Reserve levels, financing mechanisms, and release protocols are to be defined.`,
+    },
+    {
+      tag:   'Circularity',
+      title: 'Recycling Infrastructure & EPR Norms',
+      desc:  `Extended producer responsibility rules and end-of-life recovery systems to improve ${mineral.name} circularity. Collection targets and processing standards are not yet specified.`,
+    },
+  ];
+
+  pane.innerHTML = `
+    <div class="mp-policy-header">
+      <span class="mp-card-title">Policy Alternatives</span>
+      <span class="mp-tbc-global">All entries TBC — indicative only</span>
+    </div>
+    <div class="mp-policy-grid">
+      ${levers.map(l => `
+        <div class="mp-policy-card">
+          <div class="mp-policy-top">
+            <span class="mp-policy-tag">${l.tag}</span>
+            <span class="mp-tbc-badge">TBC</span>
+          </div>
+          <div class="mp-policy-title">${l.title}</div>
+          <div class="mp-policy-desc">${l.desc}</div>
+        </div>`).join('')}
+    </div>`;
 }
 
 function addToCompare(name) {
@@ -1277,21 +1343,21 @@ function renderCompareRadar(minerals) {
         r: {
           min: 0, max: 5,
           ticks: { display: false, stepSize: 1 },
-          grid: { color: 'rgba(255,255,255,0.07)', lineWidth: 1 },
-          pointLabels: { color: '#848d97', font: { size: 9, family: 'Inter' } },
-          angleLines: { color: 'rgba(255,255,255,0.05)' }
+          grid: { color: 'rgba(98,13,60,0.08)', lineWidth: 1 },
+          pointLabels: { color: '#6b4020', font: { size: 9, family: 'Inter' } },
+          angleLines: { color: 'rgba(98,13,60,0.06)' }
         }
       },
       plugins: {
         legend: {
           display: true,
-          labels: { color: '#e6edf3', font: { size: 11, family: 'Inter' }, boxWidth: 12, padding: 14 }
+          labels: { color: '#1a0804', font: { size: 11, family: 'Inter' }, boxWidth: 12, padding: 14 }
         },
         tooltip: {
-          backgroundColor: '#21262d',
-          titleColor: '#e6edf3',
-          bodyColor: '#848d97',
-          borderColor: '#3d444d',
+          backgroundColor: '#ffffff',
+          titleColor: '#1a0804',
+          bodyColor: '#6b4020',
+          borderColor: '#e4d49c',
           borderWidth: 1,
           callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw.toFixed(2)} / 5` }
         }
@@ -1551,28 +1617,28 @@ function renderBuilderScatter(svg, minerals) {
   const xS = v => M.left + ((v - xMin) / (xMax - xMin)) * PW;
   const yS = v => M.top  + PH - ((v - yMin) / (yMax - yMin)) * PH;
 
-  let html = `<rect x="0" y="0" width="${W}" height="${H}" fill="#0d1117" rx="0"/>`;
-  html += `<rect x="${M.left}" y="${M.top}" width="${PW}" height="${PH}" fill="rgba(255,255,255,0.01)" rx="4"/>`;
+  let html = `<rect x="0" y="0" width="${W}" height="${H}" fill="#fdf4d0" rx="0"/>`;
+  html += `<rect x="${M.left}" y="${M.top}" width="${PW}" height="${PH}" fill="rgba(241,162,34,0.02)" rx="4"/>`;
 
   const xTicks = 6, yTicks = 5;
   for (let i = 0; i <= xTicks; i++) {
     const v = rawXMin + (i / xTicks) * xRange;
     const x = xS(v);
-    html += `<line x1="${x}" y1="${M.top}" x2="${x}" y2="${M.top+PH}" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>`;
-    html += `<text x="${x}" y="${M.top+PH+20}" text-anchor="middle" font-size="10" fill="#545d68" font-family="Inter,sans-serif">${v.toFixed(xRange > 20 ? 0 : 1)}</text>`;
+    html += `<line x1="${x}" y1="${M.top}" x2="${x}" y2="${M.top+PH}" stroke="rgba(26,8,4,0.07)" stroke-width="1"/>`;
+    html += `<text x="${x}" y="${M.top+PH+20}" text-anchor="middle" font-size="10" fill="#9a7040" font-family="Inter,sans-serif">${v.toFixed(xRange > 20 ? 0 : 1)}</text>`;
   }
   for (let i = 0; i <= yTicks; i++) {
     const v = rawYMin + (i / yTicks) * yRange;
     const y = yS(v);
-    html += `<line x1="${M.left}" y1="${y}" x2="${M.left+PW}" y2="${y}" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>`;
-    html += `<text x="${M.left-10}" y="${y+4}" text-anchor="end" font-size="10" fill="#545d68" font-family="Inter,sans-serif">${v.toFixed(yRange > 20 ? 0 : 1)}</text>`;
+    html += `<line x1="${M.left}" y1="${y}" x2="${M.left+PW}" y2="${y}" stroke="rgba(26,8,4,0.07)" stroke-width="1"/>`;
+    html += `<text x="${M.left-10}" y="${y+4}" text-anchor="end" font-size="10" fill="#9a7040" font-family="Inter,sans-serif">${v.toFixed(yRange > 20 ? 0 : 1)}</text>`;
   }
 
-  html += `<line x1="${M.left}" y1="${M.top}" x2="${M.left}" y2="${M.top+PH}" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>`;
-  html += `<line x1="${M.left}" y1="${M.top+PH}" x2="${M.left+PW}" y2="${M.top+PH}" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>`;
+  html += `<line x1="${M.left}" y1="${M.top}" x2="${M.left}" y2="${M.top+PH}" stroke="rgba(26,8,4,0.18)" stroke-width="1.5"/>`;
+  html += `<line x1="${M.left}" y1="${M.top+PH}" x2="${M.left+PW}" y2="${M.top+PH}" stroke="rgba(26,8,4,0.18)" stroke-width="1.5"/>`;
 
-  html += `<text x="${M.left+PW/2}" y="${H-10}" text-anchor="middle" font-size="12" fill="#848d97" font-family="Inter,sans-serif" font-weight="500">${xAx.label}</text>`;
-  html += `<text x="16" y="${M.top+PH/2}" text-anchor="middle" font-size="12" fill="#848d97" font-family="Inter,sans-serif" font-weight="500" transform="rotate(-90,16,${M.top+PH/2})">${yAx.label}</text>`;
+  html += `<text x="${M.left+PW/2}" y="${H-10}" text-anchor="middle" font-size="12" fill="#6b4020" font-family="Inter,sans-serif" font-weight="500">${xAx.label}</text>`;
+  html += `<text x="16" y="${M.top+PH/2}" text-anchor="middle" font-size="12" fill="#6b4020" font-family="Inter,sans-serif" font-weight="500" transform="rotate(-90,16,${M.top+PH/2})">${yAx.label}</text>`;
 
   const search = BuilderState.search;
   minerals.forEach((m) => {
@@ -1626,13 +1692,13 @@ function renderBuilderBar(svg, minerals) {
 
   const maxVal = Math.max(...sorted.map(m => xAx.getValue(m)));
 
-  let html = `<rect x="0" y="0" width="${W}" height="${H}" fill="#0d1117"/>`;
-  html += `<text x="${M.left+PW/2}" y="${H-6}" text-anchor="middle" font-size="11" fill="#848d97" font-family="Inter,sans-serif">${xAx.label}</text>`;
+  let html = `<rect x="0" y="0" width="${W}" height="${H}" fill="#fdf4d0"/>`;
+  html += `<text x="${M.left+PW/2}" y="${H-6}" text-anchor="middle" font-size="11" fill="#9a7040" font-family="Inter,sans-serif">${xAx.label}</text>`;
 
   [0.25,0.5,0.75,1].forEach(t => {
     const x = M.left + t * PW;
-    html += `<line x1="${x}" y1="${M.top}" x2="${x}" y2="${M.top+sorted.length*rowH}" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>`;
-    html += `<text x="${x}" y="${M.top+sorted.length*rowH+16}" text-anchor="middle" font-size="9" fill="#545d68" font-family="Inter,sans-serif">${(maxVal*t).toFixed(1)}</text>`;
+    html += `<line x1="${x}" y1="${M.top}" x2="${x}" y2="${M.top+sorted.length*rowH}" stroke="rgba(26,8,4,0.07)" stroke-width="1"/>`;
+    html += `<text x="${x}" y="${M.top+sorted.length*rowH+16}" text-anchor="middle" font-size="9" fill="#9a7040" font-family="Inter,sans-serif">${(maxVal*t).toFixed(1)}</text>`;
   });
 
   sorted.forEach((m, i) => {
@@ -1644,10 +1710,10 @@ function renderBuilderBar(svg, minerals) {
     const isDim = search && !isHit;
     const opacity = isDim ? 0.25 : 0.85;
 
-    if (i % 2 === 0) html += `<rect x="0" y="${y}" width="${W}" height="${rowH}" fill="rgba(255,255,255,0.015)"/>`;
+    if (i % 2 === 0) html += `<rect x="0" y="${y}" width="${W}" height="${rowH}" fill="rgba(241,162,34,0.06)"/>`;
     html += `<g class="builder-dot" data-mineral="${m.name}" style="cursor:pointer;">`;
     html += `<rect x="${M.left}" y="${y+5}" width="${Math.max(3,barW)}" height="${rowH-10}" fill="${col}" fill-opacity="${opacity}" rx="3"/>`;
-    html += `<text x="${M.left-6}" y="${y+rowH/2+4}" text-anchor="end" font-size="10" fill="${isHit ? col : '#848d97'}" font-family="Inter,sans-serif" font-weight="${isHit?700:400}">${m.name}</text>`;
+    html += `<text x="${M.left-6}" y="${y+rowH/2+4}" text-anchor="end" font-size="10" fill="${isHit ? col : '#6b4020'}" font-family="Inter,sans-serif" font-weight="${isHit?700:400}">${m.name}</text>`;
     html += `<text x="${M.left+Math.max(3,barW)+6}" y="${y+rowH/2+4}" font-size="9.5" fill="${col}" font-family="Inter,sans-serif" font-weight="700">${val.toFixed(1)}</text>`;
     html += `</g>`;
   });
