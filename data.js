@@ -1,4 +1,4 @@
-// CRITICAL MINERALS DATA
+// CRITICAL MINERALS DATA — updated from Excel scoring sheet
 // Each mineral has: name, symbol, scores (14 dimensions), meta, description
 //
 // DIMENSION KEYS (higher = more risky):
@@ -14,7 +14,7 @@
 //   extraction     – extraction/processing complexity (1-5)
 //   projects       – pipeline scarcity (1-5)
 //   importDep      – India import dependence (1-5)
-//   strategic      – India strategic posture risk (1-3)
+//   strategic      – India strategic posture risk (1-5)
 //   volatility     – price volatility (1-5)
 
 window.DIMENSIONS = {
@@ -54,21 +54,18 @@ window.RADAR_14 = [
 
 window.MINERALS = [
   {
-    name: 'Beryllium',
-    symbol: 'Be',
+    name: "Beryllium",
+    symbol: "Be",
     scores: {
-      demand: 1, growth: 3, miningDiv: 3, refiningDiv: 4,
-      resTime: 6, resDiv: 2.5, endUseComp: 6, substitutability: 4,
-      recyclability: 2, extraction: 3, projects: 5, importDep: 5,
-      strategic: 3, volatility: 5
+      demand: 1, growth: 3, miningDiv: 3, refiningDiv: 4, resTime: 1, resDiv: 4, endUseComp: 8.5, substitutability: 3, recyclability: 2, extraction: 4, projects: 3, importDep: 5, strategic: 3, volatility: 4
     },
     meta: {
       sectors: ['defense', 'energy', 'semiconductors', 'electrification', 'healthcare'],
       chinaShare: 21,
-      topSupplier: 'USA (Materion)',
+      topSupplier: "USA (Materion)",
       annualDemandTons: 430,
-      annualDemand: '~430 t',
-      keyFact: 'Only 3 countries can process. Materion is sole Western integrated producer.',
+      annualDemand: "~430 t",
+      keyFact: "Only 3 countries can process. Materion is sole Western integrated producer.",
     },
     description: {
       supply: "USA's Materion is the sole Western integrated producer, controlling ~50-70% of global refining. China (21% mining) and Kazakhstan are the only other processors.",
@@ -78,21 +75,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Indium',
-    symbol: 'In',
+    name: "Indium",
+    symbol: "In",
     scores: {
-      demand: 2, growth: 4, miningDiv: 4, refiningDiv: 4,
-      resTime: 5.5, resDiv: 2, endUseComp: 5, substitutability: 3,
-      recyclability: 3, extraction: 3, projects: 5, importDep: 5,
-      strategic: 3, volatility: 4
+      demand: 2, growth: 4, miningDiv: 4, refiningDiv: 4, resTime: 3, resDiv: 4, endUseComp: 7.5, substitutability: 3, recyclability: 2, extraction: 3, projects: 3, importDep: 5, strategic: 3, volatility: 4
     },
     meta: {
       sectors: ['defense', 'energy', 'semiconductors', 'healthcare', 'construction'],
       chinaShare: 70,
-      topSupplier: 'China (70%)',
+      topSupplier: "China (70%)",
       annualDemandTons: 1080,
-      annualDemand: '~1,080 t',
-      keyFact: 'No primary mines — 100% byproduct of zinc smelting. China imposed export controls.',
+      annualDemand: "~1,080 t",
+      keyFact: "No primary mines — 100% byproduct of zinc smelting. China imposed export controls.",
     },
     description: {
       supply: "China produces ~70% of global refined indium, exclusively as a byproduct of zinc smelting. China imposed export controls; no dedicated indium mines exist globally.",
@@ -102,20 +96,17 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Niobium',
-    symbol: 'Nb',
+    name: "Niobium",
+    symbol: "Nb",
     scores: {
-      demand: 4, growth: 3, miningDiv: 5, refiningDiv: 5,
-      resTime: 1, resDiv: 5, endUseComp: 6, substitutability: 2,
-      recyclability: 3, extraction: 2, projects: 2, importDep: 5,
-      strategic: 3, volatility: 1
+      demand: 4, growth: 3, miningDiv: 5, refiningDiv: 5, resTime: 1, resDiv: 5, endUseComp: 7.5, substitutability: 3, recyclability: 3, extraction: 2, projects: 2, importDep: 5, strategic: 3, volatility: 2
     },
     meta: {
       sectors: ['defense', 'energy', 'semiconductors', 'electrification', 'construction'],
       chinaShare: 0,
-      topSupplier: 'Brazil/CBMM (92%)',
+      topSupplier: "Brazil/CBMM (92%)",
       annualDemandTons: 110000,
-      annualDemand: '~110,000 t',
+      annualDemand: "~110,000 t",
       keyFact: "CBMM (Brazil) operates world's largest mine and dominates global supply. Prices managed as near-monopoly.",
     },
     description: {
@@ -126,21 +117,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Titanium',
-    symbol: 'Ti',
+    name: "Titanium",
+    symbol: "Ti",
     scores: {
-      demand: 5, growth: 3, miningDiv: 1, refiningDiv: 2,
-      resTime: 1, resDiv: 2, endUseComp: 5, substitutability: 3,
-      recyclability: 1, extraction: 2, projects: 2, importDep: 2,
-      strategic: 3, volatility: 2
+      demand: 5, growth: 3, miningDiv: 2, refiningDiv: 3, resTime: 1, resDiv: 2, endUseComp: 7.5, substitutability: 3, recyclability: 2, extraction: 3, projects: 2, importDep: 3, strategic: 2, volatility: 2
     },
     meta: {
       sectors: ['defense', 'energy', 'electrification', 'construction', 'healthcare'],
       chinaShare: 35,
-      topSupplier: 'China (sponge ~65%)',
+      topSupplier: "China (sponge ~65%)",
       annualDemandTons: 6500000,
-      annualDemand: '~6–7 million t',
-      keyFact: 'India owns 21% of world ilmenite reserves but imports 50%+ of processed titanium from China.',
+      annualDemand: "~6–7 million t",
+      keyFact: "India owns 21% of world ilmenite reserves but imports 50%+ of processed titanium from China.",
     },
     description: {
       supply: "Mining is moderately diversified (China ~33%, Mozambique, South Africa, Australia). However, for titanium metal sponge — the strategic aerospace product — China controls 60–70%.",
@@ -150,21 +138,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Graphite',
-    symbol: 'C',
+    name: "Graphite",
+    symbol: "C",
     scores: {
-      demand: 5, growth: 5, miningDiv: 5, refiningDiv: 5,
-      resTime: 1, resDiv: 2, endUseComp: 7, substitutability: 3,
-      recyclability: 4, extraction: 2, projects: 3, importDep: 2,
-      strategic: 3, volatility: 3
+      demand: 5, growth: 5, miningDiv: 4, refiningDiv: 5, resTime: 1, resDiv: 2, endUseComp: 7.5, substitutability: 3, recyclability: 4, extraction: 3, projects: 2, importDep: 3, strategic: 3, volatility: 2
     },
     meta: {
       sectors: ['defense', 'energy', 'semiconductors', 'electrification', 'construction'],
       chinaShare: 78,
-      topSupplier: 'China (78% mining, 90% refining)',
+      topSupplier: "China (78% mining, 90% refining)",
       annualDemandTons: 1600000,
-      annualDemand: '~1.6 million t',
-      keyFact: 'China imposed export controls. Battery-grade spherical graphite: China controls ~90% of refining.',
+      annualDemand: "~1.6 million t",
+      keyFact: "China imposed export controls. Battery-grade spherical graphite: China controls ~90% of refining.",
     },
     description: {
       supply: "China produces 78% of global graphite and controls ~90% of battery-grade spherical graphite refining. Even African mines ship concentrate to China for processing.",
@@ -174,20 +159,17 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Tellurium',
-    symbol: 'Te',
+    name: "Tellurium",
+    symbol: "Te",
     scores: {
-      demand: 2, growth: 5, miningDiv: 3, refiningDiv: 4,
-      resTime: 4.5, resDiv: 1.5, endUseComp: 7, substitutability: 4,
-      recyclability: 5, extraction: 4, projects: 5, importDep: 5,
-      strategic: 3, volatility: 5
+      demand: 2, growth: 5, miningDiv: 1, refiningDiv: 5, resTime: 3, resDiv: 5, endUseComp: 6, substitutability: 3, recyclability: 5, extraction: 4, projects: 4, importDep: 5, strategic: 3, volatility: 5
     },
     meta: {
       sectors: ['energy', 'defense', 'semiconductors', 'construction'],
       chinaShare: 75,
-      topSupplier: 'China (75–80%)',
+      topSupplier: "China (75–80%)",
       annualDemandTons: 640,
-      annualDemand: '~640 t',
+      annualDemand: "~640 t",
       keyFact: "Byproduct of copper refining. China's Feb 2025 export controls caused 84% price rise in Europe.",
     },
     description: {
@@ -198,21 +180,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Strontium',
-    symbol: 'Sr',
+    name: "Strontium",
+    symbol: "Sr",
     scores: {
-      demand: 4, growth: 2, miningDiv: 1, refiningDiv: 2,
-      resTime: 1, resDiv: 1, endUseComp: 7, substitutability: 1,
-      recyclability: 5, extraction: 1, projects: 3, importDep: 2,
-      strategic: 3, volatility: 2
+      demand: 4, growth: 2, miningDiv: 2, refiningDiv: 3, resTime: 1, resDiv: 2, endUseComp: 4, substitutability: 2, recyclability: 5, extraction: 2, projects: 5, importDep: 5, strategic: 3, volatility: 2
     },
     meta: {
       sectors: ['defense', 'healthcare', 'construction'],
       chinaShare: 35,
-      topSupplier: 'China & Mexico (~65%)',
+      topSupplier: "China & Mexico (~65%)",
       annualDemandTons: 500000,
-      annualDemand: '~500,000 t',
-      keyFact: 'Reserves could last thousands of years. Challenge is processing concentration, not scarcity.',
+      annualDemand: "~500,000 t",
+      keyFact: "Reserves could last thousands of years. Challenge is processing concentration, not scarcity.",
     },
     description: {
       supply: "China (~35%) and Mexico (~30–35%) together account for ~65% of global celestite production. Germany dominates strontium carbonate processing for the EU market.",
@@ -222,21 +201,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Silicon',
-    symbol: 'Si',
+    name: "Silicon",
+    symbol: "Si",
     scores: {
-      demand: 5, growth: 5, miningDiv: 5, refiningDiv: 5,
-      resTime: 1, resDiv: 1, endUseComp: 8, substitutability: 4,
-      recyclability: 5, extraction: 2, projects: 3, importDep: 4,
-      strategic: 2, volatility: 5
+      demand: 5, growth: 5, miningDiv: 4, refiningDiv: 5, resTime: 1, resDiv: 1, endUseComp: 8, substitutability: 4, recyclability: 5, extraction: 4, projects: 2, importDep: 3, strategic: 3, volatility: 5
     },
     meta: {
       sectors: ['defense', 'energy', 'semiconductors', 'electrification', 'construction', 'healthcare', 'agriculture'],
       chinaShare: 80,
-      topSupplier: 'China (~80%)',
+      topSupplier: "China (~80%)",
       annualDemandTons: 9700000,
-      annualDemand: '~9.7 million t',
-      keyFact: 'China explicitly listed as national security concern. 85–90% of semiconductor/solar grade polysilicon is Chinese.',
+      annualDemand: "~9.7 million t",
+      keyFact: "China explicitly listed as national security concern. 85–90% of semiconductor/solar grade polysilicon is Chinese.",
     },
     description: {
       supply: "China produces ~80% of total global silicon (metals + ferrosilicon). For semiconductor and solar polysilicon, China's share reaches 85–90%. Explicitly listed as a US national security concern.",
@@ -246,21 +222,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Tungsten',
-    symbol: 'W',
+    name: "Tungsten",
+    symbol: "W",
     scores: {
-      demand: 3, growth: 3, miningDiv: 5, refiningDiv: 5,
-      resTime: 3, resDiv: 2, endUseComp: 5, substitutability: 3,
-      recyclability: 2, extraction: 2, projects: 2, importDep: 3,
-      strategic: 3, volatility: 4
+      demand: 3, growth: 3, miningDiv: 4, refiningDiv: 5, resTime: 1, resDiv: 3, endUseComp: 6, substitutability: 2, recyclability: 2, extraction: 3, projects: 2, importDep: 4, strategic: 3, volatility: 3
     },
     meta: {
       sectors: ['defense', 'energy', 'electrification', 'construction', 'healthcare'],
       chinaShare: 83,
-      topSupplier: 'China (83%)',
+      topSupplier: "China (83%)",
       annualDemandTons: 81000,
-      annualDemand: '~81,000 t',
-      keyFact: 'China imposed export restrictions. Among highest production concentration of any strategic mineral.',
+      annualDemand: "~81,000 t",
+      keyFact: "China imposed export restrictions. Among highest production concentration of any strategic mineral.",
     },
     description: {
       supply: "China produces 83% of global tungsten — among the highest mining concentration of any strategic mineral. China also dominates ammonium paratungstate (APT) processing.",
@@ -270,21 +243,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Antimony',
-    symbol: 'Sb',
+    name: "Antimony",
+    symbol: "Sb",
     scores: {
-      demand: 3, growth: 4, miningDiv: 4, refiningDiv: 3,
-      resTime: 4, resDiv: 1.5, endUseComp: 4, substitutability: 2,
-      recyclability: 3, extraction: 2, projects: 3, importDep: 5,
-      strategic: 3, volatility: 5
+      demand: 4, growth: 4, miningDiv: 3, refiningDiv: 4, resTime: 3, resDiv: 3, endUseComp: 5.5, substitutability: 2, recyclability: 3, extraction: 2, projects: 2, importDep: 4, strategic: 3, volatility: 5
     },
     meta: {
       sectors: ['defense', 'energy', 'electrification', 'construction'],
       chinaShare: 60,
-      topSupplier: 'China (60% mining, 70–80% refining)',
+      topSupplier: "China (60% mining, 70–80% refining)",
       annualDemandTons: 110000,
-      annualDemand: '~110,000 t',
-      keyFact: 'China banned all antimony exports to the USA in December 2024. Prices nearly doubled in 4 months.',
+      annualDemand: "~110,000 t",
+      keyFact: "China banned all antimony exports to the USA in December 2024. Prices nearly doubled in 4 months.",
     },
     description: {
       supply: "China produced 60% of global antimony mining in 2024 but controls 70–80% of refining. China banned all antimony exports to the USA in December 2024.",
@@ -294,21 +264,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Zirconium',
-    symbol: 'Zr',
+    name: "Zirconium",
+    symbol: "Zr",
     scores: {
-      demand: 5, growth: 3, miningDiv: 1, refiningDiv: 5,
-      resTime: 2, resDiv: 5, endUseComp: 6, substitutability: 4,
-      recyclability: 5, extraction: 2, projects: 2, importDep: 3,
-      strategic: 3, volatility: 4
+      demand: 5, growth: 3, miningDiv: 2, refiningDiv: 4, resTime: 2, resDiv: 5, endUseComp: 6.5, substitutability: 3, recyclability: 3, extraction: 4, projects: 2, importDep: 4, strategic: 2, volatility: 4
     },
     meta: {
       sectors: ['energy', 'defense', 'semiconductors', 'construction', 'healthcare'],
       chinaShare: 8,
-      topSupplier: 'Australia (33%)',
+      topSupplier: "Australia (33%)",
       annualDemandTons: 1600000,
-      annualDemand: '~1.6 million t',
-      keyFact: 'India paradox: 21% of world ilmenite reserves but 80% import-dependent for processed zirconium.',
+      annualDemand: "~1.6 million t",
+      keyFact: "India paradox: 21% of world ilmenite reserves but 80% import-dependent for processed zirconium.",
     },
     description: {
       supply: "Mining is well-diversified: Australia (33%), South Africa (20%), Mozambique (11%). However, for nuclear-grade Zircaloy, China supplied 88% of US unwrought zirconium imports (2020–23).",
@@ -318,21 +285,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Bismuth',
-    symbol: 'Bi',
+    name: "Bismuth",
+    symbol: "Bi",
     scores: {
-      demand: 2, growth: 3, miningDiv: 4, refiningDiv: 4,
-      resTime: 4, resDiv: 1.5, endUseComp: 6, substitutability: 2,
-      recyclability: 4, extraction: 2, projects: 3, importDep: 5,
-      strategic: 3, volatility: 4
+      demand: 3, growth: 3, miningDiv: 2, refiningDiv: 4, resTime: 4, resDiv: 3, endUseComp: 5.5, substitutability: 2, recyclability: 3, extraction: 2, projects: 4, importDep: 5, strategic: 3, volatility: 5
     },
     meta: {
       sectors: ['healthcare', 'defense', 'construction', 'semiconductors'],
       chinaShare: 81,
-      topSupplier: 'China (81% refining)',
+      topSupplier: "China (81% refining)",
       annualDemandTons: 20000,
-      annualDemand: '~20,000 t',
-      keyFact: 'India has 85.6% Chinese import dependency. Only 2 mines globally ever produced bismuth as a primary product.',
+      annualDemand: "~20,000 t",
+      keyFact: "India has 85.6% Chinese import dependency. Only 2 mines globally ever produced bismuth as a primary product.",
     },
     description: {
       supply: "China produces 81% of global refined bismuth, as a byproduct of lead and tungsten processing. Only 2 mines globally have ever produced bismuth as a primary product.",
@@ -342,21 +306,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Cobalt',
-    symbol: 'Co',
+    name: "Cobalt",
+    symbol: "Co",
     scores: {
-      demand: 4, growth: 4, miningDiv: 5, refiningDiv: 3,
-      resTime: 3, resDiv: 1.5, endUseComp: 4, substitutability: 2,
-      recyclability: 2, extraction: 3, projects: 2, importDep: 5,
-      strategic: 2, volatility: 5
+      demand: 4, growth: 4, miningDiv: 4, refiningDiv: 4, resTime: 3, resDiv: 3, endUseComp: 6.5, substitutability: 2, recyclability: 2, extraction: 3, projects: 2, importDep: 5, strategic: 2, volatility: 4
     },
     meta: {
       sectors: ['defense', 'energy', 'electrification', 'healthcare'],
       chinaShare: 80,
-      topSupplier: 'DRC (76% mining) + China (80% refining)',
+      topSupplier: "DRC (76% mining) + China (80% refining)",
       annualDemandTons: 200000,
-      annualDemand: '~200,000 t',
-      keyFact: 'DRC initiated export ban Feb 2025. KABIL has mandate. DoD stockpiling $500M in cobalt.',
+      annualDemand: "~200,000 t",
+      keyFact: "DRC initiated export ban Feb 2025. KABIL has mandate. DoD stockpiling $500M in cobalt.",
     },
     description: {
       supply: "DRC produced 76% of global cobalt in 2024. China's CMOC is a key DRC operator, and China processes ~80% of global refined cobalt. DRC initiated an export ban in February 2025.",
@@ -366,21 +327,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Copper',
-    symbol: 'Cu',
+    name: "Copper",
+    symbol: "Cu",
     scores: {
-      demand: 5, growth: 5, miningDiv: 1, refiningDiv: 2,
-      resTime: 4, resDiv: 1, endUseComp: 8, substitutability: 1,
-      recyclability: 1, extraction: 1, projects: 4, importDep: 5,
-      strategic: 2, volatility: 5
+      demand: 5, growth: 3, miningDiv: 1, refiningDiv: 2, resTime: 3, resDiv: 2, endUseComp: 11, substitutability: 2, recyclability: 2, extraction: 2, projects: 3, importDep: 4, strategic: 2, volatility: 3
     },
     meta: {
       sectors: ['defense', 'energy', 'semiconductors', 'electrification', 'construction', 'healthcare', 'agriculture'],
       chinaShare: 44,
-      topSupplier: 'Chile (23% mining) + China (44% refining)',
+      topSupplier: "Chile (23% mining) + China (44% refining)",
       annualDemandTons: 26000000,
-      annualDemand: '~26 million t',
-      keyFact: 'S&P Global projects 50% demand increase by 2040. Mine supply projected to peak in 2030.',
+      annualDemand: "~26 million t",
+      keyFact: "S&P Global projects 50% demand increase by 2040. Mine supply projected to peak in 2030.",
     },
     description: {
       supply: "Mining is relatively diversified: Chile (23%), DRC (14%), Peru (11%). However, China smelts ~44% of global refined copper, rising toward 50%. UNCTAD: China imports 60% of global copper ore.",
@@ -390,45 +348,39 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Germanium',
-    symbol: 'Ge',
+    name: "Germanium",
+    symbol: "Ge",
     scores: {
-      demand: 1, growth: 4, miningDiv: 4, refiningDiv: 5,
-      resTime: 1, resDiv: 1.5, endUseComp: 5, substitutability: 3,
-      recyclability: 2, extraction: 3, projects: 5, importDep: 5,
-      strategic: 3, volatility: 5
+      demand: 1, growth: 4, miningDiv: 2, refiningDiv: 4, resTime: 1, resDiv: 2, endUseComp: 5, substitutability: 3, recyclability: 3, extraction: 3, projects: 3, importDep: 5, strategic: 3, volatility: 5
     },
     meta: {
       sectors: ['defense', 'semiconductors', 'energy', 'healthcare'],
       chinaShare: 70,
-      topSupplier: 'China (70–80%)',
+      topSupplier: "China (70–80%)",
       annualDemandTons: 35,
-      annualDemand: '~30–40 t',
-      keyFact: 'China banned ALL germanium exports to the US in December 2024. Prices nearly doubled post-export licensing.',
+      annualDemand: "~30–40 t",
+      keyFact: "China banned ALL germanium exports to the US in December 2024. Prices nearly doubled post-export licensing.",
     },
     description: {
-      supply: "China produces 70–80% of global refined germanium. In December 2024, China banned ALL germanium exports to the USA — the most severe export control for any mineral.",
+      supply: "China produces 70–80% of global refined germanium. In December 2024, China banned ALL germanium exports to the United States. Russia, Japan, and Korea ceased primary production years ago.",
       reserves: "Germanium doesn't form standalone deposits; it occurs at <0.1% in zinc and coal ores. Identified resources within zinc deposits alone are estimated at 250+ years at current consumption.",
       india: "India has zero domestic germanium production. No zinc smelter with germanium recovery circuits. Semiconductor Mission and Gaganyaan space programme both require germanium but no supply agreements.",
       priceContext: "Prices nearly doubled post-export licensing — from ~$1,290/kg to $2,800–3,000/kg in early 2024. Then the December 2024 complete ban to the US represents an unprecedented supply action."
     }
   },
   {
-    name: 'Rhenium',
-    symbol: 'Re',
+    name: "Rhenium",
+    symbol: "Re",
     scores: {
-      demand: 1, growth: 4, miningDiv: 2, refiningDiv: 2,
-      resTime: 3.5, resDiv: 1, endUseComp: 6, substitutability: 3,
-      recyclability: 2, extraction: 3, projects: 5, importDep: 5,
-      strategic: 3, volatility: 3
+      demand: 1, growth: 4, miningDiv: 2, refiningDiv: 2, resTime: 2, resDiv: 3, endUseComp: 5, substitutability: 4, recyclability: 2, extraction: 3, projects: 4, importDep: 5, strategic: 3, volatility: 2
     },
     meta: {
       sectors: ['defense', 'energy', 'electrification', 'semiconductors'],
       chinaShare: 9,
-      topSupplier: 'Chile (47%)',
+      topSupplier: "Chile (47%)",
       annualDemandTons: 55,
-      annualDemand: '~50–60 t',
-      keyFact: 'Only ~15–20 facilities globally can produce it. No dedicated rhenium mines — 100% byproduct of copper-molybdenum smelting.',
+      annualDemand: "~50–60 t",
+      keyFact: "Only ~15–20 facilities globally can produce it. No dedicated rhenium mines — 100% byproduct of copper-molybdenum smelting.",
     },
     description: {
       supply: "Chile produces ~47% of global rhenium, exclusively as a byproduct of molybdenum roasting at copper-molybdenum mines. USA (15%), Poland (15%), and Uzbekistan (8%) are other major sources.",
@@ -438,21 +390,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Tantalum',
-    symbol: 'Ta',
+    name: "Tantalum",
+    symbol: "Ta",
     scores: {
-      demand: 2, growth: 4, miningDiv: 1, refiningDiv: 3,
-      resTime: 4.5, resDiv: 1.5, endUseComp: 5, substitutability: 3,
-      recyclability: 2, extraction: 2, projects: 5, importDep: 5,
-      strategic: 3, volatility: 2
+      demand: 2, growth: 4, miningDiv: 2, refiningDiv: 2, resTime: 1, resDiv: 3, endUseComp: 6, substitutability: 3, recyclability: 2, extraction: 4, projects: 2, importDep: 5, strategic: 3, volatility: 2
     },
     meta: {
       sectors: ['semiconductors', 'defense', 'electrification', 'healthcare'],
       chinaShare: 43,
-      topSupplier: 'DRC (42%)',
+      topSupplier: "DRC (42%)",
       annualDemandTons: 2100,
-      annualDemand: '~2,100 t',
-      keyFact: 'DRC+Rwanda together at ~59% of mining — conflict minerals zone. US DoD stockpiling $100M in tantalum.',
+      annualDemand: "~2,100 t",
+      keyFact: "DRC+Rwanda together at ~59% of mining — conflict minerals zone. US DoD stockpiling $100M in tantalum.",
     },
     description: {
       supply: "DRC (42%) and Rwanda (17%) together account for ~59% of mining — a conflict minerals zone. China processes 43% of metal/powder imports to the US, Germany 27%, Kazakhstan 15%.",
@@ -462,20 +411,17 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Phosphorous',
-    symbol: 'P',
+    name: "Phosphorus",
+    symbol: "P",
     scores: {
-      demand: 5, growth: 4, miningDiv: 1, refiningDiv: 5,
-      resTime: 1, resDiv: 5, endUseComp: 10, substitutability: 1,
-      recyclability: 5, extraction: 1, projects: 2, importDep: 5,
-      strategic: 3, volatility: 3
+      demand: 5, growth: 3, miningDiv: 2, refiningDiv: 5, resTime: 1, resDiv: 4, endUseComp: 6.5, substitutability: 5, recyclability: 5, extraction: 2, projects: 2, importDep: 4, strategic: 3, volatility: 5
     },
     meta: {
       sectors: ['agriculture', 'energy', 'defense', 'electrification', 'healthcare'],
       chinaShare: 46,
-      topSupplier: 'China (46%) + Morocco (67% of reserves)',
+      topSupplier: "China (46%) + Morocco (67% of reserves)",
       annualDemandTons: 47000000,
-      annualDemand: '~47 million t',
+      annualDemand: "~47 million t",
       keyFact: "Morocco holds 67.6% of world phosphate reserves. Phosphorus is the ONLY major nutrient that cannot be synthetically created.",
     },
     description: {
@@ -486,21 +432,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Potash',
-    symbol: 'K',
+    name: "Potash",
+    symbol: "K",
     scores: {
-      demand: 5, growth: 4, miningDiv: 1, refiningDiv: 2,
-      resTime: 1, resDiv: 2, endUseComp: 10, substitutability: 1,
-      recyclability: 5, extraction: 1, projects: 3, importDep: 5,
-      strategic: 3, volatility: 3
+      demand: 5, growth: 3, miningDiv: 2, refiningDiv: 2, resTime: 1, resDiv: 2, endUseComp: 6.5, substitutability: 2, recyclability: 5, extraction: 1, projects: 1, importDep: 5, strategic: 2, volatility: 5
     },
     meta: {
       sectors: ['agriculture', 'energy', 'defense', 'healthcare'],
       chinaShare: 13,
-      topSupplier: 'Canada (31%)',
+      topSupplier: "Canada (31%)",
       annualDemandTons: 45000000,
-      annualDemand: '~45 million t',
-      keyFact: 'India is 100% import-dependent with no domestic reserves. Russia+Belarus together = ~34% of supply.',
+      annualDemand: "~45 million t",
+      keyFact: "India is 100% import-dependent with no domestic reserves. Russia+Belarus together = ~34% of supply.",
     },
     description: {
       supply: "Canada (31%), Russia (19%), and Belarus (15%) together produce ~65% of global potash. Belarus sanctions and Russia's geopolitical status make ~34% of global supply geopolitically sensitive.",
@@ -510,21 +453,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Gallium',
-    symbol: 'Ga',
+    name: "Gallium",
+    symbol: "Ga",
     scores: {
-      demand: 2, growth: 5, miningDiv: 5, refiningDiv: 3,
-      resTime: 1, resDiv: 2.5, endUseComp: 6, substitutability: 4,
-      recyclability: 4, extraction: 2, projects: 5, importDep: 5,
-      strategic: 3, volatility: 5
+      demand: 2, growth: 5, miningDiv: 5, refiningDiv: 5, resTime: 1, resDiv: 3, endUseComp: 8, substitutability: 4, recyclability: 4, extraction: 4, projects: 2, importDep: 5, strategic: 3, volatility: 5
     },
     meta: {
       sectors: ['defense', 'semiconductors', 'energy', 'electrification', 'healthcare'],
       chinaShare: 99,
-      topSupplier: 'China (~99%)',
+      topSupplier: "China (~99%)",
       annualDemandTons: 800,
-      annualDemand: '~800 t',
-      keyFact: 'China banned ALL gallium exports to the USA in December 2024. China controls 99% of primary production.',
+      annualDemand: "~800 t",
+      keyFact: "China banned ALL gallium exports to the USA in December 2024. China controls 99% of primary production.",
     },
     description: {
       supply: "China produces ~99% of primary low-purity gallium. In December 2024, China banned ALL gallium exports to the United States. Russia, Japan, and Korea ceased primary production years ago.",
@@ -534,21 +474,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Molybdenum',
-    symbol: 'Mo',
+    name: "Molybdenum",
+    symbol: "Mo",
     scores: {
-      demand: 4, growth: 3, miningDiv: 2, refiningDiv: 2,
-      resTime: 3, resDiv: 2, endUseComp: 5, substitutability: 2,
-      recyclability: 3, extraction: 2, projects: 2, importDep: 5,
-      strategic: 3, volatility: 4
+      demand: 4, growth: 3, miningDiv: 2, refiningDiv: 3, resTime: 2, resDiv: 2, endUseComp: 9, substitutability: 3, recyclability: 2, extraction: 2, projects: 2, importDep: 4, strategic: 3, volatility: 4
     },
     meta: {
       sectors: ['defense', 'energy', 'construction', 'electrification', 'healthcare', 'semiconductors'],
       chinaShare: 42,
-      topSupplier: 'China (42%)',
+      topSupplier: "China (42%)",
       annualDemandTons: 260000,
-      annualDemand: '~260,000 t',
-      keyFact: 'MOFCOM explicitly banned molybdenum exports to US. Mo-99 medical isotope (most used in nuclear medicine) depends on it.',
+      annualDemand: "~260,000 t",
+      keyFact: "MOFCOM explicitly banned molybdenum exports to US. Mo-99 medical isotope (most used in nuclear medicine) depends on it.",
     },
     description: {
       supply: "China produces 42% of global molybdenum; Peru 16%, Chile 15%, USA 13%. China has explicitly imposed export restrictions to the US (MOFCOM ban). US imports ferromolybdenum primarily from Chile (77%) and Korea.",
@@ -558,21 +495,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Tin',
-    symbol: 'Sn',
+    name: "Tin",
+    symbol: "Sn",
     scores: {
-      demand: 4, growth: 4, miningDiv: 5, refiningDiv: 1,
-      resTime: 5, resDiv: 2, endUseComp: 5, substitutability: 2,
-      recyclability: 2, extraction: 1, projects: 3, importDep: 5,
-      strategic: 3, volatility: 5
+      demand: 4, growth: 4, miningDiv: 1, refiningDiv: 3, resTime: 5, resDiv: 2, endUseComp: 7, substitutability: 2, recyclability: 3, extraction: 1, projects: 3, importDep: 4, strategic: 3, volatility: 4
     },
     meta: {
       sectors: ['semiconductors', 'construction', 'electrification', 'defense', 'healthcare'],
       chinaShare: 50,
-      topSupplier: 'China (23% mining, 50% smelting)',
+      topSupplier: "China (23% mining, 50% smelting)",
       annualDemandTons: 380000,
-      annualDemand: '~380,000 t',
-      keyFact: 'Myanmar supply halt in 2023 caused 46% LME price spike. Only 14 years of known reserves at current consumption.',
+      annualDemand: "~380,000 t",
+      keyFact: "Myanmar supply halt in 2023 caused 46% LME price spike. Only 14 years of known reserves at current consumption.",
     },
     description: {
       supply: "Mining is diversified: China (23%), Indonesia (17%), Burma (11%), DRC (8%), Brazil (10%). However, China's smelting share rises to ~50%. A single Myanmar militia halting mining in 2023 caused 46% LME price spike.",
@@ -582,21 +516,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Nickel',
-    symbol: 'Ni',
+    name: "Nickel",
+    symbol: "Ni",
     scores: {
-      demand: 5, growth: 3, miningDiv: 3, refiningDiv: 2,
-      resTime: 3, resDiv: 2, endUseComp: 3, substitutability: 4,
-      recyclability: 1, extraction: 2, projects: 5, importDep: 4,
-      strategic: 2, volatility: 5
+      demand: 5, growth: 3, miningDiv: 3, refiningDiv: 4, resTime: 3, resDiv: 3, endUseComp: 7.5, substitutability: 2, recyclability: 1, extraction: 4, projects: 2, importDep: 5, strategic: 2, volatility: 4
     },
     meta: {
       sectors: ['construction', 'defense', 'energy', 'electrification', 'healthcare'],
       chinaShare: 3,
-      topSupplier: 'Indonesia (59.5%)',
+      topSupplier: "Indonesia (59.5%)",
       annualDemandTons: 3200000,
-      annualDemand: '~3.2 million t',
-      keyFact: 'Chinese firms control ~75% of Indonesian nickel refining. LFP batteries (zero nickel) now >50% of Chinese EV market.',
+      annualDemand: "~3.2 million t",
+      keyFact: "Chinese firms control ~75% of Indonesian nickel refining. LFP batteries (zero nickel) now >50% of Chinese EV market.",
     },
     description: {
       supply: "Indonesia produces 59.5% of global nickel (mostly Class II). Chinese firms control ~75% of refining capacity in Indonesia. For battery-grade nickel specifically, China processes the vast majority of Indonesian output.",
@@ -606,21 +537,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Vanadium',
-    symbol: 'V',
+    name: "Vanadium",
+    symbol: "V",
     scores: {
-      demand: 3, growth: 4, miningDiv: 5, refiningDiv: 3,
-      resTime: 1, resDiv: 1.5, endUseComp: 5, substitutability: 3,
-      recyclability: 3, extraction: 2, projects: 3, importDep: 3,
-      strategic: 3, volatility: 3
+      demand: 3, growth: 4, miningDiv: 4, refiningDiv: 5, resTime: 1, resDiv: 3, endUseComp: 6, substitutability: 3, recyclability: 2, extraction: 3, projects: 2, importDep: 3, strategic: 3, volatility: 3
     },
     meta: {
       sectors: ['defense', 'energy', 'construction', 'electrification'],
       chinaShare: 70,
-      topSupplier: 'China (70%)',
+      topSupplier: "China (70%)",
       annualDemandTons: 100000,
-      annualDemand: '~100,000 t',
-      keyFact: 'Vanadium redox flow batteries could be transformative for grid storage. Price fell 27% in 2024 due to weak Chinese steel demand.',
+      annualDemand: "~100,000 t",
+      keyFact: "Vanadium redox flow batteries could be transformative for grid storage. Price fell 27% in 2024 due to weak Chinese steel demand.",
     },
     description: {
       supply: "China produces 70% of global vanadium, Russia 21%, South Africa 8%. China has implemented trade restrictions. The high-value form for VRFBs — high-purity V₂O₅ — is almost exclusively produced in China.",
@@ -630,21 +558,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Lithium',
-    symbol: 'Li',
+    name: "Lithium",
+    symbol: "Li",
     scores: {
-      demand: 4, growth: 5, miningDiv: 2, refiningDiv: 4,
-      resTime: 1, resDiv: 1.5, endUseComp: 6, substitutability: 3,
-      recyclability: 4, extraction: 2, projects: 5, importDep: 5,
-      strategic: 2, volatility: 5
+      demand: 4, growth: 5, miningDiv: 2, refiningDiv: 4, resTime: 1, resDiv: 4, endUseComp: 6.5, substitutability: 3, recyclability: 3, extraction: 3, projects: 2, importDep: 5, strategic: 2, volatility: 5
     },
     meta: {
       sectors: ['energy', 'electrification', 'defense', 'healthcare'],
       chinaShare: 17,
-      topSupplier: 'Australia (36.7% mining) + China (65–75% refining)',
+      topSupplier: "Australia (36.7% mining) + China (65–75% refining)",
       annualDemandTons: 170000,
-      annualDemand: '~170,000 t',
-      keyFact: 'Price went +604% (2020→2022 peak) then -82% (2022→2024). KABIL signed $24M Argentina exploration deal.',
+      annualDemand: "~170,000 t",
+      keyFact: "Price went +604% (2020→2022 peak) then -82% (2022→2024). KABIL signed $24M Argentina exploration deal.",
     },
     description: {
       supply: "Mining is diversified: Australia (37%), Chile (20%), China (17%), Zimbabwe (9%). However, China refines 65–75% of all lithium into battery-grade chemicals. The processing chokepoint is in China.",
@@ -654,21 +579,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Terbium',
-    symbol: 'Tb',
+    name: "Terbium",
+    symbol: "Tb",
     scores: {
-      demand: 2, growth: 5, miningDiv: 3, refiningDiv: 5,
-      resTime: 5, resDiv: 1.5, endUseComp: 8, substitutability: 5,
-      recyclability: 5, extraction: 5, projects: 5, importDep: 5,
-      strategic: 3, volatility: 5
+      demand: 2, growth: 5, miningDiv: 4, refiningDiv: 5, resTime: 3, resDiv: 5, endUseComp: 6.5, substitutability: 4, recyclability: 4, extraction: 5, projects: 4, importDep: 5, strategic: 3, volatility: 5
     },
     meta: {
       sectors: ['defense', 'energy', 'electrification', 'healthcare'],
       chinaShare: 70,
-      topSupplier: 'China (70% mining, >90% HREE refining)',
+      topSupplier: "China (70% mining, >90% HREE refining)",
       annualDemandTons: 500,
-      annualDemand: '~400–600 t',
-      keyFact: 'April 2025 Chinese export controls triggered emergency response. Western market prices tripled within weeks. No non-Chinese commercial HREE separation exists.',
+      annualDemand: "~400–600 t",
+      keyFact: "April 2025 Chinese export controls triggered emergency response. Western market prices tripled within weeks. No non-Chinese commercial HREE separation exists.",
     },
     description: {
       supply: "China dominates ~70% of mining and >90% of heavy rare earth refining. Myanmar feeds raw ore directly to Chinese processors. No Western facility possesses commercial HREE separation capability.",
@@ -678,21 +600,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Yttrium',
-    symbol: 'Y',
+    name: "Yttrium",
+    symbol: "Y",
     scores: {
-      demand: 2, growth: 5, miningDiv: 3, refiningDiv: 4,
-      resTime: 4.5, resDiv: 1.5, endUseComp: 7, substitutability: 5,
-      recyclability: 5, extraction: 4, projects: 4, importDep: 5,
-      strategic: 3, volatility: 5
+      demand: 3, growth: 3, miningDiv: 5, refiningDiv: 5, resTime: 3, resDiv: 5, endUseComp: 6, substitutability: 3, recyclability: 5, extraction: 5, projects: 4, importDep: 4, strategic: 3, volatility: 5
     },
     meta: {
       sectors: ['energy', 'defense', 'healthcare', 'construction'],
       chinaShare: 94,
-      topSupplier: 'China (94%)',
+      topSupplier: "China (94%)",
       annualDemandTons: 15000,
-      annualDemand: '~15,000 t',
-      keyFact: '97–94% of US yttrium imports from China. April 2025 export controls caused Western prices to triple. YSZ thermal barrier coatings in all jet engines.',
+      annualDemand: "~15,000 t",
+      keyFact: "97–94% of US yttrium imports from China. April 2025 export controls caused Western prices to triple. YSZ thermal barrier coatings in all jet engines.",
     },
     description: {
       supply: "China produces 94–97% of global yttrium. All yttrium separation occurs in China. No commercial yttrium separation facility exists in the US, EU, Australia, Japan, or India.",
@@ -702,21 +621,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Dysprosium',
-    symbol: 'Dy',
+    name: "Dysprosium",
+    symbol: "Dy",
     scores: {
-      demand: 2, growth: 5, miningDiv: 3, refiningDiv: 5,
-      resTime: 5, resDiv: 1.5, endUseComp: 8, substitutability: 5,
-      recyclability: 5, extraction: 4, projects: 5, importDep: 5,
-      strategic: 3, volatility: 5
+      demand: 2, growth: 5, miningDiv: 5, refiningDiv: 5, resTime: 3, resDiv: 5, endUseComp: 6.5, substitutability: 4, recyclability: 4, extraction: 5, projects: 4, importDep: 5, strategic: 3, volatility: 5
     },
     meta: {
       sectors: ['defense', 'energy', 'electrification', 'healthcare'],
       chinaShare: 70,
-      topSupplier: 'China (70% mining, >90% HREE refining)',
+      topSupplier: "China (70% mining, >90% HREE refining)",
       annualDemandTons: 2500,
-      annualDemand: '~2,500 t',
-      keyFact: 'April 2025 Chinese export controls caused Western dysprosium prices to triple. No commercial recycling exists today.',
+      annualDemand: "~2,500 t",
+      keyFact: "April 2025 Chinese export controls caused Western dysprosium prices to triple. No commercial recycling exists today.",
     },
     description: {
       supply: "China controls >90% of HREE refining. Myanmar feeds Chinese processors directly. April 2025 export controls caused Western dysprosium prices to triple. No commercial alternative supply exists anywhere.",
@@ -726,21 +642,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Hafnium',
-    symbol: 'Hf',
+    name: "Hafnium",
+    symbol: "Hf",
     scores: {
-      demand: 1, growth: 3, miningDiv: 1, refiningDiv: 5,
-      resTime: 4.5, resDiv: 1.5, endUseComp: 7, substitutability: 3,
-      recyclability: 4, extraction: 5, projects: 3, importDep: 5,
-      strategic: 3, volatility: 5
+      demand: 1, growth: 3, miningDiv: 2, refiningDiv: 3, resTime: 1, resDiv: 5, endUseComp: 6, substitutability: 3, recyclability: 4, extraction: 5, projects: 2, importDep: 4, strategic: 3, volatility: 4
     },
     meta: {
       sectors: ['defense', 'semiconductors', 'energy', 'construction'],
       chinaShare: 21,
-      topSupplier: 'France (Framatome ~50%)',
+      topSupplier: "France (Framatome ~50%)",
       annualDemandTons: 100,
-      annualDemand: '~100 t',
-      keyFact: 'Every Intel/TSMC/Samsung chip since 45nm uses hafnium oxide. Zr:Hf separation is one of the hardest separations in metallurgy.',
+      annualDemand: "~100 t",
+      keyFact: "Every Intel/TSMC/Samsung chip since 45nm uses hafnium oxide. Zr:Hf separation is one of the hardest separations in metallurgy.",
     },
     description: {
       supply: "No dedicated hafnium mining — exclusively co-extracted from zircon. Framatome (France) supplies ~50% of US imports, China 21%, France 18%. Three major refiners globally: Framatome, ATI (USA), Chinese producers.",
@@ -750,20 +663,17 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Selenium',
-    symbol: 'Se',
+    name: "Selenium",
+    symbol: "Se",
     scores: {
-      demand: 2, growth: 3, miningDiv: 1, refiningDiv: 2,
-      resTime: 4.5, resDiv: 1.5, endUseComp: 6, substitutability: 2,
-      recyclability: 4, extraction: 3, projects: 3, importDep: 4,
-      strategic: 3, volatility: 3
+      demand: 2, growth: 3, miningDiv: 1, refiningDiv: 2, resTime: 4, resDiv: 2, endUseComp: 6, substitutability: 2, recyclability: 3, extraction: 3, projects: 3, importDep: 4, strategic: 4, volatility: 3
     },
     meta: {
       sectors: ['energy', 'healthcare', 'agriculture', 'construction'],
       chinaShare: 49,
-      topSupplier: 'China (49%)',
+      topSupplier: "China (49%)",
       annualDemandTons: 3600,
-      annualDemand: '~3,600 t',
+      annualDemand: "~3,600 t",
       keyFact: "India's sole producer is Hindalco at Dahej (14 t/year). No exchange trading; market is opaque.",
     },
     description: {
@@ -774,21 +684,18 @@ window.MINERALS = [
     }
   },
   {
-    name: 'PGMs',
-    symbol: 'Pt/Pd',
+    name: "PGMs",
+    symbol: "Pt/Pd",
     scores: {
-      demand: 1, growth: 1, miningDiv: 2, refiningDiv: 5,
-      resTime: 1, resDiv: 5, endUseComp: 5, substitutability: 3,
-      recyclability: 1, extraction: 4, projects: 2, importDep: 5,
-      strategic: 3, volatility: 5
+      demand: 1, growth: 2, miningDiv: 3, refiningDiv: 3, resTime: 1, resDiv: 5, endUseComp: 9, substitutability: 2, recyclability: 2, extraction: 4, projects: 2, importDep: 5, strategic: 4, volatility: 5
     },
     meta: {
       sectors: ['electrification', 'energy', 'semiconductors', 'healthcare', 'defense', 'construction'],
       chinaShare: 5,
-      topSupplier: 'South Africa (53%)',
+      topSupplier: "South Africa (53%)",
       annualDemandTons: 400,
-      annualDemand: '~400 t (Pt+Pd)',
-      keyFact: 'Palladium and rhodium saw >500% price swings. Russia (Nornickel) supplies ~26% of global PGMs.',
+      annualDemand: "~400 t (Pt+Pd)",
+      keyFact: "Palladium and rhodium saw >500% price swings. Russia (Nornickel) supplies ~26% of global PGMs.",
     },
     description: {
       supply: "South Africa mines 53% of global platinum and palladium. Russia (Nornickel) supplies 26%. Zimbabwe adds 9%. South Africa and Russia together control ~80% of supply — a high geopolitical concentration.",
@@ -798,21 +705,39 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Cadmium',
-    symbol: 'Cd',
+    name: "Lanthanum",
+    symbol: "La",
     scores: {
-      demand: 2, growth: 2, miningDiv: 4, refiningDiv: 4,
-      resTime: 4.5, resDiv: 2, endUseComp: 4, substitutability: 2,
-      recyclability: 2, extraction: 1, projects: 4, importDep: 5,
-      strategic: 3, volatility: 3
+      demand: 3, growth: 2, miningDiv: 4, refiningDiv: 5, resTime: 1, resDiv: 3, endUseComp: 6.5, substitutability: 2, recyclability: 5, extraction: 3, projects: 2, importDep: 3, strategic: 3, volatility: 2
+    },
+    meta: {
+      sectors: ['energy', 'electrification', 'healthcare', 'construction', 'semiconductors'],
+      chinaShare: 70,
+      topSupplier: "China (~70%)",
+      annualDemandTons: 40000,
+      annualDemand: "~40,000 t",
+      keyFact: "Used in oil refinery catalysts (50% of demand) and NiMH batteries. Structural oversupply from co-mining with more valuable REEs.",
+    },
+    description: {
+      supply: "China dominates refining (~85% of capacity) but Lynas (Malaysia) and MP Materials (USA) are scaling separated lanthanum. LREE processing chain has more Western alternatives than HREEs.",
+      reserves: "Effectively limitless relative to demand. Lanthanum is highly abundant in bastnaesite and monazite ores globally. Found in USA, Australia, China, and India in large quantities.",
+      india: "India has vast domestic monazite resources (3rd largest REE reserves globally). IREL produces lanthanum oxide but at a fraction of potential. The MMDR/DAE thorium restrictions historically suppressed commercialization.",
+      priceContext: "Prices stable at ~$2–4/kg — near production cost due to structural oversupply. Lanthanum is produced as a byproduct of mining more valuable magnet metals (Nd, Pr), keeping supply chronically abundant."
+    }
+  },
+  {
+    name: "Cadmium",
+    symbol: "Cd",
+    scores: {
+      demand: 3, growth: 3, miningDiv: 2, refiningDiv: 2, resTime: 3, resDiv: 2, endUseComp: 5, substitutability: 2, recyclability: 3, extraction: 2, projects: 2, importDep: 3, strategic: 3, volatility: 2
     },
     meta: {
       sectors: ['energy', 'semiconductors', 'defense', 'construction'],
       chinaShare: 35,
-      topSupplier: 'China (~35%)',
+      topSupplier: "China (~35%)",
       annualDemandTons: 27000,
-      annualDemand: '~27,000 t',
-      keyFact: 'CdTe solar cells are driving new demand. India imports ~11,400 tons/year — massive global hub for cadmium consumption.',
+      annualDemand: "~27,000 t",
+      keyFact: "CdTe solar cells are driving new demand. India imports ~11,400 tons/year — massive global hub for cadmium consumption.",
     },
     description: {
       supply: "China is the leading refined cadmium producer (~35%), with significant capacity in South Korea (Korea Zinc), Japan, and Canada. Tracking the global zinc industry concentration.",
@@ -822,20 +747,17 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Cerium',
-    symbol: 'Ce',
+    name: "Cerium",
+    symbol: "Ce",
     scores: {
-      demand: 4, growth: 2, miningDiv: 1, refiningDiv: 1,
-      resTime: 1, resDiv: 1, endUseComp: 4, substitutability: 2,
-      recyclability: 5, extraction: 1, projects: 2, importDep: 2,
-      strategic: 3, volatility: 1
+      demand: 3, growth: 2, miningDiv: 4, refiningDiv: 5, resTime: 1, resDiv: 3, endUseComp: 6, substitutability: 2, recyclability: 5, extraction: 3, projects: 2, importDep: 3, strategic: 3, volatility: 2
     },
     meta: {
       sectors: ['construction', 'electrification', 'healthcare', 'semiconductors'],
       chinaShare: 70,
-      topSupplier: 'China (~70%)',
+      topSupplier: "China (~70%)",
       annualDemandTons: 75000,
-      annualDemand: '~75,000 t',
+      annualDemand: "~75,000 t",
       keyFact: "Chronic oversupply because cerium makes up ~50% of all rare earth ore. India has world's 3rd largest rare earth reserves.",
     },
     description: {
@@ -846,27 +768,255 @@ window.MINERALS = [
     }
   },
   {
-    name: 'Lanthanum',
-    symbol: 'La',
+    name: "Scandium",
+    symbol: "Sc",
     scores: {
-      demand: 3, growth: 2, miningDiv: 1, refiningDiv: 1,
-      resTime: 1, resDiv: 1, endUseComp: 5, substitutability: 2,
-      recyclability: 5, extraction: 2, projects: 2, importDep: 2,
-      strategic: 3, volatility: 1
+      demand: 1, growth: 5, miningDiv: 5, refiningDiv: 5, resTime: 1, resDiv: 1, endUseComp: 6.5, substitutability: 3, recyclability: 5, extraction: 5, projects: 1, importDep: 5, strategic: 3, volatility: 2
     },
     meta: {
-      sectors: ['energy', 'electrification', 'healthcare', 'construction', 'semiconductors'],
-      chinaShare: 70,
-      topSupplier: 'China (~70%)',
-      annualDemandTons: 40000,
-      annualDemand: '~40,000 t',
-      keyFact: 'Used in oil refinery catalysts (50% of demand) and NiMH batteries. Structural oversupply from co-mining with more valuable REEs.',
+      sectors: ['defense', 'energy', 'semiconductors', 'construction'],
+      chinaShare: 66,
+      topSupplier: "China (>85% of byproduct output)",
+      annualDemandTons: 40,
+      annualDemand: "~30–40 t",
+      keyFact: "No primary scandium mines. Exclusive byproduct from TiO₂/REE streams. China controls virtually all commercial supply.",
     },
     description: {
-      supply: "China dominates refining (~85% of capacity) but Lynas (Malaysia) and MP Materials (USA) are scaling separated lanthanum. LREE processing chain has more Western alternatives than HREEs.",
-      reserves: "Effectively limitless relative to demand. Lanthanum is highly abundant in bastnaesite and monazite ores globally. Found in USA, Australia, China, and India in large quantities.",
-      india: "India has vast domestic monazite resources (3rd largest REE reserves globally). IREL produces lanthanum oxide but at a fraction of potential. The MMDR/DAE thorium restrictions historically suppressed commercialization.",
-      priceContext: "Prices stable at ~$2–4/kg — near production cost due to structural oversupply. Lanthanum is produced as a byproduct of mining more valuable magnet metals (Nd, Pr), keeping supply chronically abundant."
+      supply: "Scandium has no primary mines. It is extracted exclusively as a trace byproduct from titanium, zirconium, iron ore, and rare earth processing streams, with China controlling >85% of commercial output.",
+      reserves: "Scandium is abundant in Earth's crust but extremely dilute. Deposits in Eurasian Russia and Scandinavia are largely uneconomic. Total recoverable resource vastly exceeds any foreseeable demand.",
+      india: "India has zero commercial domestic extraction of scandium. Latent processing options exist within IREL's titanium and monazite waste streams, but no commercial recovery is operational.",
+      priceContext: "Scandium prices are highly illiquid and volatile — $3,000–5,000/kg depending on purity. The market is extremely thin (40 t/year), with no exchange trading and opaque bilateral contracts."
+    }
+  },
+  {
+    name: "Samarium",
+    symbol: "Sm",
+    scores: {
+      demand: 2, growth: 4, miningDiv: 4, refiningDiv: 5, resTime: 1, resDiv: 3, endUseComp: 6.5, substitutability: 3, recyclability: 4, extraction: 5, projects: 3, importDep: 4, strategic: 3, volatility: 5
+    },
+    meta: {
+      sectors: ['defense', 'energy', 'electrification', 'semiconductors'],
+      chinaShare: 69,
+      topSupplier: "China (~69%)",
+      annualDemandTons: 2000,
+      annualDemand: "~1,000–3,000 t",
+      keyFact: "SmCo magnets work at extreme temperatures where NdFeB fails — irreplaceable in defense and aerospace. IREL has marginal production capability.",
+    },
+    description: {
+      supply: "Samarium is recovered from bastnaesite and monazite ores where China controls approximately 69% of global rare-earth-oxide mine production. China dominates downstream separation and alloy production.",
+      reserves: "Samarium reserves are co-located with general light rare earth deposits. China holds the largest share (~55%), with Australia, India, and Brazil holding significant fractions. Reserves last well beyond 50 years.",
+      india: "India possesses domestic samarium-extraction capability through IREL's monazite processing chain. However, separated-oxide output remains token relative to total industrial demand, leaving India substantially import-dependent.",
+      priceContext: "Samarium oxide prices have experienced high volatility, surging amid export restrictions. Prices track the broader rare earth market but with thinner liquidity due to specialist demand."
+    }
+  },
+  {
+    name: "Europium",
+    symbol: "Eu",
+    scores: {
+      demand: 2, growth: 2, miningDiv: 4, refiningDiv: 5, resTime: 1, resDiv: 3, endUseComp: 5.5, substitutability: 4, recyclability: 4, extraction: 5, projects: 3, importDep: 4, strategic: 3, volatility: 4
+    },
+    meta: {
+      sectors: ['semiconductors', 'defense', 'healthcare', 'construction'],
+      chinaShare: 69,
+      topSupplier: "China (~69%)",
+      annualDemandTons: 400,
+      annualDemand: "~400 t",
+      keyFact: "Essential phosphor for LED displays and anti-counterfeiting banknotes. China controls separation. Demand declined with CRT TV phase-out but recovering in LEDs.",
+    },
+    description: {
+      supply: "Europium is mined as a minor constituent in bastnaesite, monazite, and ion-adsorption clays, where China accounts for approximately 69% of global mine production. Separation capability is almost entirely Chinese.",
+      reserves: "Europium reserves are tied to light rare earth bastnaesite and monazite deposits globally. India, Australia, and Brazil hold significant fractions alongside China. Reserves far exceed foreseeable demand.",
+      india: "India's monazite sands contain europium, but IREL's commercial separation lines focus heavily on other rare earth oxides, leaving europium unmarketed as a standalone product — substantially import-dependent.",
+      priceContext: "Europium prices fell dramatically as CRT TV demand collapsed, but are stabilising as LED phosphor demand grows. Prices are highly policy-sensitive to Chinese export controls."
+    }
+  },
+  {
+    name: "Gadolinium",
+    symbol: "Gd",
+    scores: {
+      demand: 2, growth: 3, miningDiv: 4, refiningDiv: 5, resTime: 1, resDiv: 3, endUseComp: 6.5, substitutability: 4, recyclability: 4, extraction: 5, projects: 3, importDep: 4, strategic: 3, volatility: 5
+    },
+    meta: {
+      sectors: ['healthcare', 'energy', 'defense', 'semiconductors'],
+      chinaShare: 69,
+      topSupplier: "China (~69%)",
+      annualDemandTons: 1000,
+      annualDemand: "~800–1,200 t",
+      keyFact: "Standard MRI contrast agent worldwide. Critical nuclear reactor neutron absorber. IREL explicitly lists gadolinium in its product range.",
+    },
+    description: {
+      supply: "Gadolinium is recovered from bastnaesite, monazite, and ion-adsorption clay ores, with China producing approximately 69% of global rare-earth-oxide output. Separation capability is predominantly Chinese.",
+      reserves: "Gadolinium reserves are embedded within middle rare earth deposits globally. China holds the largest share, with India, Australia, and Brazil holding significant fractions. Long-term reserve outlook is adequate.",
+      india: "IREL's published product line explicitly includes gadolinium, so India has domestic separation capability. However, separated-oxide volumes are small relative to total industrial demand, leaving India partially import-dependent.",
+      priceContext: "Gadolinium prices are volatile and track the broader rare earth market. Prices are sensitive to Chinese export restrictions and MRI demand growth from ageing populations globally."
+    }
+  },
+  {
+    name: "Erbium",
+    symbol: "Er",
+    scores: {
+      demand: 2, growth: 3, miningDiv: 5, refiningDiv: 5, resTime: 3, resDiv: 5, endUseComp: 7.5, substitutability: 4, recyclability: 5, extraction: 5, projects: 4, importDep: 4, strategic: 3, volatility: 2
+    },
+    meta: {
+      sectors: ['defense', 'semiconductors', 'energy', 'healthcare'],
+      chinaShare: 90,
+      topSupplier: "China + Myanmar (>85%)",
+      annualDemandTons: 1000,
+      annualDemand: "~500–2,000 t",
+      keyFact: "Er-doped fiber amplifiers are the backbone of intercontinental fiber-optic networks. China+Myanmar >85% HREE supply. April 2025 export controls apply.",
+    },
+    description: {
+      supply: "Extraction is highly concentrated. China and its satellite supplier Myanmar produce over 85% of the world's heavy rare earths from ion-adsorption clay deposits. No Western HREE separation capacity exists.",
+      reserves: "Heavy rare earth ion-adsorption clay deposits are concentrated in southern China and Myanmar. These deposits are actively being depleted. Broader xenotime and fergusonite deposits exist globally but are uneconomic.",
+      india: "India possesses latent erbium traces within xenotime sands, but IREL yields zero commercial quantities of separated erbium oxide, leaving the nation heavily reliant on imports (>80% import dependent).",
+      priceContext: "Erbium prices are illiquid and highly volatile. The April 2025 Chinese export controls affected erbium supply chains alongside other HREEs, causing significant price disruption in Western markets."
+    }
+  },
+  {
+    name: "Neodymium",
+    symbol: "Nd",
+    scores: {
+      demand: 3, growth: 4, miningDiv: 4, refiningDiv: 5, resTime: 1, resDiv: 3, endUseComp: 8, substitutability: 4, recyclability: 5, extraction: 5, projects: 2, importDep: 4, strategic: 2, volatility: 4
+    },
+    meta: {
+      sectors: ['defense', 'energy', 'electrification', 'semiconductors'],
+      chinaShare: 69,
+      topSupplier: "China (~69%)",
+      annualDemandTons: 50000,
+      annualDemand: "~40,000–60,000 t",
+      keyFact: "NdFeB magnets are in every EV motor and wind turbine. April 2025 Chinese export controls triggered emergency government responses worldwide.",
+    },
+    description: {
+      supply: "China produces approximately 69% of global rare-earth-oxide output, placing primary extraction in the 65–85% band. The separation of neodymium into oxide and metal is overwhelmingly concentrated in China.",
+      reserves: "Neodymium reserves are embedded within light rare earth bastnaesite and monazite deposits. China holds the largest share, with Australia's Mount Isa and India's monazite sands as significant secondary sources.",
+      india: "IREL produces minor volumes of NdPr oxalate from monazite. However, this satisfies <20% of the rapidly growing domestic EV and wind sector demand, leaving India highly import-dependent.",
+      priceContext: "Neodymium oxide prices are highly cyclical. The April 2025 export controls caused significant Western price disruption. The EV transition creates structural long-term demand growth pressure."
+    }
+  },
+  {
+    name: "Praseodymium",
+    symbol: "Pr",
+    scores: {
+      demand: 3, growth: 4, miningDiv: 4, refiningDiv: 5, resTime: 1, resDiv: 3, endUseComp: 7.5, substitutability: 4, recyclability: 5, extraction: 5, projects: 2, importDep: 4, strategic: 2, volatility: 4
+    },
+    meta: {
+      sectors: ['defense', 'energy', 'electrification', 'semiconductors'],
+      chinaShare: 69,
+      topSupplier: "China (~69%)",
+      annualDemandTons: 15000,
+      annualDemand: "~10,000–20,000 t",
+      keyFact: "NdPr mixed oxide is the commercial standard for magnet manufacturing. Co-produced with neodymium. April 2025 export controls apply.",
+    },
+    description: {
+      supply: "Praseodymium is co-extracted with neodymium from light-rare-earth ores, where China controls ~69% of global production. Praseodymium separation capability is overwhelmingly concentrated in China.",
+      reserves: "Praseodymium reserves are co-located with neodymium in light rare earth deposits. China holds the largest share, with Australia and India holding significant secondary fractions.",
+      india: "IREL produces minor volumes of NdPr oxalate, satisfying <20% of domestic demand. India remains heavily reliant on imports for the NdPr oxide feedstock critical for its growing magnet and EV industries.",
+      priceContext: "Praseodymium prices track the NdPr oxide market closely. The April 2025 Chinese export controls caused significant price disruption in Western markets, highlighting India's acute supply vulnerability."
+    }
+  },
+  {
+    name: "Promethium",
+    symbol: "Pm",
+    scores: {
+      demand: 1, growth: 3, miningDiv: 5, refiningDiv: 5, resTime: 1, resDiv: 5, endUseComp: 6, substitutability: 2, recyclability: 5, extraction: 5, projects: 5, importDep: 5, strategic: 5, volatility: 1
+    },
+    meta: {
+      sectors: ['defense', 'energy'],
+      chinaShare: 0,
+      topSupplier: "USA (DOE Isotope Program — sole commercial supplier)",
+      annualDemandTons: 0,
+      annualDemand: "Grams scale",
+      keyFact: "Only radioactive rare earth. No stable isotopes. US DOE is sole commercial supplier. Used in nuclear batteries and thickness gauges.",
+    },
+    description: {
+      supply: "Promethium is not mined. It is produced synthetically via fission byproducts. The US DOE Isotope Program stands as the sole global commercial supplier, representing >85% concentration.",
+      reserves: "Promethium has no natural reserves — it is entirely synthetic. Supply is constrained by nuclear reactor capacity and isotope programme priorities rather than geological availability.",
+      india: "India possesses zero commercial promethium production, making any niche utilization 100% import-dependent. Promethium is not tracked on India's critical minerals list and lacks any strategic policy framework.",
+      priceContext: "Promethium pricing is essentially non-market — controlled entirely by DOE allocation priorities. No commodity pricing exists due to the vanishingly small volumes (grams to kilograms per year globally)."
+    }
+  },
+  {
+    name: "Holmium",
+    symbol: "Ho",
+    scores: {
+      demand: 2, growth: 3, miningDiv: 5, refiningDiv: 5, resTime: 3, resDiv: 5, endUseComp: 6, substitutability: 4, recyclability: 5, extraction: 5, projects: 4, importDep: 4, strategic: 3, volatility: 4
+    },
+    meta: {
+      sectors: ['defense', 'energy', 'healthcare', 'semiconductors'],
+      chinaShare: 90,
+      topSupplier: "China + Myanmar (>85%)",
+      annualDemandTons: 300,
+      annualDemand: "~100–500 t",
+      keyFact: "Strongest known magnetic field concentrator. Used in MRI focusing magnets and specialty medical lasers. China+Myanmar >85% supply. IREL produces none.",
+    },
+    description: {
+      supply: "Holmium is extracted overwhelmingly from heavy-rare-earth ion-adsorption clays in southern China and Myanmar. China commands >85% of primary mine output and essentially 100% of refined holmium.",
+      reserves: "Heavy rare earth ion-adsorption clay deposits are concentrated in southern China and Myanmar. Xenotime deposits elsewhere contain holmium but are largely uneconomic at current prices.",
+      india: "India's IREL yields no separated holmium. The nation remains reliant on imports, placing within the <20% marginal domestic production band. Holmium falls under India's REE critical minerals framework.",
+      priceContext: "Holmium is one of the least liquid rare earth markets. Prices are highly volatile and sensitive to Chinese export policies, with extremely thin Western spot market depth."
+    }
+  },
+  {
+    name: "Ytterbium",
+    symbol: "Yb",
+    scores: {
+      demand: 2, growth: 4, miningDiv: 5, refiningDiv: 5, resTime: 3, resDiv: 5, endUseComp: 6.5, substitutability: 4, recyclability: 5, extraction: 5, projects: 4, importDep: 4, strategic: 3, volatility: 1
+    },
+    meta: {
+      sectors: ['defense', 'semiconductors', 'energy', 'healthcare'],
+      chinaShare: 90,
+      topSupplier: "China + Myanmar (>85%)",
+      annualDemandTons: 700,
+      annualDemand: "~500–1,000 t",
+      keyFact: "Yb fiber lasers are the industrial cutting and welding standard globally. China+Myanmar control >85% of primary output. IREL produces none.",
+    },
+    description: {
+      supply: "Ytterbium is mined overwhelmingly from heavy-rare-earth ion-adsorption clays in southern China and Myanmar. China controls >85% of primary mine output and accounts for ~86% of refined ytterbium globally.",
+      reserves: "Heavy rare earth deposits hosting ytterbium are concentrated in southern China and Myanmar. Broader xenotime deposits exist in India, Brazil, and Australia but remain largely uneconomic.",
+      india: "India possesses latent xenotime deposits but IREL yields no separated ytterbium. India remains reliant on imports, placing within the <20% marginal domestic production band.",
+      priceContext: "Ytterbium prices are illiquid. The April 2025 Chinese export controls apply to ytterbium as part of the heavy rare earth group, creating supply uncertainty for industrial laser manufacturers globally."
+    }
+  },
+  {
+    name: "Lutetium",
+    symbol: "Lu",
+    scores: {
+      demand: 1, growth: 5, miningDiv: 5, refiningDiv: 5, resTime: 3, resDiv: 5, endUseComp: 6.5, substitutability: 4, recyclability: 5, extraction: 5, projects: 4, importDep: 4, strategic: 3, volatility: 5
+    },
+    meta: {
+      sectors: ['healthcare', 'defense', 'semiconductors', 'energy'],
+      chinaShare: 90,
+      topSupplier: "China + Myanmar (>85%)",
+      annualDemandTons: 50,
+      annualDemand: "Tens of tons",
+      keyFact: "Lu-177 DOTATATE is a breakthrough nuclear cancer treatment. Rarest stable lanthanide — separation is the hardest in the REE series. IREL produces none.",
+    },
+    description: {
+      supply: "Lutetium is mined overwhelmingly from heavy-rare-earth ion-adsorption clays in southern China and Myanmar. China controls >85% of primary mine output. Separation of lutetium — the rarest lanthanide — requires the most sophisticated solvent extraction.",
+      reserves: "Lutetium reserves are embedded within heavy rare earth deposits in southern China and Myanmar. Total geological resources in xenotime deposits globally are adequate but largely uneconomic.",
+      india: "IREL yields no separated lutetium, leaving India reliant on imports (<20% domestic production). The growing demand for Lu-177 medical isotopes creates acute supply security concerns for India's expanding nuclear medicine sector.",
+      priceContext: "Lutetium oxide prices are highly illiquid and volatile. The April 2025 Chinese export controls significantly disrupted the Western supply chain for lutetium, with medical isotope producers facing shortages."
+    }
+  },
+  {
+    name: "Thulium",
+    symbol: "Tm",
+    scores: {
+      demand: 1, growth: 4, miningDiv: 5, refiningDiv: 5, resTime: 3, resDiv: 5, endUseComp: 6.5, substitutability: 4, recyclability: 4, extraction: 5, projects: 4, importDep: 4, strategic: 3, volatility: 4
+    },
+    meta: {
+      sectors: ['defense', 'healthcare', 'energy', 'semiconductors'],
+      chinaShare: 90,
+      topSupplier: "China + Myanmar (>85%)",
+      annualDemandTons: 250,
+      annualDemand: "~200–300 t",
+      keyFact: "Tm:YAG lasers are FDA-approved surgical tools. Second rarest stable lanthanide. IREL produces zero commercial quantities. April 2025 export controls apply.",
+    },
+    description: {
+      supply: "Thulium is sourced predominantly from heavy rare earth ion-adsorption clays and xenotime. China and its satellite supplier Myanmar control over 85% of primary mine output.",
+      reserves: "Thulium reserves are among the smallest of all lanthanides. Ion-adsorption clay deposits in southern China are the primary commercial source. Broader xenotime deposits exist globally but are largely uneconomic.",
+      india: "India's coastal monazite and xenotime resources contain minute thulium fractions, but IREL produces zero commercial quantities of separated thulium oxide. India satisfies <20% of its minimal thulium consumption.",
+      priceContext: "Thulium is among the rarest and most thinly traded rare earth elements. Prices are illiquid and highly volatile. The April 2025 Chinese export controls affected thulium supply alongside the broader HREE group."
     }
   },
 ];
