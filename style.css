@@ -2608,15 +2608,11 @@ input[type="range"]::-moz-range-thumb {
   font-size: 0.58rem;
   font-weight: 600;
   padding: 2px 8px;
-  background: color-mix(in srgb, var(--gcolor, var(--accent)) 8%, var(--surface-2));
-  border: 1px solid color-mix(in srgb, var(--gcolor, var(--accent)) 22%, var(--border));
+  background: color-mix(in srgb, var(--gcolor, var(--accent)) 10%, var(--surface-2));
+  border: 1px solid color-mix(in srgb, var(--gcolor, var(--accent)) 30%, var(--border));
   border-radius: 100px;
-  color: var(--text-muted);
+  color: var(--gcolor, var(--accent));
   white-space: nowrap;
-  transition: color var(--transition);
-}
-.overview-group-card:hover .ogc-member-chip {
-  color: var(--gcolor, var(--text-muted));
 }
 
 /* ════════════════════════════════════════════════════════════
