@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="India's Critical Minerals Risk Dashboard — interactive analysis of 34 strategic minerals across supply, demand, and geopolitical dimensions." />
-  <title>India Critical Minerals Risk Dashboard</title>
+  <meta name="description" content="India Critical Minerals Dashboard — 51 minerals, 10 vectors of criticality. A Takshashila Institution analysis." />
+  <title>India Critical Minerals Dashboard</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-  <!-- Chart.js CDN (radar/compare charts only) -->
+  <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 
   <link rel="stylesheet" href="style.css" />
@@ -22,7 +22,7 @@
   <div class="header-inner">
     <div class="logo">
       <div class="logo-icon">Cm</div>
-      <span class="logo-text">CritMin<span style="color:var(--text-muted);font-weight:400"> · India</span></span>
+      <span class="logo-text">CritMin<span style="color:rgba(255,255,255,0.55);font-weight:400"> · India</span></span>
     </div>
     <nav id="main-nav">
       <button class="nav-btn active" data-page="overview">Overview</button>
@@ -31,7 +31,7 @@
       <button class="nav-btn" data-page="compare">Compare</button>
       <button class="nav-btn" data-page="builder">Builder</button>
     </nav>
-    <span class="header-badge">34 Minerals · 14 Dimensions</span>
+    <span class="header-badge" id="header-badge">51 Minerals · 10 Vectors</span>
   </div>
 </header>
 
@@ -42,39 +42,63 @@
 ═══════════════════════════════════════════════════════ -->
 <div id="page-overview" class="page active">
 
-  <!-- Problem Statement Hero -->
+  <!-- Hero -->
   <section class="problem-hero">
     <div class="container">
-      <div class="problem-eyebrow">The Analytical Foundation</div>
-      <h1 class="problem-headline">Nothing is critical<br>if everything is critical.</h1>
-      <div class="problem-body">
-        <p class="problem-para">
-          Criticality lists have proliferated across governments, multilaterals, and research institutions — each more expansive than the last.
-          India's own critical minerals list identifies 30 commodities; count the 17 rare earth elements individually and the tally reaches 47.
-          At that scale, the label "critical" stops meaning anything.
-          Policy attention, diplomatic capital, and strategic investment cannot be distributed equally across four dozen minerals —
-          <em>scarcity of focus is itself a strategic vulnerability.</em>
-        </p>
-        <p class="problem-para">
-          Not all critical minerals are critical in the same way. Terbium — with global demand of roughly 400–600 tonnes per year,
-          a near-monopoly Chinese supply chain, and applications confined to specialist magnetic alloys — is critical through scarcity and
-          geopolitical chokehold. Potassium — consumed in hundreds of millions of tonnes, with a diversified producer base across Canada,
-          Russia, and Belarus — is critical through sheer volume and food-system dependency. The policy response these two minerals require
-          is entirely different: one demands access diplomacy and substitution research; the other demands supply diversification and
-          strategic stockpiling.
-        </p>
-        <p class="problem-para">
-          A one-size-fits-all approach to critical minerals is not good policy design.
-          Understanding <em>what drives</em> criticality for each mineral — whether it is supply concentration, demand trajectory,
-          substitutability, India's specific import exposure, or price weaponization risk — is the analytical foundation for effective strategy.
-          That is what this dashboard is built to provide: a framework for disaggregating criticality, so that the right interventions
-          can be targeted at the right minerals.
-        </p>
+      <div class="problem-eyebrow">Takshashila Institution · Critical Minerals Analysis</div>
+      <h1 class="problem-headline">"Critical mineral lists have expanded to the point that they are no longer effective policy tools."</h1>
+      <p class="overview-intro-placeholder">[INTRO TEXT — I WILL WRITE THIS]</p>
+
+      <!-- Stat tiles -->
+      <div class="overview-stat-tiles">
+        <div class="overview-stat-tile">
+          <span class="ost-value">51</span>
+          <span class="ost-label">Minerals scored</span>
+        </div>
+        <div class="overview-stat-tile">
+          <span class="ost-value">10</span>
+          <span class="ost-label">Vectors of criticality</span>
+        </div>
+        <div class="overview-stat-tile">
+          <span class="ost-value">6 + 1</span>
+          <span class="ost-label">Groups + outlier</span>
+        </div>
+      </div>
+
+      <!-- Methodology note -->
+      <div class="overview-note-card">
+        No cumulative score is shown anywhere in this dashboard. The vectors are correlated — summing them manufactures false equivalence. Read the paper for the methodology.
       </div>
     </div>
   </section>
 
+  <!-- Scatter plot -->
+  <div class="container">
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">Supply Concentration vs. Price Volatility</h2>
+        <span class="text-muted text-sm">Click a dot to open mineral detail</span>
+      </div>
+      <div class="card" style="padding:16px;">
+        <svg id="overview-scatter-svg" style="width:100%;display:block;" height="420"></svg>
+        <div class="group-legend" id="overview-group-legend"></div>
+      </div>
+    </div>
 
+    <!-- Heatmap -->
+    <div class="section heatmap-section">
+      <div class="section-header">
+        <h2 class="section-title">Criticality Heatmap — All 51 Minerals × 10 Vectors</h2>
+        <span class="text-muted text-sm">Hover for value · Click mineral name to open detail · Sorted by group</span>
+      </div>
+      <div class="card" style="padding:16px;">
+        <div class="heatmap-wrap">
+          <table class="heatmap-table" id="heatmap-table"></table>
+        </div>
+      </div>
+      <p class="group-note">Minerals with similar profiles share a group and warrant similar policy responses.</p>
+    </div>
+  </div>
 </div><!-- /page-overview -->
 
 <!-- ═══════════════════════════════════════════════════════
@@ -84,46 +108,75 @@
   <div class="container">
     <section class="hero" style="padding:40px 0 24px;">
       <div class="hero-eyebrow">Mineral Explorer</div>
-      <h1 style="font-size:clamp(1.4rem,3vw,2.2rem)">Browse All 34 Minerals</h1>
+      <h1 style="font-size:clamp(1.4rem,3vw,2.2rem)">Browse All 51 Minerals</h1>
+      <p class="hero-sub">Filter by group, search by name, or sort by any of the 10 vectors. Click a card to see the full profile.</p>
     </section>
 
-    <div class="explorer-layout">
-      <div class="explorer-main">
-        <div class="explorer-controls">
-          <div class="filter-chips" id="filter-chips">
-            <button class="filter-chip active" data-sector="all">All</button>
-            <button class="filter-chip" data-sector="defense">Defense</button>
-            <button class="filter-chip" data-sector="energy">Energy</button>
-            <button class="filter-chip" data-sector="semiconductors">Semiconductors</button>
-            <button class="filter-chip" data-sector="electrification">Electrification</button>
-            <button class="filter-chip" data-sector="healthcare">Healthcare</button>
-            <button class="filter-chip" data-sector="agriculture">Agriculture</button>
-            <button class="filter-chip" data-sector="construction">Construction</button>
-          </div>
-          <select class="sort-select" id="explorer-sort">
-            <option value="china">Sort: China Risk</option>
-            <option value="growth">Sort: Demand Growth</option>
-            <option value="importDep">Sort: India Vulnerability</option>
-          </select>
-        </div>
+    <div class="explorer-controls">
+      <input class="explorer-search-input" id="explorer-search" type="text" placeholder="Search minerals…" />
+      <div class="filter-chips" id="explorer-group-chips"></div>
+      <select class="sort-select" id="explorer-sort">
+        <option value="">Sort by…</option>
+        <option value="demand">Demand</option>
+        <option value="growth">Growth</option>
+        <option value="supplier_concentration">Supplier Concentration</option>
+        <option value="reserves">Reserves</option>
+        <option value="end_use">End-use</option>
+        <option value="substitutability_recyclability">Substitutability &amp; Recyclability</option>
+        <option value="extraction_refining">Extraction &amp; Refining</option>
+        <option value="upcoming_projects">Upcoming Projects</option>
+        <option value="india_position">India's Position</option>
+        <option value="price_volatility">Price Volatility</option>
+      </select>
+    </div>
 
-        <div class="minerals-grid" id="minerals-grid"></div>
+    <div class="minerals-grid" id="minerals-grid"></div>
+  </div>
+</div><!-- /page-explorer -->
 
-        <div class="sector-matrix">
-          <div class="section-header">
-            <h2 class="section-title">Sector Dependency Matrix</h2>
-            <span class="text-muted text-sm">Sector dependencies</span>
-          </div>
-          <div class="card" style="padding:16px 20px;">
-            <div id="sector-matrix-content"></div>
+<!-- ═══════════════════════════════════════════════════════
+     PAGE: MINERAL DETAIL
+═══════════════════════════════════════════════════════ -->
+<div id="page-mineral" class="page">
+  <div class="container">
+    <div class="mp-topbar">
+      <button class="mp-back-btn" id="mp-back-btn">← Explorer</button>
+      <button class="modal-add-compare" id="mp-add-compare">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        Add to Compare
+      </button>
+    </div>
+
+    <div class="mp-header">
+      <div class="mp-symbol-wrap">
+        <span class="mp-symbol" id="mp-symbol">—</span>
+      </div>
+      <div class="mp-title-area">
+        <h1 class="mp-name" id="mp-name">—</h1>
+        <div class="mp-sub" id="mp-group-chip"></div>
+      </div>
+    </div>
+
+    <div class="mp-body">
+      <div class="mp-left">
+        <div class="card mp-radar-card">
+          <div class="mp-card-title">Risk Profile — 10 Vectors (normalized to 0–5)</div>
+          <div class="chart-canvas-wrap" style="max-height:340px;">
+            <canvas id="mp-radar-canvas"></canvas>
           </div>
         </div>
       </div>
-
+      <div class="mp-right">
+        <div class="card mp-scorecard-card">
+          <div class="mp-card-title">Dimension Scorecard — click any row to expand</div>
+          <div id="mp-scorecard"></div>
+        </div>
+      </div>
     </div>
 
+    <div class="mp-policy-section" id="mp-policy"></div>
   </div>
-</div><!-- /page-explorer -->
+</div><!-- /page-mineral -->
 
 <!-- ═══════════════════════════════════════════════════════
      PAGE: CRITERIA
@@ -132,43 +185,15 @@
   <div class="container">
     <section class="hero" style="padding:40px 0 24px;">
       <div class="hero-eyebrow">Scoring Framework</div>
-      <h1 style="font-size:clamp(1.4rem,3vw,2.2rem)">How We Assess Criticality</h1>
+      <h1 style="font-size:clamp(1.4rem,3vw,2.2rem)">How We Score Criticality</h1>
     </section>
 
     <div class="criteria-intro">
-      <p>Each mineral is evaluated across 10 criteria, producing 14 scored dimensions. Higher scores indicate greater risk or strategic importance. The Risk Index is a normalized weighted composite of all dimensions on a 0–10 scale.</p>
+      <p>Ten measurable vectors, each capturing one dimension of criticality. Eight are tied to published quantitative thresholds. No composite score is produced.</p>
+      <p style="margin-top:10px;font-style:italic;color:var(--text-dim);">The framework's value rests on its scores being contestable rather than impressionistic.</p>
     </div>
 
-    <!-- Section A: Framework Overview Grid -->
-    <div class="section">
-      <div class="section-header">
-        <h2 class="section-title">Assessment Criteria</h2>
-      </div>
-      <div class="criteria-grid" id="criteria-grid"></div>
-    </div>
-
-    <!-- Section B: Scoring Rubrics -->
-    <div class="rubric-section" id="rubric-section">
-      <div class="section-header">
-        <h2 class="section-title">Scoring Rubrics</h2>
-        <span class="text-muted text-sm">Click any criterion to expand the scoring guide</span>
-      </div>
-      <div class="rubric-accordion" id="rubric-accordion"></div>
-    </div>
-
-    <!-- Section C: Risk Heatmap -->
-    <div class="heatmap-section" id="heatmap-section">
-      <div class="section-header">
-        <h2 class="section-title">Risk Matrix — All Minerals × All Dimensions</h2>
-        <span class="text-muted text-sm">Click mineral name to open profile · Click column header to sort</span>
-      </div>
-      <div class="card" style="padding:16px;">
-        <div class="heatmap-wrap">
-          <table class="heatmap-table" id="heatmap-table"></table>
-        </div>
-      </div>
-    </div>
-
+    <div id="criteria-vectors-list"></div>
   </div>
 </div><!-- /page-criteria -->
 
@@ -205,24 +230,19 @@
     <div id="compare-content" class="hidden">
       <div class="compare-layout">
         <div class="compare-radar-box card">
-          <div class="modal-chart-title">Overlaid 14-Vector Radar</div>
+          <div class="modal-chart-title">Overlaid 10-Vector Radar (normalized to 0–5)</div>
           <div class="chart-canvas-wrap" style="max-height:400px;">
             <canvas id="compare-radar-canvas"></canvas>
           </div>
         </div>
         <div class="card">
-          <div class="modal-chart-title" style="margin-bottom:10px;">Metric Comparison</div>
+          <div class="modal-chart-title" style="margin-bottom:10px;">Score Comparison</div>
           <div class="compare-table-wrap">
             <table class="compare-table" id="compare-table"></table>
           </div>
         </div>
       </div>
-      <div class="card sector-overlap mt-16">
-        <div class="modal-chart-title" style="margin-bottom:14px;">Sector Overlap</div>
-        <div id="compare-sectors"></div>
-      </div>
     </div>
-
   </div>
 </div><!-- /page-compare -->
 
@@ -234,36 +254,17 @@
     <section class="hero" style="padding:40px 0 24px;">
       <div class="hero-eyebrow">Interactive Analysis</div>
       <h1 style="font-size:clamp(1.4rem,3vw,2.2rem)">Chart Builder</h1>
-      <p class="hero-sub" style="margin-bottom:0;">Explore relationships across all 18 dimensions. Click a preset to start, or configure your own axes below.</p>
+      <p class="hero-sub" style="margin-bottom:0;">Plot any two vectors against each other across all 51 minerals. Toggle groups, search to highlight.</p>
     </section>
 
-    <!-- Preset views -->
-    <div class="builder-presets" id="builder-presets"></div>
-
-    <!-- Controls -->
     <div class="builder-controls-row">
-      <div class="builder-axis-btn" id="builder-x-field">
+      <div class="builder-axis-btn">
         <label>X Axis</label>
         <select class="builder-axis-select" id="builder-x-axis"></select>
       </div>
-      <div class="builder-axis-btn" id="builder-y-field">
+      <div class="builder-axis-btn">
         <label>Y Axis</label>
         <select class="builder-axis-select" id="builder-y-axis"></select>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:4px;align-self:flex-end;">
-        <label style="font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-muted);">Type</label>
-        <div class="builder-type-group">
-          <button class="builder-type-btn active" data-btype="scatter">Scatter</button>
-          <button class="builder-type-btn" data-btype="bar">Bar Chart</button>
-        </div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:4px;align-self:flex-end;">
-        <label style="font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-muted);">Color By</label>
-        <div class="builder-color-group">
-          <button class="builder-color-btn active" data-bcolor="riskTier">Risk Tier</button>
-          <button class="builder-color-btn" data-bcolor="chinaShare">China</button>
-          <button class="builder-color-btn" data-bcolor="sector">Sector</button>
-        </div>
       </div>
       <div style="display:flex;flex-direction:column;gap:4px;align-self:flex-end;">
         <label style="font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-muted);">Highlight</label>
@@ -271,75 +272,19 @@
       </div>
     </div>
 
-    <!-- Chart -->
     <div class="card" style="padding:0;overflow:hidden;">
       <svg id="builder-chart-svg" height="520"></svg>
     </div>
 
+    <div class="builder-group-toggles" id="builder-group-toggles"></div>
   </div>
 </div><!-- /page-builder -->
 
 </main>
 
-<!-- ═══════════════════════════════════════════════════════
-     PAGE: MINERAL DETAIL
-═══════════════════════════════════════════════════════ -->
-<div id="page-mineral" class="page">
-  <div class="container">
-    <div class="mp-topbar">
-      <button class="mp-back-btn" onclick="navigate('explorer')">← Explorer</button>
-      <button class="modal-add-compare" id="mp-add-compare">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-        Add to Compare
-      </button>
-    </div>
-
-    <div class="mp-header">
-      <div class="mp-symbol-wrap">
-        <span class="mp-symbol" id="mp-symbol">—</span>
-      </div>
-      <div class="mp-title-area">
-        <h1 class="mp-name" id="mp-name">—</h1>
-        <div class="mp-sub" id="mp-sub">—</div>
-        <div class="mp-sectors" id="mp-sectors"></div>
-      </div>
-    </div>
-
-    <div class="mp-body">
-
-      <div class="mp-left">
-        <div class="card mp-radar-card">
-          <div class="mp-card-title">Risk Profile</div>
-          <canvas id="mp-radar-canvas" style="max-width:100%;max-height:320px"></canvas>
-        </div>
-        <div class="card mp-facts-card">
-          <div class="mp-fact-row">
-            <span class="mp-fact-label">China Share</span>
-            <span class="mp-fact-val" id="mp-china">—</span>
-          </div>
-          <div class="mp-fact-narrative" id="mp-narrative">—</div>
-        </div>
-      </div>
-
-      <div class="mp-right">
-        <div class="card mp-scorecard-card">
-          <div class="mp-card-title">Dimension Scorecard</div>
-          <div id="mp-scorecard"></div>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="mp-policy-section" id="mp-policy"></div>
-
-  </div>
-</div>
-
 <div id="tooltip" role="tooltip"></div>
 <div id="toast"></div>
 
-<script src="data.js"></script>
-<script src="justifications.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
