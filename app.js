@@ -724,7 +724,7 @@ function renderMineralScorecard(m) {
         <div class="sc-bar-track">
           <div class="sc-bar-fill" style="width:${pct.toFixed(1)}%;background:${barColor}"></div>
         </div>
-        <div class="sc-body hidden">
+        <div class="sc-body" style="display:none">
           ${subHTML}
           ${reasonHTML}
         </div>
@@ -735,16 +735,16 @@ function renderMineralScorecard(m) {
 }
 
 
-/** Called by inline onclick on scorecard rows — bypasses all event-propagation issues. */
+/** Toggle a scorecard accordion row. Uses style.display directly — no CSS class conflict possible. */
 window.toggleScRow = function(head) {
   const row  = head.closest('.sc-row');
   const body = row && row.querySelector('.sc-body');
   const arr  = head.querySelector('.sc-arrow');
   if (!body) return;
-  const isOpen = !body.classList.contains('hidden');
-  body.classList.toggle('hidden');
-  if (arr) arr.textContent = isOpen ? '▸' : '▾';
-  row.classList.toggle('sc-row--open', !isOpen);
+  const isHidden = body.style.display === 'none' || body.style.display === '';
+  body.style.display = isHidden ? 'block' : 'none';
+  if (arr) arr.textContent = isHidden ? '▾' : '▸';
+  row.classList.toggle('sc-row--open', isHidden);
 };
 
 /* ════════════════════════════════════════════════════════════
