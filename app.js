@@ -877,8 +877,8 @@ function buildScaleHTML(bands) {
       const ci = Math.min(i, BAND_BG.length - 1);
       return `<div class="crit-scale-cell" style="background:${BAND_BG[ci]};border-color:${BAND_FG[ci]}28">
         <div class="crit-scale-num" style="color:${BAND_FG[ci]}">${b.score}</div>
-        <div class="crit-scale-label">${b.label}</div>
-        ${b.note ? `<div class="crit-scale-note">${b.note}</div>` : ''}
+        <div class="crit-scale-label" style="color:${BAND_FG[ci]}">${b.label}</div>
+        ${b.note ? `<div class="crit-scale-note" style="color:${BAND_FG[ci]}bb">${b.note}</div>` : ''}
       </div>`;
     }).join('')}
   </div>`;
@@ -913,7 +913,7 @@ function buildEndUseHTML(fc) {
         ${breadthColors.map(b => `
           <div class="crit-scale-cell" style="background:${b.bg};border-color:${b.fg}28">
             <div class="crit-scale-num" style="color:${b.fg};font-size:0.85rem">${b.n} sector${b.n>1?'s':''}</div>
-            <div class="crit-scale-label" style="font-size:0.75rem;font-weight:700">${b.bonus}</div>
+            <div class="crit-scale-label" style="font-size:0.75rem;font-weight:700;color:${b.fg}">${b.bonus}</div>
           </div>`).join('')}
       </div>
     </div>
@@ -1020,7 +1020,7 @@ function renderCriteria() {
         <div class="crit-card-top">
           <div class="crit-num-wrap" style="background:${fc}"><span class="crit-num">${idx + 1}</span></div>
           <div class="crit-card-meta">
-            <h3 class="crit-name">${v.name}</h3>
+            <h3 class="crit-name" style="color:${fc}">${v.name}</h3>
             <span class="crit-family" style="color:${fc};background:${fc}12;border-color:${fc}30">${v.family}</span>
           </div>
           <span class="crit-max" style="color:${fc}">/${v.max}</span>
