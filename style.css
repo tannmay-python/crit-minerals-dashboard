@@ -2605,15 +2605,18 @@ input[type="range"]::-moz-range-thumb {
   margin-top: 2px;
 }
 .ogc-member-chip {
-  font-size: 0.58rem;
-  font-weight: 600;
-  padding: 2px 8px;
-  background: color-mix(in srgb, var(--gcolor, var(--accent)) 10%, var(--surface-2));
-  border: 1px solid color-mix(in srgb, var(--gcolor, var(--accent)) 30%, var(--border));
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  background: var(--surface);
+  border: 1.5px solid var(--gcolor, var(--accent));
   border-radius: 100px;
   color: var(--gcolor, var(--accent));
   white-space: nowrap;
+  opacity: 0.85;
+  transition: opacity var(--transition);
 }
+.overview-group-card:hover .ogc-member-chip { opacity: 1; }
 
 /* ════════════════════════════════════════════════════════════
    GROUPS PAGE
