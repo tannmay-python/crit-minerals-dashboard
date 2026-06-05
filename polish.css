@@ -1,0 +1,401 @@
+/* =========================================================
+   POLISH LAYER — Editorial refinement for the Takshashila
+   Critical Minerals Dashboard.
+
+   Loaded AFTER style.css. Changes only typography, depth,
+   spacing, and surface finish — never the colour theme,
+   copy, or content. Palette stays Llama (#620d3c) +
+   Marigold (#f1a222) on pale yellow (#fffbe2).
+   ========================================================= */
+
+/* ── Type system ──────────────────────────────────────── */
+:root {
+  --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --font-ui:      'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:    'Space Mono', 'SF Mono', 'Fira Code', monospace;
+
+  /* Warmer, layered, Llama-tinted depth */
+  --shadow:    0 1px 2px rgba(98,13,60,0.04), 0 4px 16px rgba(98,13,60,0.06);
+  --shadow-lg: 0 2px 6px rgba(98,13,60,0.06), 0 18px 48px rgba(98,13,60,0.14);
+  --shadow-sm: 0 1px 3px rgba(98,13,60,0.05);
+
+  /* Softer, warmer borders */
+  --border:   #ece0b4;
+  --border-2: #d8c585;
+
+  --transition: 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+
+  --radius-sm: 7px;
+  --radius:    12px;
+  --radius-lg: 18px;
+}
+
+/* ── Base ─────────────────────────────────────────────── */
+body {
+  font-family: var(--font-ui);
+  letter-spacing: -0.005em;
+  /* Barely-there warmth wash so the pale yellow has air, not flatness */
+  background:
+    radial-gradient(120% 80% at 85% -10%, rgba(241,162,34,0.07) 0%, transparent 55%),
+    radial-gradient(90% 60% at 0% 0%, rgba(98,13,60,0.035) 0%, transparent 50%),
+    var(--bg);
+  background-attachment: fixed;
+}
+
+::selection { background: rgba(241,162,34,0.30); color: var(--text); }
+
+/* Scrollbar a touch warmer */
+::-webkit-scrollbar-thumb { background: #d8c585; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ── Display typography ───────────────────────────────── */
+.problem-headline,
+.hero h1,
+.modal-name,
+.mp-name,
+.gm-name,
+.gdc-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-feature-settings: 'liga' 1, 'kern' 1;
+}
+
+.problem-headline {
+  font-size: clamp(2rem, 4.2vw, 3.4rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  padding-left: 26px;
+  border-left-width: 3px;
+}
+
+.hero h1 { font-weight: 560; letter-spacing: -0.025em; }
+
+/* Section titles stay sans but get a refined marigold tick */
+.section-title { font-family: var(--font-ui); font-weight: 700; letter-spacing: -0.015em; }
+.section-title::before {
+  width: 4px; height: 15px;
+  background: linear-gradient(var(--accent-2), var(--accent));
+  border-radius: 100px;
+}
+
+/* Page-level serif headings on inner pages */
+.groups-section-title,
+.crit-meth-title,
+.criteria-meth-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+/* ── Mono treatment for data + labels ─────────────────── */
+.font-mono,
+.card-symbol,
+.modal-symbol,
+.mp-symbol,
+.header-badge,
+.problem-eyebrow,
+.hero-eyebrow,
+.ost-label,
+.kf-label,
+.card-stat-label,
+.card-vec-label,
+.cks-label,
+.mp-card-title,
+.modal-chart-title,
+.compare-selector-label,
+.sc-max,
+.scorecard-max,
+.crit-num,
+.logo-icon {
+  font-family: var(--font-mono);
+}
+
+/* Numerals: tabular, mono, tightened */
+.ost-value,
+.mp-fact-val,
+.problem-stat-value,
+.sc-score,
+.scorecard-val,
+.card-china-pct,
+.modal-score {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum' 1;
+  letter-spacing: -0.03em;
+}
+
+/* Eyebrow pills — refined mono caps */
+.problem-eyebrow,
+.hero-eyebrow {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  padding: 5px 13px;
+  background: rgba(98,13,60,0.05);
+  border-color: rgba(98,13,60,0.14);
+}
+
+/* ── Header ───────────────────────────────────────────── */
+#header {
+  background:
+    linear-gradient(180deg, #6e1545 0%, #620d3c 100%);
+  border-bottom: none;
+  box-shadow: 0 1px 0 rgba(241,162,34,0.5), 0 6px 24px rgba(98,13,60,0.22);
+}
+
+.logo-icon {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(155deg, #f6b34a 0%, #f1a222 100%);
+  box-shadow: 0 2px 8px rgba(241,162,34,0.35);
+}
+.logo { white-space: nowrap; flex-shrink: 0; }
+.logo-text { letter-spacing: -0.01em; white-space: nowrap; }
+
+nav { gap: 2px; }
+.nav-btn {
+  font-family: var(--font-ui);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  border-radius: 100px;
+}
+.nav-btn.active {
+  background: rgba(241,162,34,0.16);
+  border-color: rgba(241,162,34,0.42);
+  color: #ffe7bd;
+}
+.nav-btn.active:hover { background: rgba(241,162,34,0.20); }
+
+.header-badge {
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.58);
+}
+
+/* ── Cards — warmer finish, smoother lift ─────────────── */
+.card {
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+.card:hover {
+  border-color: var(--border-2);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+/* ── Stat tiles ───────────────────────────────────────── */
+.overview-stat-tiles { gap: 14px; }
+.overview-stat-tile {
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  border-top: none;
+  padding: 18px 24px 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.overview-stat-tile::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+.overview-stat-tile:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.ost-value { font-size: 2.3rem; font-weight: 700; color: var(--accent); }
+.ost-label { font-size: 0.58rem; letter-spacing: 0.12em; color: var(--text-dim); }
+
+/* Note card — refined marigold aside */
+.overview-note-card {
+  background: rgba(241,162,34,0.07);
+  border: 1px solid rgba(241,162,34,0.22);
+  border-left: 3px solid var(--accent-2);
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  line-height: 1.7;
+  padding: 13px 18px;
+}
+
+/* ── Overview intro prose — editorial measure ─────────── */
+.overview-intro-block p { font-size: 0.9rem; line-height: 1.85; color: var(--text-muted); }
+.overview-intro-block p:first-child { font-size: 1rem; line-height: 1.78; color: var(--text); }
+
+/* ── Group cards (overview) ───────────────────────────── */
+.overview-group-card {
+  border-radius: var(--radius);
+  border-top: none;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+.overview-group-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--gcolor, var(--accent));
+}
+.overview-group-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+.ogc-name { font-family: var(--font-display); font-weight: 600; font-size: 1.08rem; letter-spacing: -0.01em; }
+.ogc-badge { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.08em; }
+.ogc-tagline { font-style: italic; font-family: var(--font-display); font-size: 0.84rem; line-height: 1.5; }
+.ogc-member-chip { font-family: var(--font-ui); font-weight: 600; }
+
+/* ── Mineral cards ────────────────────────────────────── */
+.mineral-card {
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+.mineral-card::before { height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+.mineral-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--border-2); }
+.card-name { font-weight: 700; letter-spacing: -0.01em; font-size: 0.92rem; }
+.card-symbol { font-size: 0.62rem; letter-spacing: 0.04em; color: var(--text-dim); }
+
+/* .group-chip ships as inline-flex, which defeats text-overflow.
+   Make it inline-block everywhere so the built-in max-width + ellipsis work. */
+.group-chip {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.6;
+  vertical-align: middle;
+}
+
+/* Keep the group chip inside the card and truncate gracefully. */
+.card-header { gap: 8px; align-items: center; }
+.card-header .card-name { min-width: 0; flex: 1 1 auto; }
+.card-header .group-chip {
+  display: inline-block;
+  flex: 0 1 auto;
+  max-width: 56%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.5;
+}
+
+/* ── Filter chips, presets, toggles ───────────────────── */
+.filter-chip,
+.preset-btn,
+.builder-group-toggle,
+.cv-band-pill,
+.criteria-band-pill {
+  border-radius: 100px;
+  transition: all var(--transition);
+}
+.filter-chip { font-weight: 600; }
+.filter-chip.active,
+.preset-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(98,13,60,0.22);
+}
+
+/* ── Inputs & selects — refined focus ─────────────────── */
+.explorer-search-input,
+.sort-select,
+.compare-select,
+.builder-axis-select,
+.builder-search,
+.cb-select {
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.explorer-search-input:focus,
+.sort-select:focus,
+.compare-select:focus,
+.builder-axis-select:focus,
+.builder-search:focus,
+.cb-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(98,13,60,0.10);
+}
+
+/* ── Buttons ──────────────────────────────────────────── */
+.mp-back-btn,
+.modal-add-compare {
+  border-radius: 100px;
+  transition: all var(--transition);
+}
+.modal-add-compare:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+
+/* ── Mineral detail page header ───────────────────────── */
+.mp-symbol-wrap {
+  border-radius: var(--radius);
+  background: linear-gradient(155deg, var(--surface-2), var(--surface-3));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), var(--shadow-sm);
+}
+.mp-symbol { font-family: var(--font-mono); }
+.mp-name { font-size: clamp(1.5rem, 3vw, 2.2rem); }
+
+/* ── Scorecard ────────────────────────────────────────── */
+.sc-name { font-weight: 600; }
+.sc-score { font-weight: 700; }
+.sc-bar-fill { transition: width 0.6s cubic-bezier(0.22,1,0.36,1); }
+
+/* ── Heatmap — crisper grid ───────────────────────────── */
+.heatmap-section .card { padding: 18px; }
+.heatmap-cell { border-radius: 4px; }
+.heatmap-vector-th { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.02em; }
+.heatmap-mineral-name { font-weight: 600; }
+
+/* ── Criteria page ────────────────────────────────────── */
+.crit-card { border-radius: var(--radius); }
+.crit-name { font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; letter-spacing: -0.01em; }
+.crit-family { font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.08em; }
+.crit-num-wrap { box-shadow: var(--shadow-sm); }
+.crit-scale-num { font-family: var(--font-mono); font-size: 1.2rem; margin-bottom: 1px; }
+.crit-scale-cell { min-height: 98px; padding: 12px 9px; gap: 5px; border-radius: 9px; }
+.crit-scale-txt,
+.crit-scale-label { line-height: 1.4; }
+.crit-scale-note { margin-top: 4px; }
+.criteria-intro p { font-size: 0.92rem; line-height: 1.75; }
+
+/* ── Groups page ──────────────────────────────────────── */
+.group-detail-card { border-radius: var(--radius); }
+.gdc-name { font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; }
+.gdc-tagline { font-family: var(--font-display); font-style: italic; }
+.groups-prose-card { border-radius: var(--radius); }
+.groups-prose-card p { font-size: 0.86rem; line-height: 1.85; }
+
+/* ── Group drawer ─────────────────────────────────────── */
+.gm-panel { box-shadow: -12px 0 60px rgba(98,13,60,0.22); }
+.gm-name { font-size: 1.85rem; }
+.gm-tagline { font-family: var(--font-display); }
+.gm-badge { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.08em; }
+
+/* ── Compare ──────────────────────────────────────────── */
+.modal-chart-title { letter-spacing: 0.06em; }
+
+/* ── Toast & tooltip ──────────────────────────────────── */
+#toast { border-radius: 100px; box-shadow: var(--shadow-lg); }
+#tooltip { border-radius: var(--radius-sm); box-shadow: var(--shadow-lg); }
+.tooltip-name { font-weight: 700; }
+
+/* ── Problem stat row ─────────────────────────────────── */
+.problem-stat-value { font-weight: 700; color: var(--accent); }
+.problem-stat-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; }
+
+/* ── Focus visibility for keyboard users ──────────────── */
+.nav-btn:focus-visible,
+.filter-chip:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+/* ── Reduce motion ────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}

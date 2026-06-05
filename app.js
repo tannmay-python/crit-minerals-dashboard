@@ -723,7 +723,7 @@ function renderMineralPage(mineralName) {
             min: 0, max: 5,
             ticks: { display: false, stepSize: 1 },
             grid: { color: 'rgba(98,13,60,0.08)' },
-            pointLabels: { color: '#6b4020', font: { size: 8, family: 'Inter' } },
+            pointLabels: { color: '#6b4020', font: { size: 8, family: 'Hanken Grotesk' } },
             angleLines: { color: 'rgba(98,13,60,0.06)' }
           }
         },
@@ -1169,12 +1169,12 @@ function renderCompare() {
             min: 0, max: 5,
             ticks: { display: false },
             grid: { color: 'rgba(98,13,60,0.08)' },
-            pointLabels: { color: '#6b4020', font: { size: 8, family: 'Inter' } },
+            pointLabels: { color: '#6b4020', font: { size: 8, family: 'Hanken Grotesk' } },
             angleLines: { color: 'rgba(98,13,60,0.06)' }
           }
         },
         plugins: {
-          legend: { labels: { color: '#1a0804', font: { size: 11, family: 'Inter' }, boxWidth: 12, padding: 14 } },
+          legend: { labels: { color: '#1a0804', font: { size: 11, family: 'Hanken Grotesk' }, boxWidth: 12, padding: 14 } },
           tooltip: {
             backgroundColor: '#fff', titleColor: '#1a0804',
             bodyColor: '#6b4020', borderColor: '#e4d49c', borderWidth: 1,
@@ -1271,13 +1271,13 @@ function renderBuilderChart() {
     const gy = M.top  + (1 - t) * PH;
     html += `<line x1="${gx}" y1="${M.top}" x2="${gx}" y2="${M.top+PH}" stroke="rgba(26,8,4,0.07)" stroke-width="1"/>`;
     html += `<line x1="${M.left}" y1="${gy}" x2="${M.left+PW}" y2="${gy}" stroke="rgba(26,8,4,0.07)" stroke-width="1"/>`;
-    if (xVec) html += `<text x="${gx}" y="${M.top+PH+16}" text-anchor="middle" font-size="8.5" fill="#9a7040" font-family="Inter">${(t*xVec.max).toFixed(1)}</text>`;
-    if (yVec) html += `<text x="${M.left-6}" y="${gy+3}" text-anchor="end" font-size="8.5" fill="#9a7040" font-family="Inter">${((1-t)*yVec.max).toFixed(1)}</text>`;
+    if (xVec) html += `<text x="${gx}" y="${M.top+PH+16}" text-anchor="middle" font-size="8.5" fill="#9a7040" font-family="Hanken Grotesk">${(t*xVec.max).toFixed(1)}</text>`;
+    if (yVec) html += `<text x="${M.left-6}" y="${gy+3}" text-anchor="end" font-size="8.5" fill="#9a7040" font-family="Hanken Grotesk">${((1-t)*yVec.max).toFixed(1)}</text>`;
   });
 
   // Axis labels
-  if (xVec) html += `<text x="${M.left+PW/2}" y="${H-8}" text-anchor="middle" font-size="10" fill="#6b4020" font-family="Inter,sans-serif" font-weight="600">${xVec.name} (/${xVec.max})</text>`;
-  if (yVec) html += `<text x="14" y="${M.top+PH/2}" text-anchor="middle" font-size="10" fill="#6b4020" font-family="Inter,sans-serif" font-weight="600" transform="rotate(-90,14,${M.top+PH/2})">${yVec.name} (/${yVec.max})</text>`;
+  if (xVec) html += `<text x="${M.left+PW/2}" y="${H-8}" text-anchor="middle" font-size="10" fill="#6b4020" font-family="Hanken Grotesk,sans-serif" font-weight="600">${xVec.name} (/${xVec.max})</text>`;
+  if (yVec) html += `<text x="14" y="${M.top+PH/2}" text-anchor="middle" font-size="10" fill="#6b4020" font-family="Hanken Grotesk,sans-serif" font-weight="600" transform="rotate(-90,14,${M.top+PH/2})">${yVec.name} (/${yVec.max})</text>`;
 
   // Dots
   AppData.minerals.forEach(m => {
@@ -1299,7 +1299,7 @@ function renderBuilderChart() {
 
     html += `<g class="builder-dot" data-mineral="${m.mineral}" style="cursor:pointer;">
       <circle cx="${cx}" cy="${cy}" r="${rad}" fill="${col}" fill-opacity="${op}" stroke="${isHit ? '#1a0804':'#fdf4d0'}" stroke-width="${isHit?1.5:0.8}"/>
-      ${isHit ? `<text x="${cx}" y="${cy-rad-3}" text-anchor="middle" font-size="9" fill="#1a0804" font-family="Inter" font-weight="700">${m.mineral}</text>` : ''}
+      ${isHit ? `<text x="${cx}" y="${cy-rad-3}" text-anchor="middle" font-size="9" fill="#1a0804" font-family="Hanken Grotesk" font-weight="700">${m.mineral}</text>` : ''}
       <title>${m.mineral} (${groupName(gid)})
 ${xVec?.name}: ${xVal}/${xVec?.max}  ·  ${yVec?.name}: ${yVal}/${yVec?.max}</title>
     </g>`;
