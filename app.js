@@ -240,6 +240,20 @@ function init() {
   // Mineral page back button
   document.getElementById('mp-back-btn').addEventListener('click', () => navigate('explorer'));
 
+  // Scorecard accordion — single delegated listener, attached once, works across all minerals
+  document.getElementById('mp-scorecard').addEventListener('click', e => {
+    const head = e.target.closest('.sc-head');
+    if (!head) return;
+    const row  = head.closest('.sc-row');
+    const body = row && row.querySelector('.sc-body');
+    const arr  = head.querySelector('.sc-arrow');
+    if (!body) return;
+    const isOpen = !body.classList.contains('hidden');
+    body.classList.toggle('hidden');
+    if (arr) arr.textContent = isOpen ? '▸' : '▾';
+    row.classList.toggle('sc-row--open', !isOpen);
+  });
+
   // Add-to-compare button
   document.getElementById('mp-add-compare').addEventListener('click', () => {
     const name = AppState.selectedMineral;
@@ -729,20 +743,7 @@ function renderMineralScorecard(m) {
       </div>`;
   }).join('');
 
-  // Accordion toggle
-  container.querySelectorAll('.sc-head').forEach(head => {
-    const toggle = () => {
-      const row  = head.closest('.sc-row');
-      const body = row.querySelector('.sc-body');
-      const arr  = head.querySelector('.sc-arrow');
-      const open = !body.classList.contains('hidden');
-      body.classList.toggle('hidden');
-      arr.textContent = open ? '▸' : '▾';
-      row.classList.toggle('sc-row--open', !open);
-    };
-    head.addEventListener('click', toggle);
-    head.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') toggle(); });
-  });
+  // Listener is attached once in init() via scorecard delegation — nothing to do here
 }
 
 
