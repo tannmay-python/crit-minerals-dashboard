@@ -2944,3 +2944,151 @@ input[type="range"]::-moz-range-thumb {
   margin: 0 0 8px;
 }
 .sc-reason p:last-child { margin-bottom: 0; }
+
+/* ════════════════════════════════════════════════════════════
+   CRITERIA PAGE — clean redesign (crit-* classes)
+   ════════════════════════════════════════════════════════════ */
+
+.crit-card {
+  padding: 24px 26px;
+  margin-bottom: 14px;
+}
+
+/* Header row */
+.crit-card-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+.crit-num-wrap {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.crit-num {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #fff;
+}
+.crit-card-meta { flex: 1; min-width: 0; }
+.crit-name {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.crit-family {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  padding: 2px 9px;
+  border-radius: 100px;
+  border: 1px solid;
+}
+.crit-max {
+  font-size: 1rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  letter-spacing: -0.02em;
+}
+
+/* Description */
+.crit-what {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 16px;
+  max-width: 800px;
+}
+
+/* Score scale — colour-coded boxes */
+.crit-scale {
+  display: grid;
+  gap: 6px;
+  margin-top: 4px;
+}
+.crit-scale-cell {
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 10px 8px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  min-height: 80px;
+  justify-content: flex-start;
+}
+.crit-scale-num {
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.crit-scale-txt {
+  font-size: 0.63rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+  font-weight: 500;
+}
+
+/* Sub-scales for composite vectors */
+.crit-subscales {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 4px;
+}
+.crit-subscale-label {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.crit-subscale-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.crit-subscale-max {
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+.crit-subscale-note {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Methodology footer */
+.crit-methodology {
+  padding: 24px 28px;
+  margin-top: 10px;
+  border-top: 3px solid var(--accent);
+}
+.crit-meth-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+.crit-methodology p {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+  margin-bottom: 10px;
+  max-width: 800px;
+}
+.crit-methodology p:last-child { margin-bottom: 0; }
+.crit-methodology strong { color: var(--text); }
+
+/* Responsive */
+@media (max-width: 680px) {
+  .crit-scale { grid-template-columns: repeat(3, 1fr) !important; }
+  .crit-scale-cell:nth-child(n+4) { display: none; }
+}

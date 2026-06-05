@@ -759,12 +759,29 @@ function parseBandsFromNote(note) {
   return null;
 }
 
-function buildBandPillsHTML(bands, prefix = '') {
-  return `<div class="criteria-bands">
-    ${bands.map(b => `<button class="criteria-band-pill" data-label="${escapeHtml(b.label)}" data-score="${b.score}">${prefix}Score ${b.score}</button>`).join('')}
-    <div class="criteria-band-callout hidden"></div>
+/* ── Criteria band colours: green (low risk) → plum (high risk) ── */
+const BAND_BG  = ['#edf7ee','#f8f5e3','#fdf3db','#fce6de','#f4e6f0'];
+const BAND_FG  = ['#1a6b2a','#7a5f00','#b05400','#b91c1c','#620d3c'];
+
+function buildScaleHTML(bands) {
+  if (!bands || !bands.length) return '';
+  return `<div class="crit-scale" style="grid-template-columns:repeat(${bands.length},1fr)">
+    ${bands.map((b, i) => {
+      const idx = Math.min(i, BAND_BG.length - 1);
+      return `<div class="crit-scale-cell" style="background:${BAND_BG[idx]};border-color:${BAND_FG[idx]}28">
+        <div class="crit-scale-num" style="color:${BAND_FG[idx]}">${b.score}</div>
+        <div class="crit-scale-txt">${b.label}</div>
+      </div>`;
+    }).join('')}
   </div>`;
 }
+
+/* Family → accent colour */
+const FAMILY_COLOR = {
+  'How much it matters':  '#620d3c',
+  'How exposed supply is':'#3d6b7d',
+  'Where India stands':   '#2e8b57',
+};
 
 function renderCriteria() {
   const container = document.getElementById('criteria-vectors-list');
@@ -772,70 +789,51 @@ function renderCriteria() {
   container.dataset.rendered = 'true';
 
   container.innerHTML = AppData.criteriaVectors.map((v, idx) => {
-    // Top-level bands (for simple vectors: demand, growth, extraction, pipeline, volatility, supplier_concentration)
-    const topBandsHTML = v.bands ? buildBandPillsHTML(v.bands) : '';
+    const fc = FAMILY_COLOR[v.family] || '#620d3c';
 
-    // Sub-scores with their own band pills
-    const subsHTML = v.sub ? `
-      <div class="criteria-subs">
-        ${v.sub.map(s => {
-          const subBands = parseBandsFromNote(s.note);
-          return `
-            <div class="criteria-sub-item">
-              <div class="criteria-sub-header">
-                <span class="criteria-sub-name">${s.name}</span>
-                <span class="criteria-sub-max">/${s.max}</span>
-              </div>
-              ${subBands ? buildBandPillsHTML(subBands, '↳ ') : (s.note ? `<div class="criteria-sub-note">${s.note}</div>` : '')}
-            </div>`;
-        }).join('')}
-      </div>` : '';
+    // Build the scoring visual
+    let scoringHTML = '';
+
+    if (v.bands) {
+      // Simple vector — full colour scale, all bands visible at once
+      scoringHTML = buildScaleHTML(v.bands);
+    } else if (v.sub) {
+      // Composite vector — one scale per sub-score
+      scoringHTML = `<div class="crit-subscales">${v.sub.map(s => {
+        const subBands = parseBandsFromNote(s.note);
+        return `<div class="crit-subscale">
+          <div class="crit-subscale-label">
+            <span class="crit-subscale-name">${s.name}</span>
+            <span class="crit-subscale-max" style="color:${fc}">/${s.max}</span>
+          </div>
+          ${subBands ? buildScaleHTML(subBands)
+            : `<p class="crit-subscale-note">${s.note || ''}</p>`}
+        </div>`;
+      }).join('')}</div>`;
+    }
 
     return `
-      <div class="criteria-vector-card card">
-        <div class="criteria-vector-top">
-          <span class="criteria-index">${idx + 1}</span>
-          <div class="criteria-vector-header">
-            <div class="criteria-vector-name">${v.name}</div>
-            <span class="criteria-family-tag">${v.family}</span>
+      <div class="crit-card card">
+        <div class="crit-card-top">
+          <div class="crit-num-wrap" style="background:${fc}">
+            <span class="crit-num">${idx + 1}</span>
           </div>
-          <span class="criteria-max-badge">/${v.max}</span>
+          <div class="crit-card-meta">
+            <h3 class="crit-name">${v.name}</h3>
+            <span class="crit-family" style="color:${fc};background:${fc}12;border-color:${fc}30">${v.family}</span>
+          </div>
+          <span class="crit-max" style="color:${fc}">/${v.max}</span>
         </div>
-        <p class="criteria-vector-what">${v.what}</p>
-        ${subsHTML}
-        ${topBandsHTML}
+        <p class="crit-what">${v.what}</p>
+        ${scoringHTML}
       </div>`;
   }).join('') + `
-  <!-- Methodology note at bottom of Criteria -->
-  <div class="criteria-methodology-section card">
-    <div class="criteria-meth-title">Scoring Methodology</div>
-    <p class="criteria-meth-body">Eight of the ten vectors are tied to published quantitative thresholds: tonnes, CAGR bands, percentage market shares, HHI bands, reserve-years, secondary-supply shares, and percentage price movements. The two qualitative vectors — extraction complexity and strategic posture — are anchored to observable facts, such as whether a solvent-extraction cascade is required or whether an offtake has been signed and a refinery is under construction.</p>
-    <p class="criteria-meth-body" style="margin-top:10px">The scores are not beyond dispute, but the basis for each is stated, which allows others to challenge a score or substitute their own. This is the framework's primary value: it converts impressionistic judgements into contestable numbers.</p>
-    <p class="criteria-meth-body" style="margin-top:10px"><strong>No cumulative score is produced.</strong> The vectors are correlated — refining concentration, extraction complexity, and price volatility move together. Summing them counts the same underlying condition more than once. Demand scale and end-use breadth overlap, as do import dependence and strategic posture. Any single set of weights embeds one viewpoint and conceals it inside a number that appears objective.</p>
+  <div class="crit-methodology card">
+    <h3 class="crit-meth-title">Methodology note</h3>
+    <p>Eight of the ten vectors are tied to published quantitative thresholds: tonnes, CAGR bands, market-share percentages, HHI bands, reserve-years, secondary-supply shares, and price-movement percentages. The two qualitative vectors — extraction complexity and strategic posture — are anchored to observable facts.</p>
+    <p>The scores are not beyond dispute, but the basis for each is stated, which allows others to challenge a score or substitute their own.</p>
+    <p><strong>No cumulative score is produced.</strong> The vectors are correlated — summing them counts the same underlying risk condition more than once, and any weighting scheme embeds one analyst's priorities while appearing objective.</p>
   </div>`;
-
-  // Wire all band pill interactions (in container)
-  wireAllBandPills(container);
-}
-
-function wireAllBandPills(container) {
-  container.querySelectorAll('.criteria-band-pill').forEach(pill => {
-    pill.addEventListener('click', () => {
-      const bandsDiv   = pill.closest('.criteria-bands');
-      const callout    = bandsDiv.querySelector('.criteria-band-callout');
-      const label      = pill.dataset.label;
-      const alreadyOpen = !callout.classList.contains('hidden')
-        && callout.textContent === `Score ${pill.dataset.score}: ${label}`;
-      bandsDiv.querySelectorAll('.criteria-band-pill').forEach(p => p.classList.remove('active'));
-      if (alreadyOpen) {
-        callout.classList.add('hidden');
-      } else {
-        pill.classList.add('active');
-        callout.textContent = `Score ${pill.dataset.score}: ${label}`;
-        callout.classList.remove('hidden');
-      }
-    });
-  });
 }
 
 function escapeHtml(str) {
