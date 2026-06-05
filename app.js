@@ -240,19 +240,7 @@ function init() {
   // Mineral page back button
   document.getElementById('mp-back-btn').addEventListener('click', () => navigate('explorer'));
 
-  // Scorecard accordion — single delegated listener, attached once, works across all minerals
-  document.getElementById('mp-scorecard').addEventListener('click', e => {
-    const head = e.target.closest('.sc-head');
-    if (!head) return;
-    const row  = head.closest('.sc-row');
-    const body = row && row.querySelector('.sc-body');
-    const arr  = head.querySelector('.sc-arrow');
-    if (!body) return;
-    const isOpen = !body.classList.contains('hidden');
-    body.classList.toggle('hidden');
-    if (arr) arr.textContent = isOpen ? '▸' : '▾';
-    row.classList.toggle('sc-row--open', !isOpen);
-  });
+  // Scorecard accordion: handled by window.toggleScRow (inline onclick)
 
   // Add-to-compare button
   document.getElementById('mp-add-compare').addEventListener('click', () => {
@@ -728,7 +716,7 @@ function renderMineralScorecard(m) {
 
     return `
       <div class="sc-row">
-        <div class="sc-head" role="button" tabindex="0">
+        <div class="sc-head" role="button" tabindex="0" onclick="toggleScRow(this)">
           <span class="sc-name">${v.name}</span>
           <span class="sc-score" style="color:${barColor}">${valDisplay}<span class="sc-max"> / ${v.max}</span></span>
           <span class="sc-arrow">▸</span>
@@ -746,6 +734,18 @@ function renderMineralScorecard(m) {
   // Listener is attached once in init() via scorecard delegation — nothing to do here
 }
 
+
+/** Called by inline onclick on scorecard rows — bypasses all event-propagation issues. */
+window.toggleScRow = function(head) {
+  const row  = head.closest('.sc-row');
+  const body = row && row.querySelector('.sc-body');
+  const arr  = head.querySelector('.sc-arrow');
+  if (!body) return;
+  const isOpen = !body.classList.contains('hidden');
+  body.classList.toggle('hidden');
+  if (arr) arr.textContent = isOpen ? '▸' : '▾';
+  row.classList.toggle('sc-row--open', !isOpen);
+};
 
 /* ════════════════════════════════════════════════════════════
    CRITERIA PAGE
