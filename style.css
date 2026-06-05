@@ -3168,3 +3168,149 @@ input[type="range"]::-moz-range-thumb {
 
 /* Taller cells for longer labels */
 .crit-scale-cell { min-height: 90px; }
+
+/* ══════════════════════════════════════════════════════════════
+   GROUP DETAIL DRAWER
+   ══════════════════════════════════════════════════════════════ */
+
+.gm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 8000;
+  background: rgba(26,8,4,0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: flex-end;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+.gm-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.gm-panel {
+  background: var(--surface);
+  width: min(520px, 94vw);
+  height: 100%;
+  overflow-y: auto;
+  box-shadow: -10px 0 48px rgba(0,0,0,0.18);
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.23,1,0.32,1);
+  display: flex;
+  flex-direction: column;
+}
+.gm-overlay.open .gm-panel {
+  transform: translateX(0);
+}
+
+.gm-close {
+  position: sticky;
+  top: 0;
+  align-self: flex-end;
+  margin: 16px 16px 0 0;
+  flex-shrink: 0;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition);
+  z-index: 2;
+}
+.gm-close:hover { background: var(--danger); border-color: var(--danger); color: #fff; }
+
+.gm-inner {
+  padding: 4px 28px 44px;
+  flex: 1;
+}
+
+.gm-header {
+  border-left: 4px solid var(--accent);
+  padding-left: 14px;
+  margin-bottom: 16px;
+  margin-top: 4px;
+}
+.gm-badge {
+  display: inline-block;
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  padding: 2px 9px;
+  border-radius: 100px;
+  border: 1px solid;
+  margin-bottom: 7px;
+}
+.gm-name {
+  font-size: 1.7rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.gm-tagline {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.gm-radar-canvas {
+  display: block;
+  margin: 0 auto 24px;
+}
+.gm-body {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  line-height: 1.82;
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.gm-chips-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+.gm-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.gm-chip {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 5px 13px;
+  border-radius: 100px;
+  border: 1.5px solid;
+  background: var(--surface);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition);
+}
+.gm-chip:hover {
+  background: var(--surface-2);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+/* Make homepage group cards show pointer on hover */
+.overview-group-card { cursor: pointer; }
+.ogc-member-chip { cursor: pointer; }
+.gm-body p {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  line-height: 1.82;
+  margin: 0 0 12px 0;
+}
+.gm-body p:last-child { margin-bottom: 0; }

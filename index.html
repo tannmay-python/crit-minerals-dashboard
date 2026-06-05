@@ -312,6 +312,24 @@
 <div id="tooltip" role="tooltip"></div>
 <div id="toast"></div>
 
+<!-- GROUP DETAIL DRAWER -->
+<div id="gm-overlay" class="gm-overlay">
+  <div id="gm-panel" class="gm-panel">
+    <button class="gm-close" id="gm-close">✕</button>
+    <div class="gm-inner">
+      <div class="gm-header" id="gm-header">
+        <span class="gm-badge" id="gm-badge"></span>
+        <h2 class="gm-name" id="gm-name"></h2>
+      </div>
+      <p class="gm-tagline" id="gm-tagline"></p>
+      <canvas class="gm-radar-canvas" id="gm-radar" width="240" height="240"></canvas>
+      <p class="gm-body" id="gm-body"></p>
+      <div class="gm-chips-label">Minerals in this group</div>
+      <div class="gm-chips" id="gm-chips"></div>
+    </div>
+  </div>
+</div>
+
 <script src="app.js"></script>
 </body>
 </html>
