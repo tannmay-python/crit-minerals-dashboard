@@ -40,6 +40,38 @@ const AppState = {
 /* ── Compare series colors ─────────────────────────────────── */
 const COMPARE_COLORS = ['#620d3c', '#f1a222', '#3d6b7d'];
 
+/* ── Group descriptions (from paper) ──────────────────────── */
+const GROUP_DESCRIPTIONS = {
+  1: {
+    tagline: 'Scale defines their criticality, not monopoly leverage.',
+    body: `Every member scores 4 or 5 on current demand and is consumed in quantities measured in hundreds of thousands or millions of tonnes. Their supply is comparatively diffuse: mining concentration is low, and although some refining is moderately concentrated, none is monopolised at the level seen in the rare earths. What binds these minerals is that their criticality arises from volume rather than from control. The danger is not that a single supplier can withhold them, but that they are consumed so widely across construction, energy, transport and agriculture that a sustained shortfall would transmit through the entire economy. Cobalt and lithium carry high import dependence and price volatility but belong here because their defining feature is the same: large and fast-growing demand at a scale that makes supply a question of industrial capacity rather than of monopoly leverage.`,
+  },
+  2: {
+    tagline: 'No single extreme — risk is mild and diffuse.',
+    body: `These are low-to-moderate-demand metals, most recovered as by-products of larger mining and smelting operations rather than mined in their own right. The profile that characterises the group is the absence of any extreme. Demand is modest, supply concentration is low to middling, reserves are adequate, and processing is undemanding. They belong together precisely because none presents a single sharp bottleneck. Several share a second feature that matters for policy: because they are extracted as companions to host metals such as zinc, copper and lead, their availability is governed less by dedicated supply chains than by the economics of the metals they accompany. This is the most internally varied of the six groups.`,
+  },
+  3: {
+    tagline: 'Reserves and refining both locked — no exit through substitution.',
+    body: `This is the tightest and most internally consistent group. Its members score at or near the maximum on three vectors at once: refining concentration, reserve concentration, and extraction complexity. They are consumed in very small quantities, have almost no recycling exit, and in most cases no viable substitute. Their supply is captured at the single most technically demanding stage of the chain, the geological reserves are themselves concentrated in few countries, and there is no easy route out through substitution or recovery. These are minerals over which a controlling state holds near-absolute leverage. Tellurium is not a rare earth, but its profile — a by-product whose refining is monopolised by one country, with poor recyclability and high complexity — is statistically indistinguishable from the heavy rare earths.`,
+  },
+  4: {
+    tagline: 'Abundant in the ground, locked at the refinery.',
+    body: `The minerals in this group share a single decisive feature: their constraint lies not in the ground but in the refinery. Reserves are abundant — in several cases effectively unlimited — yet refining is concentrated and technically forbidding, and these minerals carry the highest Indian import-dependence scores of any group. The bottleneck is processing capability, which no amount of mining can relieve. The group's coherence is confirmed by an apparent oddity: the platinum group elements fall into the same statistical cluster as gallium and hafnium. They do so because the framework is reading processing difficulty and abundance-with-captured-refining, not chemical family — and on those dimensions the two sets are alike. The distinction from Group 3 is that here the reserves are not the constraint; the problem is purely midstream.`,
+  },
+  5: {
+    tagline: 'Concentrated but not weaponised — the dormant risk group.',
+    body: `This group is a deliberate corrective to the assumption that concentration alone signals danger. Its members are among the most concentrated in the dataset, with a single country dominating refining in every case, yet they record the lowest price volatility and the lowest demand growth of any group. The defining shape is high concentration combined with low volatility — a monopoly that is not, at present, being exercised. The reasons differ: the dominant producer manages supply to keep prices stable (as Brazil does with niobium), or the mineral is in structural oversupply (as lanthanum and cerium are). The policy-relevant fact is common to all: their criticality is latent rather than active. They are concentrated enough to become dangerous if conditions change, but are not currently behaving as critical minerals — exactly the distinction a flat list cannot draw.`,
+  },
+  6: {
+    tagline: 'Abundant geology, captured refining, and rising demand.',
+    body: `This group resembles Group 4 in that refining is highly concentrated, but differs in two respects the data separates clearly. First, reserves are well diversified rather than locked to one country, so the geological base is not the constraint. Second, demand is larger and growing faster — several members score at the top of the growth scale. These are minerals where the raw resource is widely available but processing capacity is not, and where demand is rising rather than flat, making the midstream gap a growing rather than a static problem. The magnet rare earths neodymium and praseodymium anchor the group, joined by high-volume industrial materials such as silicon, graphite and phosphorus. Scandium belongs here rather than in Group 3 because it is the most geographically distributed mineral in the dataset — its constraint is processing, not reserves.`,
+  },
+  0: {
+    tagline: 'Not really a commercial mineral — a genuine singleton.',
+    body: `When the clustering is pushed to separate minerals more finely, promethium is the first and only mineral to split off entirely on its own. The reason is that it is not a commercial mineral: it is radioactive, has no stable isotope, exists in only trace quantities, and has effectively no market. Its scores reflect an element that is concentrated and hard to handle but barely used — a combination no policy instrument is designed for. Rather than force it into the heavy rare earths it nominally resembles, the data records it as what it is: a genuine outlier whose presence on any critical minerals list is an artefact of completeness rather than of strategic concern.`,
+  },
+};
+
 /* ════════════════════════════════════════════════════════════
    DATA LOADING
    ════════════════════════════════════════════════════════════ */
@@ -189,6 +221,7 @@ function navigate(page, mineralName) {
     case 'criteria': renderCriteria();  break;
     case 'compare':  renderCompare();   break;
     case 'builder':  renderBuilder();   break;
+    case 'groups':   renderGroups();    break;
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -276,61 +309,106 @@ function init() {
    ════════════════════════════════════════════════════════════ */
 
 function renderOverview() {
-  document.getElementById('overview-group-legend').innerHTML = buildGroupLegendHTML();
-  renderOverviewScatter();
+  renderOverviewGroupCards();
   renderHeatmap();
 }
 
-function renderOverviewScatter() {
-  const svg = document.getElementById('overview-scatter-svg');
-  if (!svg) return;
-  const W  = svg.parentElement.clientWidth || 900;
-  const H  = 420;
-  const M  = { top: 20, right: 20, bottom: 46, left: 46 };
-  const PW = W - M.left - M.right;
-  const PH = H - M.top  - M.bottom;
+function renderOverviewGroupCards() {
+  const container = document.getElementById('overview-groups-grid');
+  if (!container) return;
 
-  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-
-  let html = `<rect x="0" y="0" width="${W}" height="${H}" fill="#fffbe2"/>`;
-  html += `<rect x="${M.left}" y="${M.top}" width="${PW}" height="${PH}" fill="rgba(241,162,34,0.02)" rx="4"/>`;
-
-  // Grid + tick labels
-  [0, 0.25, 0.5, 0.75, 1].forEach(t => {
-    const gx = M.left + t * PW;
-    const gy = M.top + (1 - t) * PH;
-    html += `<line x1="${gx}" y1="${M.top}" x2="${gx}" y2="${M.top + PH}" stroke="rgba(26,8,4,0.06)" stroke-width="1"/>`;
-    html += `<line x1="${M.left}" y1="${gy}" x2="${M.left + PW}" y2="${gy}" stroke="rgba(26,8,4,0.06)" stroke-width="1"/>`;
-    html += `<text x="${gx}" y="${M.top + PH + 14}" text-anchor="middle" font-size="8.5" fill="#9a7040" font-family="Inter,sans-serif">${(t * 10).toFixed(0)}</text>`;
-    html += `<text x="${M.left - 6}" y="${gy + 3}" text-anchor="end" font-size="8.5" fill="#9a7040" font-family="Inter,sans-serif">${(t * 5).toFixed(0)}</text>`;
+  // Order: groups 1-6 first, then outlier (0)
+  const orderedGroups = [...AppData.groups].sort((a, b) => {
+    if (a.id === 0) return 1;
+    if (b.id === 0) return -1;
+    return a.id - b.id;
   });
 
-  // Axis labels
-  html += `<text x="${M.left + PW / 2}" y="${H - 6}" text-anchor="middle" font-size="10" fill="#6b4020" font-family="Inter,sans-serif" font-weight="600">Supply Concentration (0–10)</text>`;
-  html += `<text x="13" y="${M.top + PH / 2}" text-anchor="middle" font-size="10" fill="#6b4020" font-family="Inter,sans-serif" font-weight="600" transform="rotate(-90,13,${M.top + PH / 2})">Price Volatility (0–5)</text>`;
+  container.innerHTML = orderedGroups.map(g => {
+    const members = AppData.minerals.filter(m => getGroup(m.mineral) === g.id);
+    const desc = GROUP_DESCRIPTIONS[g.id] || {};
 
-  // Dots
-  AppData.minerals.forEach(m => {
-    const xN   = normalizeToOne(m, 'supplier_concentration');
-    const yN   = normalizeToOne(m, 'price_volatility');
-    const cx   = M.left + xN * PW;
-    const cy   = M.top  + (1 - yN) * PH;
-    const gid  = getGroup(m.mineral);
-    const col  = groupColor(gid);
-    const xVal = getVectorValue(m, 'supplier_concentration') ?? '—';
-    const yVal = getVectorValue(m, 'price_volatility') ?? '—';
+    return `
+      <div class="overview-group-card" data-gid="${g.id}" style="--gcolor:${g.color}">
+        <div class="ogc-left">
+          <canvas class="ogc-radar" width="130" height="130"></canvas>
+        </div>
+        <div class="ogc-right">
+          <div class="ogc-header">
+            <span class="ogc-badge" style="background:${g.color}22;color:${g.color};border-color:${g.color}44;">${g.id === 0 ? 'Outlier' : `Group ${g.id}`}</span>
+            <span class="ogc-name" style="color:${g.color}">${g.name}</span>
+          </div>
+          ${desc.tagline ? `<div class="ogc-tagline">${desc.tagline}</div>` : ''}
+          <div class="ogc-members">${members.map(m => `<span class="ogc-member-chip">${m.mineral}</span>`).join('')}</div>
+        </div>
+      </div>`;
+  }).join('');
 
-    html += `<g class="scatter-dot" data-mineral="${m.mineral}" style="cursor:pointer;">
-      <circle cx="${cx}" cy="${cy}" r="5" fill="${col}" fill-opacity="0.82" stroke="#fffbe2" stroke-width="1.2"/>
-      <title>${m.mineral} (${groupName(gid)})
-Supply Conc: ${xVal}/10  ·  Volatility: ${yVal}/5</title>
-    </g>`;
+  // Draw average-profile mini radars
+  container.querySelectorAll('.overview-group-card').forEach(card => {
+    const gid     = Number(card.dataset.gid);
+    const col     = groupColor(gid);
+    const members = AppData.minerals.filter(m => getGroup(m.mineral) === gid);
+    const canvas  = card.querySelector('.ogc-radar');
+    if (canvas && members.length) drawGroupAvgRadar(canvas, members, col);
+
+    card.addEventListener('click', () => {
+      AppState.explorerGroupFilter = String(gid);
+      navigate('explorer');
+    });
+  });
+}
+
+/** Draws an average-profile radar for a set of minerals, colored by group. */
+function drawGroupAvgRadar(canvas, members, color) {
+  const ctx = canvas.getContext('2d');
+  const cx  = canvas.width  / 2;
+  const cy  = canvas.height / 2;
+  const r   = Math.min(cx, cy) - 10;
+  const n   = AppData.criteriaVectors.length;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Average normalized values per vector
+  const avgs = AppData.criteriaVectors.map(v => {
+    const vals = members.map(m => normalizeToFive(m, v.key)).filter(v => !isNaN(v));
+    return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length / 5 : 0;
   });
 
-  svg.innerHTML = html;
-  svg.querySelectorAll('.scatter-dot').forEach(el =>
-    el.addEventListener('click', () => navigate('mineral', el.dataset.mineral))
-  );
+  // Grid rings
+  for (let ring = 1; ring <= 5; ring++) {
+    ctx.beginPath();
+    for (let i = 0; i < n; i++) {
+      const a  = (i / n) * Math.PI * 2 - Math.PI / 2;
+      const rr = (ring / 5) * r;
+      i === 0 ? ctx.moveTo(cx + rr * Math.cos(a), cy + rr * Math.sin(a))
+              : ctx.lineTo(cx + rr * Math.cos(a), cy + rr * Math.sin(a));
+    }
+    ctx.closePath();
+    ctx.strokeStyle = 'rgba(98,13,60,0.09)';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+  }
+  // Axes
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2 - Math.PI / 2;
+    ctx.beginPath(); ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + r * Math.cos(a), cy + r * Math.sin(a));
+    ctx.strokeStyle = 'rgba(98,13,60,0.06)'; ctx.lineWidth = 0.5; ctx.stroke();
+  }
+  // Filled polygon
+  ctx.beginPath();
+  avgs.forEach((norm, i) => {
+    const a = (i / n) * Math.PI * 2 - Math.PI / 2;
+    const rr = norm * r;
+    i === 0 ? ctx.moveTo(cx + rr * Math.cos(a), cy + rr * Math.sin(a))
+            : ctx.lineTo(cx + rr * Math.cos(a), cy + rr * Math.sin(a));
+  });
+  ctx.closePath();
+  ctx.fillStyle   = color + '30';
+  ctx.fill();
+  ctx.strokeStyle = color;
+  ctx.lineWidth   = 2;
+  ctx.stroke();
 }
 
 /* ── Heatmap ───────────────────────────────────────────────── */
@@ -413,6 +491,12 @@ function renderExplorer() {
       renderExplorer();
     });
   }
+
+  // Sync chip active state to AppState (in case filter was set programmatically)
+  const chipWrap2 = document.getElementById('explorer-group-chips');
+  chipWrap2.querySelectorAll('.filter-chip').forEach(b => {
+    b.classList.toggle('active', b.dataset.group === AppState.explorerGroupFilter);
+  });
 
   let minerals = AppData.minerals.filter(m => {
     if (AppState.explorerGroupFilter !== 'all' && getGroup(m.mineral) !== Number(AppState.explorerGroupFilter)) return false;
@@ -592,9 +676,6 @@ function renderMineralPage(mineralName) {
 
   // Scorecard
   renderMineralScorecard(m);
-
-  // Policy pane
-  renderPolicyPane(mineralName);
 }
 
 function renderMineralScorecard(m) {
@@ -651,57 +732,49 @@ function renderMineralScorecard(m) {
   });
 }
 
-/* ── Policy pane (TBC) ─────────────────────────────────────── */
-function renderPolicyPane(mineralName) {
-  const pane = document.getElementById('mp-policy');
-  if (!pane) return;
-  const levers = [
-    { tag: 'Supply Security',       title: 'Strategic Partner & Import Diversification',   desc: `Bilateral agreements and diversification strategies to reduce concentration risk for ${mineralName}. Frameworks with resource-rich partner nations are yet to be defined.` },
-    { tag: 'Domestic Development',  title: 'Exploration, Mining & Processing Investment',  desc: `Deposit identification and mining promotion specific to ${mineralName} supply chains. Investment frameworks and production targets pending formulation.` },
-    { tag: 'Demand Management',     title: 'Efficiency Standards & Substitution R&D',      desc: `Efficiency standards and substitution research to moderate ${mineralName} demand intensity. Technology roadmaps and subsidy structures under deliberation.` },
-    { tag: 'Stockpiling',           title: 'Strategic Reserve & Buffer Stock Policy',       desc: `National stockpile targets and buffer stock norms for ${mineralName}. Reserve levels, financing mechanisms, and release protocols yet to be defined.` },
-    { tag: 'Circularity',           title: 'Recycling Infrastructure & EPR Norms',          desc: `Extended producer responsibility rules and end-of-life recovery to improve ${mineralName} circularity. Collection targets and processing standards not yet specified.` },
-  ];
-  pane.innerHTML = `
-    <div class="mp-policy-header">
-      <span class="mp-card-title">Policy Alternatives</span>
-      <span class="mp-tbc-global">All entries TBC — indicative only</span>
-    </div>
-    <div class="mp-policy-grid">
-      ${levers.map(l => `
-        <div class="mp-policy-card">
-          <div class="mp-policy-top"><span class="mp-policy-tag">${l.tag}</span><span class="mp-tbc-badge">TBC</span></div>
-          <div class="mp-policy-title">${l.title}</div>
-          <div class="mp-policy-desc">${l.desc}</div>
-        </div>`).join('')}
-    </div>`;
-}
 
 /* ════════════════════════════════════════════════════════════
    CRITERIA PAGE
    ════════════════════════════════════════════════════════════ */
 
+/** Parse a sub-score note like "1: >100 yrs; 2: 50–100; 3: ..." into band objects. */
+function parseBandsFromNote(note) {
+  if (!note) return null;
+  const matches = [...note.matchAll(/(\d+):\s*([^;]+)/g)];
+  if (matches.length >= 2) return matches.map(m => ({ score: parseInt(m[1]), label: m[2].trim() }));
+  return null;
+}
+
+function buildBandPillsHTML(bands, prefix = '') {
+  return `<div class="criteria-bands">
+    ${bands.map(b => `<button class="criteria-band-pill" data-label="${escapeHtml(b.label)}" data-score="${b.score}">${prefix}Score ${b.score}</button>`).join('')}
+    <div class="criteria-band-callout hidden"></div>
+  </div>`;
+}
+
 function renderCriteria() {
   const container = document.getElementById('criteria-vectors-list');
-  if (container.dataset.rendered) return; // render once
+  if (container.dataset.rendered) return;
   container.dataset.rendered = 'true';
 
   container.innerHTML = AppData.criteriaVectors.map((v, idx) => {
-    // Bands (interactive pills)
-    const bandsHTML = v.bands ? `
-      <div class="criteria-bands">
-        ${v.bands.map(b => `<button class="criteria-band-pill" data-label="${escapeHtml(b.label)}" data-score="${b.score}">Score ${b.score}</button>`).join('')}
-        <div class="criteria-band-callout hidden"></div>
-      </div>` : '';
+    // Top-level bands (for simple vectors: demand, growth, extraction, pipeline, volatility, supplier_concentration)
+    const topBandsHTML = v.bands ? buildBandPillsHTML(v.bands) : '';
 
-    // Sub-scores
+    // Sub-scores with their own band pills
     const subsHTML = v.sub ? `
       <div class="criteria-subs">
-        ${v.sub.map(s => `
-          <div class="criteria-sub-item">
-            <span class="criteria-sub-name">${s.name} <em>/${s.max}</em></span>
-            ${s.note ? `<div class="criteria-sub-note">${s.note}</div>` : ''}
-          </div>`).join('')}
+        ${v.sub.map(s => {
+          const subBands = parseBandsFromNote(s.note);
+          return `
+            <div class="criteria-sub-item">
+              <div class="criteria-sub-header">
+                <span class="criteria-sub-name">${s.name}</span>
+                <span class="criteria-sub-max">/${s.max}</span>
+              </div>
+              ${subBands ? buildBandPillsHTML(subBands, '↳ ') : (s.note ? `<div class="criteria-sub-note">${s.note}</div>` : '')}
+            </div>`;
+        }).join('')}
       </div>` : '';
 
     return `
@@ -716,17 +789,29 @@ function renderCriteria() {
         </div>
         <p class="criteria-vector-what">${v.what}</p>
         ${subsHTML}
-        ${bandsHTML}
+        ${topBandsHTML}
       </div>`;
-  }).join('');
+  }).join('') + `
+  <!-- Methodology note at bottom of Criteria -->
+  <div class="criteria-methodology-section card">
+    <div class="criteria-meth-title">Scoring Methodology</div>
+    <p class="criteria-meth-body">Eight of the ten vectors are tied to published quantitative thresholds: tonnes, CAGR bands, percentage market shares, HHI bands, reserve-years, secondary-supply shares, and percentage price movements. The two qualitative vectors — extraction complexity and strategic posture — are anchored to observable facts, such as whether a solvent-extraction cascade is required or whether an offtake has been signed and a refinery is under construction.</p>
+    <p class="criteria-meth-body" style="margin-top:10px">The scores are not beyond dispute, but the basis for each is stated, which allows others to challenge a score or substitute their own. This is the framework's primary value: it converts impressionistic judgements into contestable numbers.</p>
+    <p class="criteria-meth-body" style="margin-top:10px"><strong>No cumulative score is produced.</strong> The vectors are correlated — refining concentration, extraction complexity, and price volatility move together. Summing them counts the same underlying condition more than once. Demand scale and end-use breadth overlap, as do import dependence and strategic posture. Any single set of weights embeds one viewpoint and conceals it inside a number that appears objective.</p>
+  </div>`;
 
-  // Band pill click → show/hide callout
+  // Wire all band pill interactions (in container)
+  wireAllBandPills(container);
+}
+
+function wireAllBandPills(container) {
   container.querySelectorAll('.criteria-band-pill').forEach(pill => {
     pill.addEventListener('click', () => {
-      const bandsDiv = pill.closest('.criteria-bands');
-      const callout  = bandsDiv.querySelector('.criteria-band-callout');
-      const label    = pill.dataset.label;
-      const alreadyOpen = !callout.classList.contains('hidden') && callout.textContent === `Score ${pill.dataset.score}: ${label}`;
+      const bandsDiv   = pill.closest('.criteria-bands');
+      const callout    = bandsDiv.querySelector('.criteria-band-callout');
+      const label      = pill.dataset.label;
+      const alreadyOpen = !callout.classList.contains('hidden')
+        && callout.textContent === `Score ${pill.dataset.score}: ${label}`;
       bandsDiv.querySelectorAll('.criteria-band-pill').forEach(p => p.classList.remove('active'));
       if (alreadyOpen) {
         callout.classList.add('hidden');
@@ -870,6 +955,14 @@ function renderBuilderGroupToggles() {
   });
 }
 
+/** Deterministic jitter so overlapping discrete-score points separate slightly. */
+function dJitter(mineralName, axis) {
+  let h = 0;
+  for (let i = 0; i < mineralName.length; i++) h = Math.imul(31, h) + mineralName.charCodeAt(i) | 0;
+  const v = ((h >> (axis === 'x' ? 0 : 8)) & 0xff) / 255;
+  return (v - 0.5) * 0.022; // ±1.1% of axis range
+}
+
 function renderBuilderChart() {
   const svg  = document.getElementById('builder-chart-svg');
   if (!svg) return;
@@ -912,10 +1005,10 @@ function renderBuilderChart() {
     const yVal = getVectorValue(m, yKey);
     if (xVal === null || yVal === null) return;
 
-    const xN    = xVec ? xVal / xVec.max : 0;
-    const yN    = yVec ? yVal / yVec.max : 0;
-    const cx    = M.left + xN * PW;
-    const cy    = M.top  + (1 - yN) * PH;
+    const xN    = (xVec ? xVal / xVec.max : 0) + dJitter(m.mineral, 'x');
+    const yN    = (yVec ? yVal / yVec.max : 0) + dJitter(m.mineral, 'y');
+    const cx    = M.left + Math.max(0, Math.min(1, xN)) * PW;
+    const cy    = M.top  + (1 - Math.max(0, Math.min(1, yN))) * PH;
     const col   = groupColor(gid);
     const isHit = srch && m.mineral.toLowerCase().includes(srch);
     const isDim = srch && !isHit;
@@ -934,6 +1027,101 @@ ${xVec?.name}: ${xVal}/${xVec?.max}  ·  ${yVec?.name}: ${yVal}/${yVec?.max}</ti
   svg.querySelectorAll('.builder-dot').forEach(el =>
     el.addEventListener('click', () => navigate('mineral', el.dataset.mineral))
   );
+}
+
+/* ════════════════════════════════════════════════════════════
+   GROUPS PAGE
+   ════════════════════════════════════════════════════════════ */
+
+function renderGroups() {
+  const list = document.getElementById('groups-detail-list');
+  if (list.dataset.rendered) return;
+  list.dataset.rendered = 'true';
+
+  // Order: 1-6 then 0
+  const ordered = [...AppData.groups].sort((a, b) => {
+    if (a.id === 0) return 1; if (b.id === 0) return -1; return a.id - b.id;
+  });
+
+  list.innerHTML = ordered.map(g => {
+    const members = AppData.minerals.filter(m => getGroup(m.mineral) === g.id);
+    const desc    = GROUP_DESCRIPTIONS[g.id] || {};
+    const isOut   = g.id === 0;
+
+    return `
+      <div class="group-detail-card card" style="--gcolor:${g.color}">
+        <div class="gdc-top">
+          <div class="gdc-radar-wrap">
+            <canvas class="gdc-radar" width="160" height="160" data-gid="${g.id}"></canvas>
+            <div class="gdc-radar-label" style="color:${g.color}">Avg. profile</div>
+          </div>
+          <div class="gdc-info">
+            <div class="gdc-badge-row">
+              <span class="gdc-badge" style="background:${g.color}18;color:${g.color};border-color:${g.color}40;">${isOut ? 'Outlier' : `Group ${g.id}`}</span>
+              <h2 class="gdc-name" style="color:${g.color}">${g.name}</h2>
+            </div>
+            ${desc.tagline ? `<p class="gdc-tagline">${desc.tagline}</p>` : ''}
+            <div class="gdc-members">${members.map(m =>
+              `<span class="gdc-member" data-mineral="${m.mineral}">${m.mineral}</span>`
+            ).join('')}</div>
+          </div>
+        </div>
+        ${desc.body ? `<p class="gdc-body">${desc.body}</p>` : ''}
+      </div>`;
+  }).join('');
+
+  // Draw radars
+  list.querySelectorAll('.gdc-radar').forEach(canvas => {
+    const gid     = Number(canvas.dataset.gid);
+    const col     = groupColor(gid);
+    const members = AppData.minerals.filter(m => getGroup(m.mineral) === gid);
+    if (members.length) drawGroupAvgRadar(canvas, members, col);
+  });
+
+  // Member chip clicks
+  list.querySelectorAll('.gdc-member').forEach(el =>
+    el.addEventListener('click', () => navigate('mineral', el.dataset.mineral))
+  );
+
+  // "Why distinct" section
+  const why = document.getElementById('groups-why');
+  why.innerHTML = `
+    <div class="card groups-prose-card">
+      <h2 class="groups-section-title">Why the Groups Are Distinct</h2>
+      <p>The six groups are not arbitrary slices of a spectrum — they are separated by a specific combination of answers to three structural questions. It is the combination, rather than any single vector, that makes them mutually exclusive.</p>
+      <p>The <strong>first question</strong> is whether the binding constraint is <em>volume or vulnerability</em> — whether a mineral matters because of how much is consumed or because of how exposed its supply is. Group 1 answers volume. Every other group answers vulnerability, consisting of minerals consumed in far smaller quantities.</p>
+      <p>The <strong>second question</strong> is where in the supply chain the constraint sits. For Group 2 it sits nowhere in particular — the vulnerability is diffuse. For Groups 3, 4, 5 and 6 it sits at the refining stage, but for different reasons: in Group 3 the reserves are also concentrated; in Groups 4 and 6 the reserves are not the problem; in Group 5 the refining is concentrated but the constraint is dormant rather than active.</p>
+      <p>The <strong>third question</strong> is whether the constraint is currently active. Groups 4 and 6 are both abundant-reserve, captured-refining minerals — but Group 6's demand is large and rising while Group 4's is small and flat. Similarly Groups 3 and 5 both contain heavily concentrated minerals, but Group 3's are volatile and exit-less while Group 5's are calm and oversupplied.</p>
+      <p>Minerals that a summed score would place side by side — niobium and dysprosium both appear severe, copper and cerium both total 44 — separate cleanly once the <em>shape</em> of their criticality is read rather than its height.</p>
+    </div>`;
+
+  // Outlier section
+  const outEl = document.getElementById('groups-outlier');
+  outEl.innerHTML = `
+    <div class="card groups-outlier-card">
+      <div class="groups-outlier-header">
+        <span class="groups-outlier-badge">Outlier</span>
+        <h2 class="groups-section-title" style="margin:0">Promethium</h2>
+      </div>
+      <p>When the clustering is pushed to separate minerals more finely, Promethium is the first and only mineral to split off entirely on its own — the k=7 cut isolates it as a singleton. The reason is that it is not a commercial mineral: it is radioactive, has no stable isotope, exists in only trace quantities, and has effectively no market. Rather than force it into the heavy rare earths it nominally resembles, the data records it as what it is: a genuine outlier whose presence on any critical minerals list is an artefact of completeness rather than of strategic concern.</p>
+    </div>`;
+
+  // Methodology section
+  const meth = document.getElementById('groups-methodology');
+  meth.innerHTML = `
+    <div class="card groups-prose-card">
+      <h2 class="groups-section-title">Grouping Methodology</h2>
+      <h3 class="groups-sub-title">Inputs</h3>
+      <p>Each mineral is represented by the fourteen scored sub-vectors. Composite roll-ups are not used as inputs, since they would double-count their constituents. Because the vectors are measured on different scales, each was standardised to zero mean and unit variance before any distance was computed, so that no vector influences the grouping merely by having a wider range.</p>
+      <h3 class="groups-sub-title">Clustering</h3>
+      <p>Minerals were grouped using agglomerative hierarchical clustering with Ward's linkage and Euclidean distance on the standardised profiles. Ward's method builds a tree by repeatedly merging the two clusters whose combination increases total within-cluster variance the least, producing compact, comparably sized groups. Hierarchical clustering was preferred over methods requiring the number of groups to be fixed in advance, because it allows the structure to be examined at every level of granularity.</p>
+      <h3 class="groups-sub-title">How Many Groups</h3>
+      <p>The number of groups was not assumed. The clustering tree was examined at cuts from three to nine groups. Two diagnostics informed the choice. <strong>Stability:</strong> the six-group solution is robust — the same groups persist when the tree is cut at five, six and seven, with only edge members reassigned. <strong>Interpretability:</strong> at six groups, every cluster corresponds to a profile that can be described in supply-chain terms. The one substantive change between six and seven groups is that Promethium separates as a singleton — the basis for treating it as an outlier.</p>
+      <h3 class="groups-sub-title">An Honest Limitation</h3>
+      <p>Standard measures of cluster quality — the silhouette score (all approximately 0.15–0.20) and cophenetic correlation (0.55) — indicate that these groups are imposed on a continuous distribution rather than discovered as naturally separated clouds. A principal-component analysis explains why: a single dominant axis accounts for more than 28% of all variation and runs continuously from high-volume, easily-processed minerals at one end to small-volume, concentrated, hard-to-process ones at the other. The minerals form a spectrum, not a set of islands. This does not invalidate the groups, but they should be understood as a useful partition of a continuum, not as natural kinds.</p>
+      <h3 class="groups-sub-title">Manual Adjustment</h3>
+      <p>The statistical output was treated as a strong prior rather than a verdict. A small number of placements were settled on reasoning where a mineral sat near a boundary. These judgement calls are flagged in the group descriptions above: the inclusion of Tellurium with the heavy rare earths, the placement of Scandium with the rising-demand processing group rather than with the other rare earths, and the treatment of Promethium as an outlier. In each case the statistical assignment and the reasoning agreed.</p>
+    </div>`;
 }
 
 /* ════════════════════════════════════════════════════════════

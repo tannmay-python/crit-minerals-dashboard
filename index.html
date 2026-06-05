@@ -30,6 +30,7 @@
       <button class="nav-btn" data-page="criteria">Criteria</button>
       <button class="nav-btn" data-page="compare">Compare</button>
       <button class="nav-btn" data-page="builder">Builder</button>
+      <button class="nav-btn" data-page="groups">Groups</button>
     </nav>
     <span class="header-badge" id="header-badge">51 Minerals · 10 Vectors</span>
   </div>
@@ -45,7 +46,7 @@
   <!-- Hero -->
   <section class="problem-hero">
     <div class="container">
-      <div class="problem-eyebrow">Takshashila Institution · Critical Minerals Analysis</div>
+      <div class="problem-eyebrow">Critical Minerals Analysis · India</div>
       <h1 class="problem-headline">"Critical mineral lists have expanded to the point that they are no longer effective policy tools."</h1>
       <p class="overview-intro-placeholder">[INTRO TEXT — I WILL WRITE THIS]</p>
 
@@ -72,17 +73,14 @@
     </div>
   </section>
 
-  <!-- Scatter plot -->
+  <!-- Group profile overview -->
   <div class="container">
     <div class="section">
       <div class="section-header">
-        <h2 class="section-title">Supply Concentration vs. Price Volatility</h2>
-        <span class="text-muted text-sm">Click a dot to open mineral detail</span>
+        <h2 class="section-title">The Six Groups + One Outlier</h2>
+        <span class="text-muted text-sm">Average vector profile per group · Click any card to explore</span>
       </div>
-      <div class="card" style="padding:16px;">
-        <svg id="overview-scatter-svg" style="width:100%;display:block;" height="420"></svg>
-        <div class="group-legend" id="overview-group-legend"></div>
-      </div>
+      <div class="overview-groups-grid" id="overview-groups-grid"></div>
     </div>
 
     <!-- Heatmap -->
@@ -174,7 +172,6 @@
       </div>
     </div>
 
-    <div class="mp-policy-section" id="mp-policy"></div>
   </div>
 </div><!-- /page-mineral -->
 
@@ -279,6 +276,31 @@
     <div class="builder-group-toggles" id="builder-group-toggles"></div>
   </div>
 </div><!-- /page-builder -->
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE: GROUPS
+═══════════════════════════════════════════════════════ -->
+<div id="page-groups" class="page">
+  <div class="container">
+    <section class="hero" style="padding:40px 0 24px;">
+      <div class="hero-eyebrow">Methodology</div>
+      <h1 style="font-size:clamp(1.4rem,3vw,2.2rem)">Understanding the Six Groups</h1>
+      <p class="hero-sub" style="max-width:760px;">The minerals do not fall into neatly separated natural clusters — they occupy a continuous space. Clustering imposes boundaries on that spectrum rather than discovering gaps in it. The boundaries are nonetheless informative.</p>
+    </section>
+
+    <!-- Group detail cards -->
+    <div id="groups-detail-list"></div>
+
+    <!-- Why groups are distinct -->
+    <div class="groups-why-section section" id="groups-why"></div>
+
+    <!-- Promethium outlier -->
+    <div class="groups-outlier-section section" id="groups-outlier"></div>
+
+    <!-- Methodology appendix -->
+    <div class="groups-methodology section" id="groups-methodology"></div>
+  </div>
+</div><!-- /page-groups -->
 
 </main>
 
