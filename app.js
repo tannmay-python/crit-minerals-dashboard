@@ -751,37 +751,174 @@ window.toggleScRow = function(head) {
    CRITERIA PAGE
    ════════════════════════════════════════════════════════════ */
 
-/** Parse a sub-score note like "1: >100 yrs; 2: 50–100; 3: ..." into band objects. */
-function parseBandsFromNote(note) {
-  if (!note) return null;
-  const matches = [...note.matchAll(/(\d+):\s*([^;]+)/g)];
-  if (matches.length >= 2) return matches.map(m => ({ score: parseInt(m[1]), label: m[2].trim() }));
-  return null;
-}
+/* ════════════════════════════════════════════════════════════
+   CRITERIA — complete band data from framework document
+   ════════════════════════════════════════════════════════════ */
 
-/* ── Criteria band colours: green (low risk) → plum (high risk) ── */
-const BAND_BG  = ['#edf7ee','#f8f5e3','#fdf3db','#fce6de','#f4e6f0'];
-const BAND_FG  = ['#1a6b2a','#7a5f00','#b05400','#b91c1c','#620d3c'];
+/* Band colours: Score 1 (low risk/green) → Score 5 (high risk/plum) */
+const BAND_BG = ['#edf7ee','#f9f6e3','#fdf3db','#fce6de','#f4e6f0'];
+const BAND_FG = ['#1a6b2a','#7a5f00','#b05400','#b91c1c','#620d3c'];
 
-function buildScaleHTML(bands) {
-  if (!bands || !bands.length) return '';
-  return `<div class="crit-scale" style="grid-template-columns:repeat(${bands.length},1fr)">
-    ${bands.map((b, i) => {
-      const idx = Math.min(i, BAND_BG.length - 1);
-      return `<div class="crit-scale-cell" style="background:${BAND_BG[idx]};border-color:${BAND_FG[idx]}28">
-        <div class="crit-scale-num" style="color:${BAND_FG[idx]}">${b.score}</div>
-        <div class="crit-scale-txt">${b.label}</div>
-      </div>`;
-    }).join('')}
-  </div>`;
-}
-
-/* Family → accent colour */
 const FAMILY_COLOR = {
   'How much it matters':  '#620d3c',
   'How exposed supply is':'#3d6b7d',
   'Where India stands':   '#2e8b57',
 };
+
+/* Complete 5-band definitions for every scoreable dimension */
+const COMPLETE_BANDS = {
+  demand: [
+    {score:1, label:'≤ 500 t/yr', note:'Negligible absolute demand'},
+    {score:2, label:'500 – 10,000 t/yr', note:'Modest demand'},
+    {score:3, label:'10,000 – 100,000 t/yr', note:'Moderate demand'},
+    {score:4, label:'100,000 – 1,000,000 t/yr', note:'High demand'},
+    {score:5, label:'> 1,000,000 t/yr', note:'Extremely high demand'},
+  ],
+  growth: [
+    {score:1, label:'Declining', note:'Demand falling — replaced by other materials'},
+    {score:2, label:'Flat / stagnant', note:'No growth expected'},
+    {score:3, label:'Low growth (1–5% CAGR)', note:'Steady mature industrial uses'},
+    {score:4, label:'Moderate growth (6–12% CAGR)', note:'Driven by emerging sectors'},
+    {score:5, label:'High growth (>12% CAGR)', note:'Rapid expansion — e.g. EVs'},
+  ],
+  /* Shared scale for mining and refining sub-scores */
+  supplier_sub: [
+    {score:1, label:'No country > 30%', note:'Well distributed globally'},
+    {score:2, label:'Largest country 30–50%', note:'Moderate concentration'},
+    {score:3, label:'Largest country 50–65%', note:'Significant concentration'},
+    {score:4, label:'Largest country 65–85%', note:'Highly concentrated'},
+    {score:5, label:'Largest country > 85%', note:'Near-monopoly supply'},
+  ],
+  timeframe: [
+    {score:1, label:'> 100 years', note:'Effectively limitless at current consumption'},
+    {score:2, label:'50 – 100 years', note:'Abundant; long-term runway'},
+    {score:3, label:'30 – 50 years', note:'Substantial but finite'},
+    {score:4, label:'15 – 30 years', note:'Significant scarcity pressure emerging'},
+    {score:5, label:'< 15 years', note:'Near-term scarcity risk'},
+  ],
+  diversification: [
+    {score:1, label:'HHI < 0.15', note:'Highly distributed — no country > ~25% of reserves'},
+    {score:2, label:'HHI 0.15–0.25', note:'Well distributed — top country typically < 35%'},
+    {score:3, label:'HHI 0.25–0.40', note:'Moderately concentrated — one country 35–55%'},
+    {score:4, label:'HHI 0.40–0.60', note:'Concentrated — one country holds 55–75%'},
+    {score:5, label:'HHI > 0.60', note:'Near-monopoly reserve base — one country > 75%'},
+  ],
+  substitutability: [
+    {score:1, label:'Drop-in substitute', note:'Already > 20% market share; commercially deployed by multiple manufacturers'},
+    {score:2, label:'10–30% cost/performance penalty', note:'Industry can adapt within 1–2 years; at least one major manufacturer has deployed'},
+    {score:3, label:'Significant trade-offs (> 50% cost premium)', note:'3–5 year adaptation; only at pilot scale or limited commercial use'},
+    {score:4, label:'Lab-proven only', note:'No commercial-scale alternative; switching requires fundamental product redesign'},
+    {score:5, label:'No substitute at any cost', note:'Unique physical/chemical property — no known workaround for primary application'},
+  ],
+  recyclability: [
+    {score:1, label:'> 40% from secondary supply', note:'Mature collection infrastructure; recovery cost competitive with primary'},
+    {score:2, label:'20–40% secondary supply', note:'Proven technology for high-concentration scrap; end-of-life limited by logistics'},
+    {score:3, label:'5–20% recycled', note:'Technology exists for manufacturing scrap; end-of-life economically marginal'},
+    {score:4, label:'< 5% recycled', note:'Technology exists but uneconomic — concentrations too low for cost recovery'},
+    {score:5, label:'Effectively 0% recovered', note:'No viable technology, or mineral is chemically consumed/dissipated in use'},
+  ],
+  extraction_refining: [
+    {score:1, label:'Simple, widely accessible', note:'Standard open-pit or dredge mining + physical separation; any industrialised nation can operate'},
+    {score:2, label:'Moderately complex', note:'Multi-stage chemical refining; mature technology requiring trained engineers'},
+    {score:3, label:'Complex, specialised', note:'Multi-stage hydrometallurgy or solvent extraction; < 20 companies globally have expertise'},
+    {score:4, label:'Highly complex (< 15 facilities)', note:'Proprietary/restricted tech; must co-locate with other large-scale operations; near-identical element separation'},
+    {score:5, label:'Nation-state level capability', note:'Nuclear-grade separation or equivalent; $100M+ facilities; decade-long licensing barriers'},
+  ],
+  upcoming_projects: [
+    {score:1, label:'Strong pipeline (> 20% new supply)', note:'Major project under construction; first output within 2–3 years; geographically diversified'},
+    {score:2, label:'Adequate (10–20%)', note:'Lead projects financed, feasibility complete; first output 3–5 years'},
+    {score:3, label:'Thin (5–10%)', note:'Projects at pre-feasibility; realistic output 5–7 years away; execution risk'},
+    {score:4, label:'Minimal (< 5%)', note:'Only exploratory-stage projects; any supply 7–10+ years out'},
+    {score:5, label:'No pipeline + structural constraint', note:'No projects at any stage AND structural reason supply cannot scale even if prices rise'},
+  ],
+  import_dependence: [
+    {score:1, label:'Self-sufficient (≥ 60% domestic)', note:'Operating mines and/or refineries at commercial scale'},
+    {score:2, label:'40–60% domestic', note:'Mostly self-sufficient; imports supplement but don\'t define supply'},
+    {score:3, label:'20–40% domestic', note:'Significant base but majority imported; assets undersized relative to demand'},
+    {score:4, label:'< 20% domestic', note:'Marginal production; some resources or operations but token relative to demand'},
+    {score:5, label:'Zero domestic production', note:'100% import-dependent'},
+  ],
+  strategic_posture: [
+    {score:1, label:'Active secured position', note:'Binding offtakes, equity stakes in foreign assets, or operational JVs delivering material'},
+    {score:2, label:'Concrete plans in motion', note:'Exploration blocks auctioned; MOUs/framework agreements signed; KABIL active due diligence; output 3–7 yrs'},
+    {score:3, label:'Strategic intent declared', note:'On official critical minerals list; mentioned in policy documents; no specific projects or agreements yet'},
+    {score:4, label:'Passive awareness', note:'Acknowledged as important; no KABIL mandate, no exploration blocks, no foreign outreach'},
+    {score:5, label:'No awareness or relevance', note:'Not identified as strategic; India is a passive importer of finished goods'},
+  ],
+  price_volatility: [
+    {score:1, label:'Stable (within ± 20% over 5 yrs)', note:'Dominated by long-term contracts; often managed by a single producer; no exchange trading'},
+    {score:2, label:'Low (± 20–50%)', note:'Gradual movements driven by transparent factors; mix of contract and spot; liquid market'},
+    {score:3, label:'Moderate (± 50–100%)', note:'At least one notable spike or correction; partially opaque market; active procurement management needed'},
+    {score:4, label:'High (> ± 100%)', note:'Thin and opaque market; sensitive to single-actor decisions; genuine procurement uncertainty'},
+    {score:5, label:'Extreme (> 200% or market breakdown)', note:'Export bans or weaponised supply; price can double overnight; supply cannot be reliably secured'},
+  ],
+};
+
+/* Sector weights for End-use Applications */
+const ENDUSE_SECTORS = [
+  {name:'Defence & National Security',         weight:'+1.5', color:'#c42b1e'},
+  {name:'Energy Generation & Grid',            weight:'+1.5', color:'#c05b00'},
+  {name:'Agriculture & Food Security',         weight:'+1.5', color:'#1e7a2e'},
+  {name:'Advanced Semiconductors & Computing', weight:'+1',   color:'#620d3c'},
+  {name:'Electrification & Transport',         weight:'+1',   color:'#3d6b7d'},
+  {name:'Healthcare & Biomedical',             weight:'+1',   color:'#7d6b9e'},
+  {name:'Construction & Heavy Industry',       weight:'+0.5', color:'#6b4020'},
+];
+
+const ENDUSE_BREADTH = [
+  {n:1,bonus:'+0'},{n:2,bonus:'+0.5'},{n:3,bonus:'+1'},
+  {n:4,bonus:'+1.5'},{n:5,bonus:'+2'},{n:6,bonus:'+2.5'},{n:7,bonus:'+3'},
+];
+
+function buildScaleHTML(bands) {
+  if (!bands?.length) return '';
+  return `<div class="crit-scale" style="grid-template-columns:repeat(${bands.length},1fr)">
+    ${bands.map((b, i) => {
+      const ci = Math.min(i, BAND_BG.length - 1);
+      return `<div class="crit-scale-cell" style="background:${BAND_BG[ci]};border-color:${BAND_FG[ci]}28">
+        <div class="crit-scale-num" style="color:${BAND_FG[ci]}">${b.score}</div>
+        <div class="crit-scale-label">${b.label}</div>
+        ${b.note ? `<div class="crit-scale-note">${b.note}</div>` : ''}
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function buildEndUseHTML(fc) {
+  const breadthColors = ENDUSE_BREADTH.map((b, i) => ({
+    bg: BAND_BG[Math.min(Math.round(i*4/6), BAND_BG.length-1)],
+    fg: BAND_FG[Math.min(Math.round(i*4/6), BAND_FG.length-1)],
+    ...b
+  }));
+  return `<div class="crit-subscales">
+    <div class="crit-subscale">
+      <div class="crit-subscale-label">
+        <span class="crit-subscale-name">Sector presence</span>
+        <span class="crit-subscale-max" style="color:${fc}">/ 7 points additive</span>
+      </div>
+      <div class="crit-sector-grid">
+        ${ENDUSE_SECTORS.map(s => `
+          <div class="crit-sector-card" style="border-color:${s.color}28;background:${s.color}08">
+            <span class="crit-sector-weight" style="color:${s.color}">${s.weight}</span>
+            <span class="crit-sector-name">${s.name}</span>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="crit-subscale">
+      <div class="crit-subscale-label">
+        <span class="crit-subscale-name">Breadth bonus</span>
+        <span class="crit-subscale-max" style="color:${fc}">/ 3 points — rewards cross-sector dependency</span>
+      </div>
+      <div class="crit-scale" style="grid-template-columns:repeat(7,1fr)">
+        ${breadthColors.map(b => `
+          <div class="crit-scale-cell" style="background:${b.bg};border-color:${b.fg}28">
+            <div class="crit-scale-num" style="color:${b.fg};font-size:0.85rem">${b.n} sector${b.n>1?'s':''}</div>
+            <div class="crit-scale-label" style="font-size:0.75rem;font-weight:700">${b.bonus}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
 
 function renderCriteria() {
   const container = document.getElementById('criteria-vectors-list');
@@ -790,34 +927,98 @@ function renderCriteria() {
 
   container.innerHTML = AppData.criteriaVectors.map((v, idx) => {
     const fc = FAMILY_COLOR[v.family] || '#620d3c';
-
-    // Build the scoring visual
     let scoringHTML = '';
 
-    if (v.bands) {
-      // Simple vector — full colour scale, all bands visible at once
-      scoringHTML = buildScaleHTML(v.bands);
-    } else if (v.sub) {
-      // Composite vector — one scale per sub-score
-      scoringHTML = `<div class="crit-subscales">${v.sub.map(s => {
-        const subBands = parseBandsFromNote(s.note);
-        return `<div class="crit-subscale">
-          <div class="crit-subscale-label">
-            <span class="crit-subscale-name">${s.name}</span>
-            <span class="crit-subscale-max" style="color:${fc}">/${s.max}</span>
+    switch (v.key) {
+      case 'demand':
+        scoringHTML = buildScaleHTML(COMPLETE_BANDS.demand); break;
+      case 'growth':
+        scoringHTML = buildScaleHTML(COMPLETE_BANDS.growth); break;
+
+      case 'supplier_concentration':
+        // Split: Mining /5 + Refining /5, both use same band scale
+        scoringHTML = `<div class="crit-subscales">
+          ${['Mining concentration','Refining concentration'].map(name => `
+            <div class="crit-subscale">
+              <div class="crit-subscale-label">
+                <span class="crit-subscale-name">${name}</span>
+                <span class="crit-subscale-max" style="color:${fc}">/5</span>
+              </div>
+              ${buildScaleHTML(COMPLETE_BANDS.supplier_sub)}
+            </div>`).join('')}
+        </div>`; break;
+
+      case 'reserves':
+        scoringHTML = `<div class="crit-subscales">
+          <div class="crit-subscale">
+            <div class="crit-subscale-label">
+              <span class="crit-subscale-name">Reserve time-frame</span>
+              <span class="crit-subscale-max" style="color:${fc}">/5</span>
+            </div>
+            ${buildScaleHTML(COMPLETE_BANDS.timeframe)}
           </div>
-          ${subBands ? buildScaleHTML(subBands)
-            : `<p class="crit-subscale-note">${s.note || ''}</p>`}
-        </div>`;
-      }).join('')}</div>`;
+          <div class="crit-subscale">
+            <div class="crit-subscale-label">
+              <span class="crit-subscale-name">Reserve diversification</span>
+              <span class="crit-subscale-max" style="color:${fc}">/5 — scored by HHI (Herfindahl–Hirschman Index)</span>
+            </div>
+            <p class="crit-hhi-note">HHI = sum of squared country shares of global reserves. HHI = 1.0 if one country holds 100%; HHI = 0.10 if ten countries each hold 10%. Higher HHI = more concentrated.</p>
+            ${buildScaleHTML(COMPLETE_BANDS.diversification)}
+          </div>
+        </div>`; break;
+
+      case 'end_use':
+        scoringHTML = buildEndUseHTML(fc); break;
+
+      case 'substitutability_recyclability':
+        scoringHTML = `<div class="crit-subscales">
+          <div class="crit-subscale">
+            <div class="crit-subscale-label">
+              <span class="crit-subscale-name">Substitutability</span>
+              <span class="crit-subscale-max" style="color:${fc}">/5</span>
+            </div>
+            ${buildScaleHTML(COMPLETE_BANDS.substitutability)}
+          </div>
+          <div class="crit-subscale">
+            <div class="crit-subscale-label">
+              <span class="crit-subscale-name">Recyclability</span>
+              <span class="crit-subscale-max" style="color:${fc}">/5</span>
+            </div>
+            ${buildScaleHTML(COMPLETE_BANDS.recyclability)}
+          </div>
+        </div>`; break;
+
+      case 'extraction_refining':
+        scoringHTML = buildScaleHTML(COMPLETE_BANDS.extraction_refining); break;
+      case 'upcoming_projects':
+        scoringHTML = buildScaleHTML(COMPLETE_BANDS.upcoming_projects); break;
+
+      case 'india_position':
+        scoringHTML = `<div class="crit-subscales">
+          <div class="crit-subscale">
+            <div class="crit-subscale-label">
+              <span class="crit-subscale-name">Import dependence</span>
+              <span class="crit-subscale-max" style="color:${fc}">/5</span>
+            </div>
+            ${buildScaleHTML(COMPLETE_BANDS.import_dependence)}
+          </div>
+          <div class="crit-subscale">
+            <div class="crit-subscale-label">
+              <span class="crit-subscale-name">Strategic posture</span>
+              <span class="crit-subscale-max" style="color:${fc}">/5</span>
+            </div>
+            ${buildScaleHTML(COMPLETE_BANDS.strategic_posture)}
+          </div>
+        </div>`; break;
+
+      case 'price_volatility':
+        scoringHTML = buildScaleHTML(COMPLETE_BANDS.price_volatility); break;
     }
 
     return `
       <div class="crit-card card">
         <div class="crit-card-top">
-          <div class="crit-num-wrap" style="background:${fc}">
-            <span class="crit-num">${idx + 1}</span>
-          </div>
+          <div class="crit-num-wrap" style="background:${fc}"><span class="crit-num">${idx + 1}</span></div>
           <div class="crit-card-meta">
             <h3 class="crit-name">${v.name}</h3>
             <span class="crit-family" style="color:${fc};background:${fc}12;border-color:${fc}30">${v.family}</span>
@@ -830,7 +1031,7 @@ function renderCriteria() {
   }).join('') + `
   <div class="crit-methodology card">
     <h3 class="crit-meth-title">Methodology note</h3>
-    <p>Eight of the ten vectors are tied to published quantitative thresholds: tonnes, CAGR bands, market-share percentages, HHI bands, reserve-years, secondary-supply shares, and price-movement percentages. The two qualitative vectors — extraction complexity and strategic posture — are anchored to observable facts.</p>
+    <p>Eight of the ten vectors are tied to published quantitative thresholds: tonnes, CAGR bands, market-share percentages, HHI bands, reserve-years, secondary-supply shares, and price-movement percentages. The two qualitative vectors — extraction complexity and strategic posture — are anchored to observable facts (e.g. whether a solvent-extraction cascade is required, or whether an offtake has been signed).</p>
     <p>The scores are not beyond dispute, but the basis for each is stated, which allows others to challenge a score or substitute their own.</p>
     <p><strong>No cumulative score is produced.</strong> The vectors are correlated — summing them counts the same underlying risk condition more than once, and any weighting scheme embeds one analyst's priorities while appearing objective.</p>
   </div>`;

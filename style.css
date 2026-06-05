@@ -3092,3 +3092,58 @@ input[type="range"]::-moz-range-thumb {
   .crit-scale { grid-template-columns: repeat(3, 1fr) !important; }
   .crit-scale-cell:nth-child(n+4) { display: none; }
 }
+
+/* ── Criteria: additional scale styles ─────────────────────── */
+.crit-scale-note {
+  font-size: 0.58rem;
+  color: var(--text-dim);
+  line-height: 1.35;
+  margin-top: 3px;
+  text-align: center;
+  font-weight: 400;
+}
+
+/* HHI explanation line */
+.crit-hhi-note {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  line-height: 1.55;
+}
+
+/* End-use sector cards */
+.crit-sector-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  margin-top: 4px;
+}
+.crit-sector-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid;
+}
+.crit-sector-weight {
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+  min-width: 36px;
+  text-align: right;
+}
+.crit-sector-name {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+/* Taller cells for longer labels */
+.crit-scale-cell { min-height: 90px; }
