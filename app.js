@@ -680,55 +680,68 @@ function renderMineralPage(mineralName) {
 
 function renderMineralScorecard(m) {
   const container = document.getElementById('mp-scorecard');
+
   container.innerHTML = AppData.criteriaVectors.map(v => {
     const val  = getVectorValue(m, v.key);
-    const pct  = val !== null ? (val / v.max) * 100 : 0;
+    const pct  = val !== null ? Math.min((val / v.max) * 100, 100) : 0;
     const norm = val !== null ? val / v.max : 0;
-    const barColor = `hsl(${Math.round((1 - norm) * 90)},60%,42%)`;
+    // Green (low risk) → red (high risk) colour
+    const hue      = Math.round((1 - norm) * 110);
+    const barColor = `hsl(${hue},58%,40%)`;
+    const valDisplay = val !== null ? val : '—';
 
-    // Sub-score HTML (inside accordion)
+    // Sub-scores (shown inside accordion)
     let subHTML = '';
     if (v.sub && m.vectors[v.key]?.sub) {
       const subs = m.vectors[v.key].sub;
-      subHTML = `<div class="scorecard-subs">${v.sub.map(s => {
+      subHTML = `<div class="sc-subs">${v.sub.map(s => {
         const sv = subs[s.key];
-        return `<div class="scorecard-sub-row">
-          <span class="scorecard-sub-label">${s.name}</span>
-          <span class="scorecard-sub-val">${sv !== undefined ? sv : '—'} / ${s.max}</span>
+        return `<div class="sc-sub-row">
+          <span class="sc-sub-label">${s.name}</span>
+          <span class="sc-sub-val">${sv !== undefined ? sv : '—'}<span class="sc-sub-max"> / ${s.max}</span></span>
         </div>`;
       }).join('')}</div>`;
     }
 
-    const reason = m.vectors[v.key]?.reason || '';
+    const rawReason = (m.vectors[v.key]?.reason || '').trim();
+    const reasonParas = rawReason
+      .split(/\n\s*\n/)
+      .map(p => p.trim())
+      .filter(Boolean);
+    const reasonHTML = reasonParas.length
+      ? `<div class="sc-reason">${reasonParas.map(p => `<p>${p}</p>`).join('')}</div>`
+      : '';
 
     return `
-      <div class="scorecard-row" data-key="${v.key}">
-        <div class="scorecard-row-header">
-          <span class="scorecard-vec-name">${v.name}</span>
-          <div class="scorecard-right">
-            <div class="scorecard-bar-wrap">
-              <div class="scorecard-bar" style="width:${pct.toFixed(1)}%;background:${barColor}"></div>
-            </div>
-            <span class="scorecard-val" style="color:${barColor}">${val !== null ? val : 'n/a'}<span class="scorecard-max">/${v.max}</span></span>
-            <span class="scorecard-expand-icon">▸</span>
-          </div>
+      <div class="sc-row">
+        <div class="sc-head" role="button" tabindex="0">
+          <span class="sc-name">${v.name}</span>
+          <span class="sc-score" style="color:${barColor}">${valDisplay}<span class="sc-max"> / ${v.max}</span></span>
+          <span class="sc-arrow">▸</span>
         </div>
-        <div class="scorecard-accord hidden">
+        <div class="sc-bar-track">
+          <div class="sc-bar-fill" style="width:${pct.toFixed(1)}%;background:${barColor}"></div>
+        </div>
+        <div class="sc-body hidden">
           ${subHTML}
-          ${reason ? `<div class="scorecard-reason">${reason}</div>` : ''}
+          ${reasonHTML}
         </div>
       </div>`;
   }).join('');
 
-  // Wire accordion toggles
-  container.querySelectorAll('.scorecard-row-header').forEach(header => {
-    header.addEventListener('click', () => {
-      const accord = header.closest('.scorecard-row').querySelector('.scorecard-accord');
-      const icon   = header.querySelector('.scorecard-expand-icon');
-      const open   = !accord.classList.contains('hidden');
-      accord.classList.toggle('hidden');
-      icon.textContent = open ? '▸' : '▾';
-    });
+  // Accordion toggle
+  container.querySelectorAll('.sc-head').forEach(head => {
+    const toggle = () => {
+      const row  = head.closest('.sc-row');
+      const body = row.querySelector('.sc-body');
+      const arr  = head.querySelector('.sc-arrow');
+      const open = !body.classList.contains('hidden');
+      body.classList.toggle('hidden');
+      arr.textContent = open ? '▸' : '▾';
+      row.classList.toggle('sc-row--open', !open);
+    };
+    head.addEventListener('click', toggle);
+    head.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') toggle(); });
   });
 }
 

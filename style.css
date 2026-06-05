@@ -2819,3 +2819,128 @@ input[type="range"]::-moz-range-thumb {
 }
 .overview-intro-block strong { color: var(--text); }
 .overview-intro-block em { color: var(--accent); font-style: normal; font-weight: 600; }
+
+/* ════════════════════════════════════════════════════════════
+   SCORECARD — clean sc-* classes (no legacy CSS conflicts)
+   ════════════════════════════════════════════════════════════ */
+
+#mp-scorecard { display: flex; flex-direction: column; }
+
+.sc-row {
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+}
+.sc-row:last-child { border-bottom: none; }
+.sc-row--open { background: rgba(241,162,34,0.04); border-radius: var(--radius-sm); padding: 13px 10px; margin: 0 -10px; }
+
+/* Header line: name · score · arrow */
+.sc-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  cursor: pointer;
+  margin-bottom: 7px;
+  user-select: none;
+}
+.sc-head:hover .sc-name { color: var(--accent); }
+
+.sc-name {
+  flex: 1;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+}
+.sc-score {
+  font-size: 0.88rem;
+  font-weight: 800;
+  font-feature-settings: 'tnum';
+  flex-shrink: 0;
+  letter-spacing: -0.01em;
+}
+.sc-max {
+  font-size: 0.62rem;
+  font-weight: 400;
+  color: var(--text-dim);
+  letter-spacing: 0;
+}
+.sc-arrow {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  flex-shrink: 0;
+  transition: transform 0.15s;
+  margin-left: 2px;
+}
+
+/* Progress bar — full width, sits below name */
+.sc-bar-track {
+  height: 4px;
+  background: var(--surface-3);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+.sc-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.5s cubic-bezier(0.23,1,0.32,1);
+}
+
+/* Expanded body */
+.sc-body {
+  margin-top: 12px;
+}
+
+/* Sub-scores box */
+.sc-subs {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 10px;
+  padding: 10px 14px;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.sc-sub-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.73rem;
+}
+.sc-sub-label { color: var(--text-muted); }
+.sc-sub-val { font-weight: 700; color: var(--text); font-feature-settings: 'tnum'; }
+.sc-sub-max { font-weight: 400; color: var(--text-dim); }
+
+/* Reason text */
+.sc-reason {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.72;
+  white-space: pre-wrap;
+  padding: 10px 14px;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--accent-2);
+}
+
+/* ── Mineral page header improvements ─────────────────────── */
+.mp-scorecard-card { padding: 20px 22px; }
+.mp-card-title {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+}
+
+/* sc-reason paragraph override */
+.sc-reason { white-space: normal; }
+.sc-reason p {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+  margin: 0 0 8px;
+}
+.sc-reason p:last-child { margin-bottom: 0; }
