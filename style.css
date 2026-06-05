@@ -2779,3 +2779,43 @@ input[type="range"]::-moz-range-thumb {
   .gdc-radar-wrap { display: none; }
   .overview-groups-grid { grid-template-columns: 1fr; }
 }
+
+/* ── Scorecard row layout OVERRIDE (reset old grid) ──────────
+   The old .scorecard-row used display:grid. The new accordion
+   layout needs display:block so each row stacks vertically. */
+.scorecard-row {
+  display: block !important;
+  grid-template-columns: none !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+.scorecard-row:hover { background: transparent !important; }
+
+.scorecard-row-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 2px;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition);
+}
+.scorecard-row-header:hover { background: var(--surface-2); }
+
+/* ── Overview intro paragraphs ─────────────────────────────── */
+.overview-intro-block {
+  max-width: 760px;
+  margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.overview-intro-block p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin: 0;
+}
+.overview-intro-block strong { color: var(--text); }
+.overview-intro-block em { color: var(--accent); font-style: normal; font-weight: 600; }
