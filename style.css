@@ -41,7 +41,7 @@
   --shadow-lg:    0 6px 32px rgba(98,13,60,0.18);
 
   --transition:   0.15s ease;
-  --header-h:     60px;
+  --header-h:     74px;
   --sidebar-w:    300px;
 }
 
@@ -119,7 +119,7 @@ h1, h2, h3, h4, h5 { font-weight: 700; line-height: 1.2; letter-spacing: -0.02em
   text-decoration: none;
 }
 .logo-img {
-  height: 38px;
+  height: 46px;
   width: auto;
   display: block;
 }
