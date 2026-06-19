@@ -360,7 +360,7 @@ const PT_ELEMENTS = [
 /* The category removed at each step, the running count, and the caption. */
 const PT_STEPS = [
   { num: 118, label: 'known elements', pill: '118 elements',
-    caption: 'The periodic table holds 118 known elements. Only a fraction are even candidates for a minerals strategy.' },
+    caption: 'Highlighted are the 51 minerals India designates critical. They look like a handful against all 118 known elements. Step through to see how small the pool they are actually drawn from is.' },
   { num: 94, label: 'occur in nature', pill: '−24 synthetic', removes: 'syn',
     caption: 'Elements 95 to 118 are synthetic, created in particle accelerators and never mined. Set them aside and 94 occur in nature.' },
   { num: 85, label: 'non-radioactive', pill: '−9 radioactive', removes: 'rad',
@@ -475,16 +475,18 @@ function setPtStep(step) {
   for (let i = 1; i <= ptStep; i++) {
     if (PT_STEPS[i].removes) removedCats.add(PT_STEPS[i].removes);
   }
-  const showCritical = PT_STEPS[ptStep].highlightCritical;
+  // India's 51 stay highlighted at every step; the final step additionally
+  // distinguishes the commercial-but-not-listed cells from the empty ones.
+  const showMined = PT_STEPS[ptStep].highlightCritical;
 
   document.querySelectorAll('#pt-grid .pt-cell').forEach(cell => {
     const cat  = cell.dataset.cat;
     const crit = cell.dataset.crit === '1';
     let state;
-    if (removedCats.has(cat))      state = 'removed';
-    else if (showCritical && crit) state = 'critical';
-    else if (showCritical)         state = 'mined';      // commercial, not listed
-    else                           state = 'neutral';
+    if (removedCats.has(cat)) state = 'removed';
+    else if (crit)            state = 'critical';   // always show India's list
+    else if (showMined)       state = 'mined';      // commercial, not listed
+    else                      state = 'neutral';
     cell.dataset.state = state;
   });
 
