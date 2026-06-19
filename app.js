@@ -52,7 +52,7 @@ const GROUP_DESCRIPTIONS = {
   },
   4: {
     tagline: 'High concentration. Low volatility. The monopoly not being exercised.',
-    body: `This group is a direct corrective to the assumption that concentration automatically signals danger. Every member here is dominated by a single country or producer, yet this group records the lowest price volatility and weakest demand growth of any of the six. The monopoly is real; it is simply not being exercised — at least not yet.\n\nThe reasons differ by mineral. Brazil's CBMM manages niobium supply with deliberate discipline, holding prices stable at around $26/kg over years. Lanthanum and cerium are in chronic structural oversupply because they are co-produced with more commercially valuable rare earths; the market is flooded by the economics of mining neodymium. Vanadium prices fell 27% in 2024 on weak Chinese steel demand. Europium is so niche that the market barely registers. What matters for policy is that these minerals are concentrated enough to become dangerous if geopolitical conditions change, but are not currently behaving as critical minerals. A flat list cannot draw this distinction. Monitoring rather than urgent intervention is the appropriate posture.`,
+    body: `This group is a direct corrective to the assumption that concentration automatically signals danger. Every member here is dominated by a single country or producer, yet this group records the lowest price volatility and weakest demand growth of any of the six. The monopoly is real; it is simply not being exercised, at least not yet.\n\nThe reasons differ by mineral. Brazil's CBMM manages niobium supply with deliberate discipline, holding prices stable at around $26/kg over years. Lanthanum and cerium come out of the ground mainly as by-products of mining the more valuable neodymium, so they pile up in oversupply whether or not anyone needs them. Vanadium prices fell 27% in 2024 on weak Chinese steel demand. Europium has so few uses left that almost no one buys it. For policy, what matters is that these minerals could become dangerous if geopolitics shift, but this is not happening currently. Monitoring rather than urgent intervention may be the appropriate posture.`,
   },
   5: {
     tagline: 'Available geology, captured refining, and demand that is growing fast.',
@@ -1553,17 +1553,6 @@ function renderGroups() {
       <p>The <strong>second question</strong> is where in the supply chain the constraint sits. For Group 2 it sits nowhere in particular — the vulnerability is diffuse. For Groups 3, 4, 5 and 6 it sits at the refining stage, but for different reasons: in Group 3 the reserves are also concentrated; in Groups 4 and 6 the reserves are not the problem; in Group 5 the refining is concentrated but the constraint is dormant rather than active.</p>
       <p>The <strong>third question</strong> is whether the constraint is currently active. Groups 4 and 6 are both abundant-reserve, captured-refining minerals — but Group 6's demand is large and rising while Group 4's is small and flat. Similarly Groups 3 and 5 both contain heavily concentrated minerals, but Group 3's are volatile and exit-less while Group 5's are calm and oversupplied.</p>
       <p>Minerals that a summed score would place side by side — niobium and dysprosium both appear severe, copper and cerium both total 44 — separate cleanly once the <em>shape</em> of their criticality is read rather than its height.</p>
-    </div>`;
-
-  // Outlier section
-  const outEl = document.getElementById('groups-outlier');
-  outEl.innerHTML = `
-    <div class="card groups-outlier-card">
-      <div class="groups-outlier-header">
-        <span class="groups-outlier-badge">Outlier</span>
-        <h2 class="groups-section-title" style="margin:0">Promethium</h2>
-      </div>
-      <p>When the clustering is pushed to separate minerals more finely, Promethium is the first and only mineral to split off entirely on its own — the k=7 cut isolates it as a singleton. The reason is that it is not a commercial mineral: it is radioactive, has no stable isotope, exists in only trace quantities, and has effectively no market. Rather than force it into the heavy rare earths it nominally resembles, the data records it as what it is: a genuine outlier whose presence on any critical minerals list is an artefact of completeness rather than of strategic concern.</p>
     </div>`;
 
   // Methodology section
