@@ -154,17 +154,23 @@ function getMineralByName(name) {
   return AppData.minerals.find(m => m.mineral === name);
 }
 
-/** Heatmap cell background: pale yellow → Llama (#620d3c) */
-function heatmapColor(norm) {
-  const r = Math.round(255 + (98  - 255) * norm);
-  const g = Math.round(251 + (13  - 251) * norm);
-  const b = Math.round(226 + (60  - 226) * norm);
+/* Heatmap colours every cell on a common 0–10 domain (not per-vector max),
+   so a displayed 7 always reads darker than a 5 — even across vectors scored
+   /5 and /10. Pale parchment → deep plum (#620d3c), monotonic in the score. */
+const HEATMAP_DOMAIN = 10;
+
+/** Heatmap cell background from a raw score. */
+function heatmapColor(value) {
+  const t = Math.max(0, Math.min(1, (value ?? 0) / HEATMAP_DOMAIN));
+  const r = Math.round(255 + (98  - 255) * t);
+  const g = Math.round(251 + (13  - 251) * t);
+  const b = Math.round(226 + (60  - 226) * t);
   return `rgb(${r},${g},${b})`;
 }
 
 /** Text color for heatmap cell so it remains readable. */
-function heatmapTextColor(norm) {
-  return norm > 0.55 ? 'rgba(255,255,255,0.92)' : '#1a0804';
+function heatmapTextColor(value) {
+  return ((value ?? 0) / HEATMAP_DOMAIN) > 0.55 ? 'rgba(255,255,255,0.92)' : '#1a0804';
 }
 
 function showToast(msg, dur = 2400) {
@@ -311,7 +317,7 @@ function init() {
    ════════════════════════════════════════════════════════════ */
 
 function renderOverview() {
-  renderOverviewGroupCards();
+  renderPeriodicTable();
 }
 
 /* Methodology page = scoring framework (criteria) + heatmap. */
@@ -320,54 +326,135 @@ function renderMethodology() {
   renderHeatmap();
 }
 
-function renderOverviewGroupCards() {
-  const container = document.getElementById('overview-groups-grid');
-  if (!container) return;
+/* ── Interactive periodic table ───────────────────────────────
+   Walks the reduction from 118 known elements down to the ~76 that
+   are actually mined for commercial use, then highlights the 51 that
+   India designates critical. Element rows: [Z, symbol, name, gridRow,
+   gridCol, category, isCritical]. Categories: com (commercial),
+   syn (synthetic, Z95–118), rad (non-commercial radioactive),
+   gas (atmospheric gas), hhe (hydrogen/helium).
+   ───────────────────────────────────────────────────────────── */
+const PT_ELEMENTS = [
+  [1,"H","Hydrogen",1,1,"hhe",0],[2,"He","Helium",1,18,"hhe",0],[3,"Li","Lithium",2,1,"com",1],[4,"Be","Beryllium",2,2,"com",1],[5,"B","Boron",2,13,"com",0],[6,"C","Carbon",2,14,"com",1],
+  [7,"N","Nitrogen",2,15,"gas",0],[8,"O","Oxygen",2,16,"gas",0],[9,"F","Fluorine",2,17,"gas",0],[10,"Ne","Neon",2,18,"gas",0],[11,"Na","Sodium",3,1,"com",0],[12,"Mg","Magnesium",3,2,"com",0],
+  [13,"Al","Aluminium",3,13,"com",0],[14,"Si","Silicon",3,14,"com",1],[15,"P","Phosphorus",3,15,"com",1],[16,"S","Sulfur",3,16,"com",0],[17,"Cl","Chlorine",3,17,"gas",0],[18,"Ar","Argon",3,18,"gas",0],
+  [19,"K","Potassium",4,1,"com",1],[20,"Ca","Calcium",4,2,"com",0],[21,"Sc","Scandium",4,3,"com",1],[22,"Ti","Titanium",4,4,"com",1],[23,"V","Vanadium",4,5,"com",1],[24,"Cr","Chromium",4,6,"com",0],
+  [25,"Mn","Manganese",4,7,"com",0],[26,"Fe","Iron",4,8,"com",0],[27,"Co","Cobalt",4,9,"com",1],[28,"Ni","Nickel",4,10,"com",1],[29,"Cu","Copper",4,11,"com",1],[30,"Zn","Zinc",4,12,"com",0],
+  [31,"Ga","Gallium",4,13,"com",1],[32,"Ge","Germanium",4,14,"com",1],[33,"As","Arsenic",4,15,"com",0],[34,"Se","Selenium",4,16,"com",1],[35,"Br","Bromine",4,17,"com",0],[36,"Kr","Krypton",4,18,"gas",0],
+  [37,"Rb","Rubidium",5,1,"com",0],[38,"Sr","Strontium",5,2,"com",1],[39,"Y","Yttrium",5,3,"com",1],[40,"Zr","Zirconium",5,4,"com",1],[41,"Nb","Niobium",5,5,"com",1],[42,"Mo","Molybdenum",5,6,"com",1],
+  [43,"Tc","Technetium",5,7,"rad",0],[44,"Ru","Ruthenium",5,8,"com",1],[45,"Rh","Rhodium",5,9,"com",1],[46,"Pd","Palladium",5,10,"com",1],[47,"Ag","Silver",5,11,"com",0],[48,"Cd","Cadmium",5,12,"com",1],
+  [49,"In","Indium",5,13,"com",1],[50,"Sn","Tin",5,14,"com",1],[51,"Sb","Antimony",5,15,"com",1],[52,"Te","Tellurium",5,16,"com",1],[53,"I","Iodine",5,17,"com",0],[54,"Xe","Xenon",5,18,"com",0],
+  [55,"Cs","Caesium",6,1,"com",0],[56,"Ba","Barium",6,2,"com",0],[57,"La","Lanthanum",9,3,"com",1],[58,"Ce","Cerium",9,4,"com",1],[59,"Pr","Praseodymium",9,5,"com",1],[60,"Nd","Neodymium",9,6,"com",1],
+  [61,"Pm","Promethium",9,7,"com",1],[62,"Sm","Samarium",9,8,"com",1],[63,"Eu","Europium",9,9,"com",1],[64,"Gd","Gadolinium",9,10,"com",1],[65,"Tb","Terbium",9,11,"com",1],[66,"Dy","Dysprosium",9,12,"com",1],
+  [67,"Ho","Holmium",9,13,"com",1],[68,"Er","Erbium",9,14,"com",1],[69,"Tm","Thulium",9,15,"com",1],[70,"Yb","Ytterbium",9,16,"com",1],[71,"Lu","Lutetium",9,17,"com",1],[72,"Hf","Hafnium",6,4,"com",1],
+  [73,"Ta","Tantalum",6,5,"com",1],[74,"W","Tungsten",6,6,"com",1],[75,"Re","Rhenium",6,7,"com",1],[76,"Os","Osmium",6,8,"com",1],[77,"Ir","Iridium",6,9,"com",1],[78,"Pt","Platinum",6,10,"com",1],
+  [79,"Au","Gold",6,11,"com",0],[80,"Hg","Mercury",6,12,"com",0],[81,"Tl","Thallium",6,13,"com",0],[82,"Pb","Lead",6,14,"com",0],[83,"Bi","Bismuth",6,15,"com",1],[84,"Po","Polonium",6,16,"rad",0],
+  [85,"At","Astatine",6,17,"rad",0],[86,"Rn","Radon",6,18,"rad",0],[87,"Fr","Francium",7,1,"rad",0],[88,"Ra","Radium",7,2,"rad",0],[89,"Ac","Actinium",10,3,"rad",0],[90,"Th","Thorium",10,4,"com",0],
+  [91,"Pa","Protactinium",10,5,"rad",0],[92,"U","Uranium",10,6,"com",0],[93,"Np","Neptunium",10,7,"com",0],[94,"Pu","Plutonium",10,8,"rad",0],[95,"Am","Americium",10,9,"syn",0],[96,"Cm","Curium",10,10,"syn",0],
+  [97,"Bk","Berkelium",10,11,"syn",0],[98,"Cf","Californium",10,12,"syn",0],[99,"Es","Einsteinium",10,13,"syn",0],[100,"Fm","Fermium",10,14,"syn",0],[101,"Md","Mendelevium",10,15,"syn",0],[102,"No","Nobelium",10,16,"syn",0],
+  [103,"Lr","Lawrencium",10,17,"syn",0],[104,"Rf","Rutherfordium",7,4,"syn",0],[105,"Db","Dubnium",7,5,"syn",0],[106,"Sg","Seaborgium",7,6,"syn",0],[107,"Bh","Bohrium",7,7,"syn",0],[108,"Hs","Hassium",7,8,"syn",0],
+  [109,"Mt","Meitnerium",7,9,"syn",0],[110,"Ds","Darmstadtium",7,10,"syn",0],[111,"Rg","Roentgenium",7,11,"syn",0],[112,"Cn","Copernicium",7,12,"syn",0],[113,"Nh","Nihonium",7,13,"syn",0],[114,"Fl","Flerovium",7,14,"syn",0],
+  [115,"Mc","Moscovium",7,15,"syn",0],[116,"Lv","Livermorium",7,16,"syn",0],[117,"Ts","Tennessine",7,17,"syn",0],[118,"Og","Oganesson",7,18,"syn",0],
+];
 
-  // Order: groups 1-6 first, then outlier (0)
-  const orderedGroups = [...AppData.groups].sort((a, b) => {
-    if (a.id === 0) return 1;
-    if (b.id === 0) return -1;
-    return a.id - b.id;
+/* The category removed at each step, the running count, and the caption. */
+const PT_STEPS = [
+  { num: 118, label: 'known elements', pill: '118 elements',
+    caption: 'The periodic table holds 118 known elements. Only a fraction are even candidates for a minerals strategy.' },
+  { num: 94, label: 'occur in nature', pill: '−24 synthetic', removes: 'syn',
+    caption: 'Elements 95–118 are synthetic — created in particle accelerators, never mined. Set them aside and 94 occur in nature.' },
+  { num: 85, label: 'non-radioactive', pill: '−9 radioactive', removes: 'rad',
+    caption: 'Nine more are radioactive with no commercial supply chain — technetium, polonium, plutonium and the like. That leaves 85.' },
+  { num: 78, label: 'solids & metals', pill: '−7 gases', removes: 'gas',
+    caption: 'Seven are atmospheric gases — nitrogen, oxygen, the noble gases — not mined as ores. Down to 78.' },
+  { num: 76, label: 'commercially mined', pill: '−2 H, He', removes: 'hhe',
+    caption: 'Set aside hydrogen and helium, and roughly 76 elements are actually mined for commercial use — the usable periodic table.' },
+  { num: 51, label: 'designated critical', pill: '51 critical', highlightCritical: true,
+    caption: 'India designates 51 of these 76 as critical — two-thirds. When the label covers that much of what we mine, it can no longer tell policymakers where to act first.' },
+];
+
+let ptStep = 0;
+
+function renderPeriodicTable() {
+  const grid = document.getElementById('pt-grid');
+  if (!grid) return;
+
+  // Build the cells once
+  if (!grid.dataset.built) {
+    grid.innerHTML = PT_ELEMENTS.map(([z, sym, name, row, col, cat, crit]) =>
+      `<div class="pt-cell" data-cat="${cat}" data-crit="${crit}"
+            style="grid-row:${row};grid-column:${col}"
+            title="${name} (${sym}, ${z})">
+         <span class="pt-z">${z}</span>
+         <span class="pt-sym">${sym}</span>
+       </div>`
+    ).join('');
+
+    // f-block connector labels + a thin spacer row between the main table and the f-block
+    grid.insertAdjacentHTML('beforeend',
+      `<div class="pt-fnote" style="grid-row:6;grid-column:3">57–71</div>
+       <div class="pt-fnote" style="grid-row:7;grid-column:3">89–103</div>
+       <div class="pt-spacer" style="grid-row:8;grid-column:1 / -1"></div>`);
+
+    grid.dataset.built = 'true';
+  }
+
+  // Build step pills once
+  const stepsEl = document.getElementById('pt-steps');
+  if (stepsEl && !stepsEl.dataset.built) {
+    stepsEl.innerHTML = PT_STEPS.map((s, i) =>
+      `<button class="pt-step-pill" data-step="${i}">${s.pill}</button>`
+    ).join('');
+    stepsEl.querySelectorAll('.pt-step-pill').forEach(btn =>
+      btn.addEventListener('click', () => setPtStep(Number(btn.dataset.step)))
+    );
+    document.getElementById('pt-prev').addEventListener('click', () => setPtStep(ptStep - 1));
+    document.getElementById('pt-next').addEventListener('click', () => setPtStep(ptStep + 1));
+    stepsEl.dataset.built = 'true';
+  }
+
+  setPtStep(ptStep);
+}
+
+function setPtStep(step) {
+  ptStep = Math.max(0, Math.min(PT_STEPS.length - 1, step));
+
+  // A category is "removed" once we've passed the step that removes it.
+  const removedCats = new Set();
+  for (let i = 1; i <= ptStep; i++) {
+    if (PT_STEPS[i].removes) removedCats.add(PT_STEPS[i].removes);
+  }
+  const showCritical = PT_STEPS[ptStep].highlightCritical;
+
+  document.querySelectorAll('#pt-grid .pt-cell').forEach(cell => {
+    const cat  = cell.dataset.cat;
+    const crit = cell.dataset.crit === '1';
+    let state;
+    if (removedCats.has(cat))      state = 'removed';
+    else if (showCritical && crit) state = 'critical';
+    else if (showCritical)         state = 'mined';      // commercial, not listed
+    else                           state = 'neutral';
+    cell.dataset.state = state;
   });
 
-  container.innerHTML = orderedGroups.map(g => {
-    const members = AppData.minerals.filter(m => getGroup(m.mineral) === g.id);
-    const desc = GROUP_DESCRIPTIONS[g.id] || {};
+  // Readout + caption
+  const s = PT_STEPS[ptStep];
+  document.getElementById('pt-num').textContent   = s.num;
+  document.getElementById('pt-label').textContent = s.label;
+  document.getElementById('pt-caption').innerHTML =
+    ptStep === PT_STEPS.length - 1
+      ? `<strong>51 of 76 — about 67%.</strong> ${s.caption}`
+      : s.caption;
 
-    return `
-      <div class="overview-group-card" data-gid="${g.id}" style="--gcolor:${g.color}">
-        <div class="ogc-left">
-          <canvas class="ogc-radar" width="130" height="130"></canvas>
-        </div>
-        <div class="ogc-right">
-          <div class="ogc-header">
-            <span class="ogc-badge" style="background:${g.color}22;color:${g.color};border-color:${g.color}44;">${g.id === 0 ? 'Outlier' : `Group ${g.id}`}</span>
-            <span class="ogc-name" style="color:${g.color}">${g.name}</span>
-          </div>
-          ${desc.tagline ? `<div class="ogc-tagline">${desc.tagline}</div>` : ''}
-          <div class="ogc-members">${members.map(m => `<span class="ogc-member-chip" data-mineral="${m.mineral}">${m.mineral}</span>`).join('')}</div>
-        </div>
-      </div>`;
-  }).join('');
-
-  // Draw average-profile mini radars
-  container.querySelectorAll('.overview-group-card').forEach(card => {
-    const gid     = Number(card.dataset.gid);
-    const col     = groupColor(gid);
-    const members = AppData.minerals.filter(m => getGroup(m.mineral) === gid);
-    const canvas  = card.querySelector('.ogc-radar');
-    if (canvas && members.length) drawGroupAvgRadar(canvas, members, col);
-
-    card.addEventListener('click', e => {
-      const chip = e.target.closest('.ogc-member-chip');
-      if (chip) {
-        navigate('mineral', chip.dataset.mineral);
-        return;
-      }
-      openGroupModal(gid);
-    });
+  // Pill active states (mark current + completed)
+  document.querySelectorAll('#pt-steps .pt-step-pill').forEach((btn, i) => {
+    btn.classList.toggle('active', i === ptStep);
+    btn.classList.toggle('done', i < ptStep);
   });
+
+  // Arrow disabled states
+  document.getElementById('pt-prev').disabled = ptStep === 0;
+  document.getElementById('pt-next').disabled = ptStep === PT_STEPS.length - 1;
 }
 
 /* ── Group modal drawer ──────────────────────────────────────── */
@@ -520,9 +607,8 @@ function renderHeatmap() {
       <td><span class="group-chip" style="background:${col}15;color:${col};border-color:${col}40;font-size:0.55rem;padding:1px 5px;">${gid}</span></td>
       ${vecs.map(v => {
         const val  = getVectorValue(m, v.key);
-        const norm = val !== null ? val / v.max : 0;
-        const bg   = heatmapColor(norm);
-        const tc   = heatmapTextColor(norm);
+        const bg   = heatmapColor(val);
+        const tc   = heatmapTextColor(val);
         const disp = val !== null ? val : '—';
         return `<td class="heatmap-cell" style="background:${bg};color:${tc};" title="${m.mineral} — ${v.name}: ${val !== null ? val + '/' + v.max : 'n/a'}">${disp}</td>`;
       }).join('')}
