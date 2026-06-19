@@ -154,25 +154,6 @@ function getMineralByName(name) {
   return AppData.minerals.find(m => m.mineral === name);
 }
 
-/* Heatmap colours every cell on a common 0–10 domain (not per-vector max),
-   so a displayed 7 always reads darker than a 5 — even across vectors scored
-   /5 and /10. Pale parchment → deep plum (#620d3c), monotonic in the score. */
-const HEATMAP_DOMAIN = 10;
-
-/** Heatmap cell background from a raw score. */
-function heatmapColor(value) {
-  const t = Math.max(0, Math.min(1, (value ?? 0) / HEATMAP_DOMAIN));
-  const r = Math.round(255 + (98  - 255) * t);
-  const g = Math.round(251 + (13  - 251) * t);
-  const b = Math.round(226 + (60  - 226) * t);
-  return `rgb(${r},${g},${b})`;
-}
-
-/** Text color for heatmap cell so it remains readable. */
-function heatmapTextColor(value) {
-  return ((value ?? 0) / HEATMAP_DOMAIN) > 0.55 ? 'rgba(255,255,255,0.92)' : '#1a0804';
-}
-
 function showToast(msg, dur = 2400) {
   const el = document.getElementById('toast');
   el.textContent = msg;
@@ -320,10 +301,9 @@ function renderOverview() {
   renderPeriodicTable();
 }
 
-/* Methodology page = scoring framework (criteria) + heatmap. */
+/* Methodology page = the scoring framework (criteria). */
 function renderMethodology() {
   renderCriteria();
-  renderHeatmap();
 }
 
 /* ── Interactive periodic table ───────────────────────────────
@@ -669,64 +649,6 @@ function drawGroupAvgRadar(canvas, members, color) {
   ctx.strokeStyle = color;
   ctx.lineWidth   = 2;
   ctx.stroke();
-}
-
-/* ── Heatmap ───────────────────────────────────────────────── */
-
-function renderHeatmap() {
-  const table = document.getElementById('heatmap-table');
-  if (!table) return;
-  const vecs = AppData.criteriaVectors;
-
-  // Short column labels
-  const SHORT = {
-    demand: 'Demand', growth: 'Growth', supplier_concentration: 'Supply\nConc.',
-    reserves: 'Reserves', end_use: 'End-use',
-    substitutability_recyclability: 'Subst. &\nRecycl.', extraction_refining: 'Extraction',
-    upcoming_projects: 'Pipeline', india_position: 'India', price_volatility: 'Volatility',
-  };
-
-  // Sort minerals: by group id then alphabetically
-  const sorted = [...AppData.minerals].sort((a, b) => {
-    const ga = getGroup(a.mineral), gb = getGroup(b.mineral);
-    return ga !== gb ? ga - gb : a.mineral.localeCompare(b.mineral);
-  });
-
-  // Header
-  let html = `<thead><tr>
-    <th class="heatmap-mineral-col">Mineral</th>
-    <th class="heatmap-group-col">Grp</th>
-    ${vecs.map(v => `<th class="heatmap-vector-th" title="${v.name} (max ${v.max})">${SHORT[v.key] || v.name}</th>`).join('')}
-  </tr></thead><tbody>`;
-
-  let lastGroup = null;
-  sorted.forEach(m => {
-    const gid = getGroup(m.mineral);
-    const col  = groupColor(gid);
-    if (gid !== lastGroup) {
-      html += `<tr class="heatmap-group-row">
-        <td colspan="${vecs.length + 2}" style="background:${col}15;color:${col};font-weight:700;font-size:0.68rem;padding:4px 8px;letter-spacing:0.06em;text-transform:uppercase;">${groupName(gid)}</td>
-      </tr>`;
-      lastGroup = gid;
-    }
-    html += `<tr class="heatmap-row" data-mineral="${m.mineral}">
-      <td class="heatmap-mineral-name">${m.mineral}</td>
-      <td><span class="group-chip" style="background:${col}15;color:${col};border-color:${col}40;font-size:0.55rem;padding:1px 5px;">${gid}</span></td>
-      ${vecs.map(v => {
-        const val  = getVectorValue(m, v.key);
-        const bg   = heatmapColor(val);
-        const tc   = heatmapTextColor(val);
-        const disp = val !== null ? val : '—';
-        return `<td class="heatmap-cell" style="background:${bg};color:${tc};" title="${m.mineral} — ${v.name}: ${val !== null ? val + '/' + v.max : 'n/a'}">${disp}</td>`;
-      }).join('')}
-    </tr>`;
-  });
-  html += '</tbody>';
-  table.innerHTML = html;
-
-  table.querySelectorAll('.heatmap-row').forEach(row =>
-    row.addEventListener('click', () => navigate('mineral', row.dataset.mineral))
-  );
 }
 
 /* ════════════════════════════════════════════════════════════
