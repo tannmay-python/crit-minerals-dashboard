@@ -116,6 +116,12 @@ h1, h2, h3, h4, h5 { font-weight: 700; line-height: 1.2; letter-spacing: -0.02em
   font-weight: 700;
   font-size: 0.95rem;
   letter-spacing: -0.01em;
+  text-decoration: none;
+}
+.logo-img {
+  height: 38px;
+  width: auto;
+  display: block;
 }
 
 .logo-icon {
@@ -3599,3 +3605,23 @@ input[type="range"]::-moz-range-thumb {
   .pt-readout-num { font-size: 2.2rem; }
   .pt-grid { gap: 2px; }
 }
+
+/* ── Site footer — credits / makers ──────────────────────── */
+.site-footer {
+  border-top: 1px solid var(--border);
+  margin-top: 44px;
+  padding: 20px 0 36px;
+  background: var(--surface-2);
+}
+.site-footer .container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px 20px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+.site-footer a { color: var(--accent); font-weight: 600; text-decoration: none; }
+.site-footer a:hover { color: var(--accent-hover); text-decoration: underline; }
+.sf-makers { color: var(--text-dim); }
