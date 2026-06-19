@@ -30,9 +30,7 @@
     <nav id="main-nav">
       <button class="nav-btn active" data-page="overview">Overview</button>
       <button class="nav-btn" data-page="explorer">Explorer</button>
-      <button class="nav-btn" data-page="criteria">Criteria</button>
-      <button class="nav-btn" data-page="compare">Compare</button>
-      <button class="nav-btn" data-page="builder">Builder</button>
+      <button class="nav-btn" data-page="methodology">Methodology</button>
       <button class="nav-btn" data-page="groups">Groups</button>
     </nav>
     <span class="header-badge" id="header-badge">51 Minerals · 10 Vectors</span>
@@ -90,20 +88,6 @@
       </div>
       <div class="overview-groups-grid" id="overview-groups-grid"></div>
     </div>
-
-    <!-- Heatmap -->
-    <div class="section heatmap-section">
-      <div class="section-header">
-        <h2 class="section-title">Criticality Heatmap — All 51 Minerals × 10 Vectors</h2>
-        <span class="text-muted text-sm">Hover for value · Click mineral name to open detail · Sorted by group</span>
-      </div>
-      <div class="card" style="padding:16px;">
-        <div class="heatmap-wrap">
-          <table class="heatmap-table" id="heatmap-table"></table>
-        </div>
-      </div>
-      <p class="group-note">Minerals with similar profiles share a group and warrant similar policy responses.</p>
-    </div>
   </div>
 </div><!-- /page-overview -->
 
@@ -134,6 +118,55 @@
         <option value="india_position">India's Position</option>
         <option value="price_volatility">Price Volatility</option>
       </select>
+      <button class="explorer-compare-toggle" id="ec-toggle" aria-expanded="false">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        Compare<span class="ec-count" id="ec-count"></span>
+      </button>
+    </div>
+
+    <!-- COMPARE TRAY (folded in from former Compare tab) -->
+    <div class="explorer-compare hidden" id="explorer-compare">
+      <div class="ec-head">
+        <span class="ec-title">Compare profiles</span>
+        <span class="ec-hint">Overlay up to three minerals' 10-vector shapes. Add minerals here or from any mineral's page.</span>
+        <button class="ec-clear" id="ec-clear">Clear all</button>
+      </div>
+      <div class="compare-selectors" id="compare-selectors">
+        <div class="compare-selector-wrap">
+          <label class="compare-selector-label">Mineral A</label>
+          <select class="compare-select" id="compare-a"><option value="">— Select mineral —</option></select>
+        </div>
+        <div class="compare-selector-wrap">
+          <label class="compare-selector-label">Mineral B</label>
+          <select class="compare-select" id="compare-b"><option value="">— Select mineral —</option></select>
+        </div>
+        <div class="compare-selector-wrap">
+          <label class="compare-selector-label">Mineral C (optional)</label>
+          <select class="compare-select" id="compare-c"><option value="">— Select mineral —</option></select>
+        </div>
+      </div>
+
+      <div id="compare-empty" class="empty-state">
+        <div class="empty-state-icon">⚖</div>
+        <div class="empty-state-text">Select at least two minerals above to compare</div>
+      </div>
+
+      <div id="compare-content" class="hidden">
+        <div class="compare-layout">
+          <div class="compare-radar-box card">
+            <div class="modal-chart-title">Overlaid 10-Vector Radar (normalized to 0–5)</div>
+            <div class="chart-canvas-wrap" style="max-height:400px;">
+              <canvas id="compare-radar-canvas"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <div class="modal-chart-title" style="margin-bottom:10px;">Score Comparison</div>
+            <div class="compare-table-wrap">
+              <table class="compare-table" id="compare-table"></table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="minerals-grid" id="minerals-grid"></div>
@@ -184,12 +217,12 @@
 </div><!-- /page-mineral -->
 
 <!-- ═══════════════════════════════════════════════════════
-     PAGE: CRITERIA
+     PAGE: METHODOLOGY  (scoring framework + heatmap)
 ═══════════════════════════════════════════════════════ -->
-<div id="page-criteria" class="page">
+<div id="page-methodology" class="page">
   <div class="container">
     <section class="hero" style="padding:40px 0 24px;">
-      <div class="hero-eyebrow">Scoring Framework</div>
+      <div class="hero-eyebrow">Methodology</div>
       <h1 style="font-size:clamp(1.4rem,3vw,2.2rem)">How We Score Criticality</h1>
     </section>
 
@@ -199,91 +232,22 @@
     </div>
 
     <div id="criteria-vectors-list"></div>
-  </div>
-</div><!-- /page-criteria -->
 
-<!-- ═══════════════════════════════════════════════════════
-     PAGE: COMPARE
-═══════════════════════════════════════════════════════ -->
-<div id="page-compare" class="page">
-  <div class="container">
-    <section class="hero" style="padding:40px 0 24px;">
-      <div class="hero-eyebrow">Compare Minerals</div>
-      <h1 style="font-size:clamp(1.4rem,3vw,2.2rem)">Side-by-Side Analysis</h1>
-    </section>
-
-    <div class="compare-selectors" id="compare-selectors">
-      <div class="compare-selector-wrap">
-        <label class="compare-selector-label">Mineral A</label>
-        <select class="compare-select" id="compare-a"><option value="">— Select mineral —</option></select>
+    <!-- Heatmap (moved here from Overview) -->
+    <div class="section heatmap-section">
+      <div class="section-header">
+        <h2 class="section-title">Criticality Heatmap — All 51 Minerals × 10 Vectors</h2>
+        <span class="text-muted text-sm">Hover for value · Click mineral name to open detail · Sorted by group</span>
       </div>
-      <div class="compare-selector-wrap">
-        <label class="compare-selector-label">Mineral B</label>
-        <select class="compare-select" id="compare-b"><option value="">— Select mineral —</option></select>
-      </div>
-      <div class="compare-selector-wrap">
-        <label class="compare-selector-label">Mineral C (optional)</label>
-        <select class="compare-select" id="compare-c"><option value="">— Select mineral —</option></select>
-      </div>
-    </div>
-
-    <div id="compare-empty" class="empty-state">
-      <div class="empty-state-icon">⚖</div>
-      <div class="empty-state-text">Select at least two minerals above to compare</div>
-    </div>
-
-    <div id="compare-content" class="hidden">
-      <div class="compare-layout">
-        <div class="compare-radar-box card">
-          <div class="modal-chart-title">Overlaid 10-Vector Radar (normalized to 0–5)</div>
-          <div class="chart-canvas-wrap" style="max-height:400px;">
-            <canvas id="compare-radar-canvas"></canvas>
-          </div>
-        </div>
-        <div class="card">
-          <div class="modal-chart-title" style="margin-bottom:10px;">Score Comparison</div>
-          <div class="compare-table-wrap">
-            <table class="compare-table" id="compare-table"></table>
-          </div>
+      <div class="card" style="padding:16px;">
+        <div class="heatmap-wrap">
+          <table class="heatmap-table" id="heatmap-table"></table>
         </div>
       </div>
+      <p class="group-note">Minerals with similar profiles share a group and warrant similar policy responses.</p>
     </div>
   </div>
-</div><!-- /page-compare -->
-
-<!-- ═══════════════════════════════════════════════════════
-     PAGE: BUILDER
-═══════════════════════════════════════════════════════ -->
-<div id="page-builder" class="page">
-  <div class="container">
-    <section class="hero" style="padding:40px 0 24px;">
-      <div class="hero-eyebrow">Interactive Analysis</div>
-      <h1 style="font-size:clamp(1.4rem,3vw,2.2rem)">Chart Builder</h1>
-      <p class="hero-sub" style="margin-bottom:0;">Plot any two vectors against each other across all 51 minerals. Toggle groups, search to highlight.</p>
-    </section>
-
-    <div class="builder-controls-row">
-      <div class="builder-axis-btn">
-        <label>X Axis</label>
-        <select class="builder-axis-select" id="builder-x-axis"></select>
-      </div>
-      <div class="builder-axis-btn">
-        <label>Y Axis</label>
-        <select class="builder-axis-select" id="builder-y-axis"></select>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:4px;align-self:flex-end;">
-        <label style="font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:var(--text-muted);">Highlight</label>
-        <input class="builder-search" id="builder-search" type="text" placeholder="Type mineral name…" />
-      </div>
-    </div>
-
-    <div class="card" style="padding:0;overflow:hidden;">
-      <svg id="builder-chart-svg" height="520"></svg>
-    </div>
-
-    <div class="builder-group-toggles" id="builder-group-toggles"></div>
-  </div>
-</div><!-- /page-builder -->
+</div><!-- /page-methodology -->
 
 <!-- ═══════════════════════════════════════════════════════
      PAGE: GROUPS
@@ -291,7 +255,7 @@
 <div id="page-groups" class="page">
   <div class="container">
     <section class="hero" style="padding:40px 0 24px;">
-      <div class="hero-eyebrow">Methodology</div>
+      <div class="hero-eyebrow">Grouping</div>
       <h1 style="font-size:clamp(1.4rem,3vw,2.2rem)">Understanding the Six Groups</h1>
       <p class="hero-sub" style="max-width:760px;">The minerals do not fall into neatly separated natural clusters — they occupy a continuous space. Clustering imposes boundaries on that spectrum rather than discovering gaps in it. The boundaries are nonetheless informative.</p>
     </section>

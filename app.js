@@ -29,10 +29,6 @@ const AppState = {
   explorerSearch:     '',
   explorerGroupFilter:'all',
   explorerSort:       '',
-  builderXKey:        'supplier_concentration',
-  builderYKey:        'price_volatility',
-  builderSearch:      '',
-  builderGroupVisible:{},   // { groupId: true/false }
   radarChartMineral:  null, // Chart.js instance
   radarChartCompare:  null, // Chart.js instance
 };
@@ -91,9 +87,6 @@ async function loadData() {
     AppData.criteriaVectors  = cData.vectors;
     AppData.groups           = cData.groups;
     AppData.groupAssignments = gData;
-
-    // All groups visible by default in builder
-    AppData.groups.forEach(g => { AppState.builderGroupVisible[g.id] = true; });
 
     init();
   } catch (err) {
@@ -215,13 +208,11 @@ function navigate(page, mineralName) {
   if (navBtn) navBtn.classList.add('active');
 
   switch (page) {
-    case 'overview': renderOverview();  break;
-    case 'explorer': renderExplorer();  break;
-    case 'mineral':  renderMineralPage(AppState.selectedMineral); break;
-    case 'criteria': renderCriteria();  break;
-    case 'compare':  renderCompare();   break;
-    case 'builder':  renderBuilder();   break;
-    case 'groups':   renderGroups();    break;
+    case 'overview':    renderOverview();    break;
+    case 'explorer':    renderExplorer();    break;
+    case 'mineral':     renderMineralPage(AppState.selectedMineral); break;
+    case 'methodology': renderMethodology(); break;
+    case 'groups':      renderGroups();      break;
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -252,16 +243,23 @@ function init() {
 
   // Scorecard accordion: handled by window.toggleScRow (inline onclick)
 
-  // Add-to-compare button
+  // Add-to-compare button (mineral detail) — folds into the Explorer compare tray
   document.getElementById('mp-add-compare').addEventListener('click', () => {
     const name = AppState.selectedMineral;
     if (!name) return;
     const s = AppState.compareSelections;
-    if      (!s.a) s.a = name;
-    else if (!s.b) s.b = name;
-    else           s.c = name;
-    showToast(`${name} added to compare`);
-    navigate('compare');
+    if (s.a === name || s.b === name || s.c === name) {
+      showToast(`${name} is already in compare`);
+    } else if (!s.a) { s.a = name; showToast(`${name} added to compare`); }
+    else if (!s.b)   { s.b = name; showToast(`${name} added to compare`); }
+    else if (!s.c)   { s.c = name; showToast(`${name} added to compare`); }
+    else             { showToast('Compare is full — clear one to add another'); return; }
+    openCompareTray();
+    navigate('explorer');
+    setTimeout(() => {
+      document.getElementById('explorer-compare')
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 120);
   });
 
   // Explorer search & sort
@@ -274,7 +272,7 @@ function init() {
     renderExplorer();
   });
 
-  // Populate compare selects
+  // Populate compare selects (compare tray now lives inside Explorer)
   const allNames = AppData.minerals.map(m => m.mineral).sort();
   ['a', 'b', 'c'].forEach(slot => {
     const sel = document.getElementById(`compare-${slot}`);
@@ -286,31 +284,23 @@ function init() {
     sel.addEventListener('change', e => {
       AppState.compareSelections[slot] = e.target.value;
       renderCompare();
+      updateCompareTray();
     });
   });
 
-  // Builder axis selects
-  const vecOptions = AppData.criteriaVectors
-    .map(v => `<option value="${v.key}">${v.name} (/${v.max})</option>`)
-    .join('');
-  ['builder-x-axis', 'builder-y-axis'].forEach(id => {
-    const sel = document.getElementById(id);
-    sel.innerHTML = vecOptions;
+  // Compare tray toggle (in Explorer controls)
+  document.getElementById('ec-toggle').addEventListener('click', () => {
+    const tray = document.getElementById('explorer-compare');
+    const willOpen = tray.classList.contains('hidden');
+    if (willOpen) openCompareTray(); else tray.classList.add('hidden');
+    document.getElementById('ec-toggle').setAttribute('aria-expanded', String(willOpen));
   });
-  document.getElementById('builder-x-axis').value = 'supplier_concentration';
-  document.getElementById('builder-y-axis').value = 'price_volatility';
 
-  document.getElementById('builder-x-axis').addEventListener('change', e => {
-    AppState.builderXKey = e.target.value;
-    renderBuilderChart();
-  });
-  document.getElementById('builder-y-axis').addEventListener('change', e => {
-    AppState.builderYKey = e.target.value;
-    renderBuilderChart();
-  });
-  document.getElementById('builder-search').addEventListener('input', e => {
-    AppState.builderSearch = e.target.value.toLowerCase();
-    renderBuilderChart();
+  // Compare tray "Clear all"
+  document.getElementById('ec-clear').addEventListener('click', () => {
+    AppState.compareSelections = { a: '', b: '', c: '' };
+    renderCompare();
+    updateCompareTray();
   });
 
   navigate('overview');
@@ -322,6 +312,11 @@ function init() {
 
 function renderOverview() {
   renderOverviewGroupCards();
+}
+
+/* Methodology page = scoring framework (criteria) + heatmap. */
+function renderMethodology() {
+  renderCriteria();
   renderHeatmap();
 }
 
@@ -590,6 +585,35 @@ function renderExplorer() {
     const canvas = card.querySelector('.mini-10-radar');
     if (canvas) drawMiniRadar10(canvas, card.dataset.mineral);
   });
+
+  // Keep the compare tray in sync whenever Explorer renders.
+  // Un-hide the tray first so the radar canvas has real dimensions before Chart.js draws.
+  updateCompareTray();
+  renderCompare();
+}
+
+/* ── Compare tray (Explorer) ─────────────────────────────────── */
+
+/** Count selected, update the toggle badge, and auto-open the tray if non-empty. */
+function updateCompareTray() {
+  const s = AppState.compareSelections;
+  const n = ['a', 'b', 'c'].filter(k => s[k]).length;
+
+  const countEl = document.getElementById('ec-count');
+  if (countEl) countEl.textContent = n ? ` (${n})` : '';
+
+  // If something is selected, make sure the tray is visible.
+  if (n > 0) {
+    const tray = document.getElementById('explorer-compare');
+    if (tray) tray.classList.remove('hidden');
+    document.getElementById('ec-toggle')?.setAttribute('aria-expanded', 'true');
+  }
+}
+
+/** Force the compare tray open (used by the mineral-page Add-to-Compare button). */
+function openCompareTray() {
+  document.getElementById('explorer-compare')?.classList.remove('hidden');
+  document.getElementById('ec-toggle')?.setAttribute('aria-expanded', 'true');
 }
 
 function buildMineralCard(m) {
@@ -1207,111 +1231,6 @@ function renderCompare() {
 }
 
 /* ════════════════════════════════════════════════════════════
-   CHART BUILDER PAGE
-   ════════════════════════════════════════════════════════════ */
-
-function renderBuilder() {
-  renderBuilderGroupToggles();
-  renderBuilderChart();
-}
-
-function renderBuilderGroupToggles() {
-  const wrap = document.getElementById('builder-group-toggles');
-  if (wrap.dataset.rendered) return;
-  wrap.dataset.rendered = 'true';
-
-  wrap.innerHTML = AppData.groups.map(g =>
-    `<button class="builder-group-toggle active" data-gid="${g.id}">
-       <span class="toggle-dot" style="background:${g.color}"></span>
-       ${g.name}
-     </button>`
-  ).join('');
-
-  wrap.addEventListener('click', e => {
-    const btn = e.target.closest('.builder-group-toggle');
-    if (!btn) return;
-    const gid = Number(btn.dataset.gid);
-    AppState.builderGroupVisible[gid] = !AppState.builderGroupVisible[gid];
-    btn.classList.toggle('active', AppState.builderGroupVisible[gid]);
-    renderBuilderChart();
-  });
-}
-
-/** Deterministic jitter so overlapping discrete-score points separate slightly. */
-function dJitter(mineralName, axis) {
-  let h = 0;
-  for (let i = 0; i < mineralName.length; i++) h = Math.imul(31, h) + mineralName.charCodeAt(i) | 0;
-  const v = ((h >> (axis === 'x' ? 0 : 8)) & 0xff) / 255;
-  return (v - 0.5) * 0.022; // ±1.1% of axis range
-}
-
-function renderBuilderChart() {
-  const svg  = document.getElementById('builder-chart-svg');
-  if (!svg) return;
-  const xKey = AppState.builderXKey;
-  const yKey = AppState.builderYKey;
-  const xVec = AppData.criteriaVectors.find(v => v.key === xKey);
-  const yVec = AppData.criteriaVectors.find(v => v.key === yKey);
-  const srch = AppState.builderSearch;
-
-  const W  = svg.parentElement.clientWidth || 900;
-  const H  = 520;
-  const M  = { top: 24, right: 24, bottom: 54, left: 54 };
-  const PW = W - M.left - M.right;
-  const PH = H - M.top  - M.bottom;
-
-  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-
-  let html = `<rect x="0" y="0" width="${W}" height="${H}" fill="#fdf4d0"/>`;
-  html += `<rect x="${M.left}" y="${M.top}" width="${PW}" height="${PH}" fill="rgba(241,162,34,0.02)" rx="4"/>`;
-
-  // Grid
-  [0, 0.25, 0.5, 0.75, 1].forEach(t => {
-    const gx = M.left + t * PW;
-    const gy = M.top  + (1 - t) * PH;
-    html += `<line x1="${gx}" y1="${M.top}" x2="${gx}" y2="${M.top+PH}" stroke="rgba(26,8,4,0.07)" stroke-width="1"/>`;
-    html += `<line x1="${M.left}" y1="${gy}" x2="${M.left+PW}" y2="${gy}" stroke="rgba(26,8,4,0.07)" stroke-width="1"/>`;
-    if (xVec) html += `<text x="${gx}" y="${M.top+PH+16}" text-anchor="middle" font-size="8.5" fill="#9a7040" font-family="Hanken Grotesk">${(t*xVec.max).toFixed(1)}</text>`;
-    if (yVec) html += `<text x="${M.left-6}" y="${gy+3}" text-anchor="end" font-size="8.5" fill="#9a7040" font-family="Hanken Grotesk">${((1-t)*yVec.max).toFixed(1)}</text>`;
-  });
-
-  // Axis labels
-  if (xVec) html += `<text x="${M.left+PW/2}" y="${H-8}" text-anchor="middle" font-size="10" fill="#6b4020" font-family="Hanken Grotesk,sans-serif" font-weight="600">${xVec.name} (/${xVec.max})</text>`;
-  if (yVec) html += `<text x="14" y="${M.top+PH/2}" text-anchor="middle" font-size="10" fill="#6b4020" font-family="Hanken Grotesk,sans-serif" font-weight="600" transform="rotate(-90,14,${M.top+PH/2})">${yVec.name} (/${yVec.max})</text>`;
-
-  // Dots
-  AppData.minerals.forEach(m => {
-    const gid = getGroup(m.mineral);
-    if (!AppState.builderGroupVisible[gid]) return;
-    const xVal = getVectorValue(m, xKey);
-    const yVal = getVectorValue(m, yKey);
-    if (xVal === null || yVal === null) return;
-
-    const xN    = (xVec ? xVal / xVec.max : 0) + dJitter(m.mineral, 'x');
-    const yN    = (yVec ? yVal / yVec.max : 0) + dJitter(m.mineral, 'y');
-    const cx    = M.left + Math.max(0, Math.min(1, xN)) * PW;
-    const cy    = M.top  + (1 - Math.max(0, Math.min(1, yN))) * PH;
-    const col   = groupColor(gid);
-    const isHit = srch && m.mineral.toLowerCase().includes(srch);
-    const isDim = srch && !isHit;
-    const op    = isDim ? 0.12 : 0.85;
-    const rad   = isHit ? 7 : 5;
-
-    html += `<g class="builder-dot" data-mineral="${m.mineral}" style="cursor:pointer;">
-      <circle cx="${cx}" cy="${cy}" r="${rad}" fill="${col}" fill-opacity="${op}" stroke="${isHit ? '#1a0804':'#fdf4d0'}" stroke-width="${isHit?1.5:0.8}"/>
-      ${isHit ? `<text x="${cx}" y="${cy-rad-3}" text-anchor="middle" font-size="9" fill="#1a0804" font-family="Hanken Grotesk" font-weight="700">${m.mineral}</text>` : ''}
-      <title>${m.mineral} (${groupName(gid)})
-${xVec?.name}: ${xVal}/${xVec?.max}  ·  ${yVec?.name}: ${yVal}/${yVec?.max}</title>
-    </g>`;
-  });
-
-  svg.innerHTML = html;
-  svg.querySelectorAll('.builder-dot').forEach(el =>
-    el.addEventListener('click', () => navigate('mineral', el.dataset.mineral))
-  );
-}
-
-/* ════════════════════════════════════════════════════════════
    GROUPS PAGE
    ════════════════════════════════════════════════════════════ */
 
@@ -1414,8 +1333,7 @@ let resizeTimer;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(() => {
-    if (AppState.currentPage === 'overview') renderOverviewScatter();
-    if (AppState.currentPage === 'builder')  renderBuilderChart();
+    // Canvas radars redraw on navigation; nothing layout-critical depends on resize.
   }, 180);
 });
 
