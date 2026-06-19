@@ -61,7 +61,7 @@
       <div class="pt-head">
         <div class="pt-head-text">
           <h2 class="section-title">How much of the periodic table is "critical"?</h2>
-          <p class="pt-intro">Two ways to read the same problem. <strong>India's lens</strong> strips the table down to what is actually mined, then shows how much of it India calls critical. <strong>The world's lists</strong> shows how the same elements pile up across the five major national lists. Use the toggle.</p>
+          <p class="pt-intro">Three ways to read the same problem. <strong>India's lens</strong> strips the table down to what is actually mined, then shows how much of it India calls critical. <strong>The world's lists</strong> shows how the same elements pile up across the five major national lists. <strong>By group</strong> colours each critical mineral by the group its profile places it in. Use the toggle.</p>
         </div>
         <div class="pt-readout">
           <div class="pt-readout-num" id="pt-num">118</div>
@@ -72,6 +72,7 @@
       <div class="pt-modes" id="pt-modes">
         <button class="pt-mode active" data-mode="india">India's lens</button>
         <button class="pt-mode" data-mode="lists">On the world's lists</button>
+        <button class="pt-mode" data-mode="groups">By group</button>
       </div>
 
       <div class="pt-grid" id="pt-grid"></div>
@@ -108,6 +109,9 @@
         </span>
         <span class="pt-ll-label">All 5</span>
       </div>
+
+      <!-- By-group legend (built in JS from the group palette) -->
+      <div class="pt-grouplegend hidden" id="pt-grouplegend"></div>
     </section>
   </div>
 </div><!-- /page-overview -->

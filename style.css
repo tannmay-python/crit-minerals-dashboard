@@ -3587,6 +3587,19 @@ input[type="range"]::-moz-range-thumb {
 .pt-cell[data-state="lists"][data-lists="4"] .pt-z,
 .pt-cell[data-state="lists"][data-lists="5"] .pt-z { color: rgba(255,255,255,0.7); }
 
+/* By-group view: inline fill + text colour set in JS; just reset the size/opacity */
+.pt-cell[data-state="group"] { opacity: 1; transform: none; }
+
+/* By-group legend */
+.pt-grouplegend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 16px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
 /* Lists-mode gradient legend */
 .pt-listlegend { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.72rem; color: var(--text-muted); }
 .pt-ll-scale { display: inline-flex; }

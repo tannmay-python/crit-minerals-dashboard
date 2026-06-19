@@ -388,7 +388,10 @@ const PT_LISTS = {
 };
 
 let ptStep = 0;
-let ptMode = 'india';   // 'india' (reduction) | 'lists' (count across national lists)
+let ptMode = 'india';   // 'india' (reduction) | 'lists' (national-list count) | 'groups' (by group)
+
+/* Two of the 51 are listed under a mineral name, not the element name. */
+const PT_GROUP_ALIAS = { Carbon: 'Graphite', Potassium: 'Potash' };
 
 function renderPeriodicTable() {
   const grid = document.getElementById('pt-grid');
@@ -398,7 +401,8 @@ function renderPeriodicTable() {
   if (!grid.dataset.built) {
     grid.innerHTML = PT_ELEMENTS.map(([z, sym, name, row, col, cat, crit]) => {
       const lists = PT_LISTS[sym] || 0;
-      return `<div class="pt-cell" data-cat="${cat}" data-crit="${crit}" data-lists="${lists}"
+      const gid   = crit ? getGroup(PT_GROUP_ALIAS[name] || name) : '';
+      return `<div class="pt-cell" data-cat="${cat}" data-crit="${crit}" data-lists="${lists}" data-group="${gid}"
             style="grid-row:${row};grid-column:${col}"
             title="${name} (${sym}, ${z})">
          <span class="pt-z">${z}</span>
@@ -438,22 +442,43 @@ function renderPeriodicTable() {
     modesEl.dataset.built = 'true';
   }
 
+  // Build the by-group legend once, from the live group palette
+  const glEl = document.getElementById('pt-grouplegend');
+  if (glEl && !glEl.dataset.built) {
+    const ordered = [...AppData.groups].sort((a, b) =>
+      a.id === 0 ? 1 : b.id === 0 ? -1 : a.id - b.id);
+    glEl.innerHTML = ordered.map(g =>
+      `<span class="pt-legend-item"><span class="pt-swatch" style="background:${g.color}"></span>${g.id === 0 ? 'Outlier' : 'Group ' + g.id}: ${g.name}</span>`
+    ).join('') +
+      `<span class="pt-legend-item"><span class="pt-swatch pt-sw-mined"></span>Other mineable</span>`;
+    glEl.dataset.built = 'true';
+  }
+
   setPtMode(ptMode);
 }
 
-/* Switch between the India-reduction view and the national-lists heatmap. */
+/* Switch between the three views of the table. */
 function setPtMode(mode) {
   ptMode = mode;
   document.querySelectorAll('#pt-modes .pt-mode').forEach(b =>
     b.classList.toggle('active', b.dataset.mode === mode));
 
-  const isLists = mode === 'lists';
-  document.getElementById('pt-india-controls').classList.toggle('hidden', isLists);
-  document.getElementById('pt-legend').classList.toggle('hidden', isLists);
-  document.getElementById('pt-listlegend').classList.toggle('hidden', !isLists);
+  // Clear any inline colours left by a previous by-group render
+  document.querySelectorAll('#pt-grid .pt-cell').forEach(c => {
+    c.style.background = ''; c.style.borderColor = '';
+    const sym = c.querySelector('.pt-sym'), z = c.querySelector('.pt-z');
+    if (sym) sym.style.color = '';
+    if (z)   z.style.color = '';
+  });
 
-  if (isLists) applyListsView();
-  else         setPtStep(ptStep);
+  document.getElementById('pt-india-controls').classList.toggle('hidden', mode !== 'india');
+  document.getElementById('pt-legend').classList.toggle('hidden', mode !== 'india');
+  document.getElementById('pt-listlegend').classList.toggle('hidden', mode !== 'lists');
+  document.getElementById('pt-grouplegend').classList.toggle('hidden', mode !== 'groups');
+
+  if      (mode === 'lists')  applyListsView();
+  else if (mode === 'groups') applyGroupsView();
+  else                        setPtStep(ptStep);
 }
 
 /* Colour every cell by how many national lists include it (0–5). */
@@ -465,6 +490,35 @@ function applyListsView() {
   document.getElementById('pt-label').textContent = 'major lists tracked';
   document.getElementById('pt-caption').innerHTML =
     `<strong>The lists are swelling.</strong> Each element is shaded by how many of the five major national lists (US, EU, China, Russia, India) name it. When the same elements land on list after list, "critical" stops telling any one government what to prioritise.`;
+}
+
+/* Perceived luminance of a #rrggbb colour (0–255). */
+function colorLuminance(hex) {
+  const h = hex.replace('#', '');
+  const r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);
+  return 0.299 * r + 0.587 * g + 0.114 * b;
+}
+
+/* Colour the 51 critical minerals by the group their profile places them in. */
+function applyGroupsView() {
+  document.querySelectorAll('#pt-grid .pt-cell').forEach(cell => {
+    if (cell.dataset.crit === '1') {
+      const col   = groupColor(Number(cell.dataset.group));
+      const light = colorLuminance(col) > 150;   // pick legible text per fill
+      cell.dataset.state = 'group';
+      cell.style.background = col;
+      cell.style.borderColor = col;
+      const sym = cell.querySelector('.pt-sym'), z = cell.querySelector('.pt-z');
+      if (sym) sym.style.color = light ? '#1a0804' : '#fff';
+      if (z)   z.style.color   = light ? 'rgba(26,8,4,0.55)' : 'rgba(255,255,255,0.7)';
+    } else {
+      cell.dataset.state = cell.dataset.cat === 'com' ? 'mined' : 'removed';
+    }
+  });
+  document.getElementById('pt-num').textContent   = '6';
+  document.getElementById('pt-label').textContent = 'mineral groups';
+  document.getElementById('pt-caption').innerHTML =
+    `<strong>Same list, six problems.</strong> Each critical mineral is coloured by the group its profile places it in. Minerals in a group share the same kind of bottleneck and call for the same response. Open the <strong>Groups</strong> tab to explore each.`;
 }
 
 function setPtStep(step) {
