@@ -3552,6 +3552,47 @@ input[type="range"]::-moz-range-thumb {
 .pt-sw-gas { background: #c2d6e0; }
 .pt-sw-hhe { background: #b8ddcc; }
 
+/* Mode toggle (India lens / world lists) */
+.pt-modes { display: flex; justify-content: center; gap: 8px; margin: 2px 0 16px; }
+.pt-mode {
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 7px 18px;
+  border-radius: 100px;
+  border: 1px solid var(--border-2);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.pt-mode:hover { border-color: var(--accent); color: var(--accent); }
+.pt-mode.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* Lists-mode cell shading: 0 (light) → 5 (deep slate), echoing the paper's figure */
+.pt-cell[data-state="lists"] { opacity: 1; transform: none; }
+.pt-cell[data-state="lists"][data-lists="0"] { background: #eef2f4; border-color: #e2e8ea; }
+.pt-cell[data-state="lists"][data-lists="1"] { background: #d3dee2; border-color: #c4d2d7; }
+.pt-cell[data-state="lists"][data-lists="2"] { background: #aec3cb; border-color: #9db6bf; }
+.pt-cell[data-state="lists"][data-lists="3"] { background: #84a3ad; border-color: #74959f; }
+.pt-cell[data-state="lists"][data-lists="4"] { background: #557480; border-color: #4a6670; }
+.pt-cell[data-state="lists"][data-lists="5"] { background: #324f5a; border-color: #2a434d; }
+.pt-cell[data-state="lists"][data-lists="4"] .pt-sym,
+.pt-cell[data-state="lists"][data-lists="5"] .pt-sym { color: #fff; }
+.pt-cell[data-state="lists"][data-lists="4"] .pt-z,
+.pt-cell[data-state="lists"][data-lists="5"] .pt-z { color: rgba(255,255,255,0.7); }
+
+/* Lists-mode gradient legend */
+.pt-listlegend { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.72rem; color: var(--text-muted); }
+.pt-ll-scale { display: inline-flex; }
+.pt-ll-cell { width: 28px; height: 14px; border: 1px solid rgba(0,0,0,0.06); border-right: none; }
+.pt-ll-cell:last-child { border-right: 1px solid rgba(0,0,0,0.06); }
+.pt-ll-cell[data-lists="0"] { background: #eef2f4; border-top-left-radius: 3px; border-bottom-left-radius: 3px; }
+.pt-ll-cell[data-lists="1"] { background: #d3dee2; }
+.pt-ll-cell[data-lists="2"] { background: #aec3cb; }
+.pt-ll-cell[data-lists="3"] { background: #84a3ad; }
+.pt-ll-cell[data-lists="4"] { background: #557480; }
+.pt-ll-cell[data-lists="5"] { background: #324f5a; border-top-right-radius: 3px; border-bottom-right-radius: 3px; }
+
 @media (max-width: 760px) {
   .pt-sym { font-size: 0.5rem; }
   .pt-z { font-size: 0.3rem; top: 1px; left: 2px; }

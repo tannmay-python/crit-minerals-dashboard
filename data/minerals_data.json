@@ -1007,11 +1007,11 @@
           }
         },
         "end_use": {
-          "composite": 11.0,
+          "composite": 10.0,
           "max": 10,
-          "reason": "Defense & National Security (+1.5): structurally foundational in munitions, radar, and military electronics. Energy Generation & Grid (+1.5): acts as the indispensable conductor for global power transmission and renewable grids. Agriculture & Food Security (+1.5): deployed universally in copper-based fungicides. Semiconductors & Computing (+1.0): essential for chip fabrication and data center cabling. Electrification & Transport (+1.0): critical for EV motors and charging architecture. Healthcare & Biomedical (+1.0): utilized in MRI machines and antimicrobial surfaces. Construction & Heavy Industry (+0.5): foundational for commercial plumbing and HVAC.\n\n\nSector presence scores total 8.0 across 7 qualifying sectors. The breadth bonus adds +3.0, yielding a composite score of 11.0, which caps at the framework maximum of 10.0.",
+          "reason": "Defense & National Security (+1.5): structurally foundational in munitions, radar, and military electronics. Energy Generation & Grid (+1.5): acts as the indispensable conductor for global power transmission and renewable grids. Agriculture & Food Security (+0.5): deployed universally in copper-based fungicides. Semiconductors & Computing (+1.0): essential for chip fabrication and data center cabling. Electrification & Transport (+1.0): critical for EV motors and charging architecture. Healthcare & Biomedical (+1.0): utilized in MRI machines and antimicrobial surfaces. Construction & Heavy Industry (+0.5): foundational for commercial plumbing and HVAC.\n\n\nSector presence scores total 7.0 across 7 qualifying sectors. The breadth bonus adds +3.0, yielding the framework maximum of 10.0.",
           "sub": {
-            "sectoral": 8.0,
+            "sectoral": 7.0,
             "breadth": 3.0
           }
         },
@@ -1307,11 +1307,11 @@
           }
         },
         "end_use": {
-          "composite": 6.5,
+          "composite": 5.5,
           "max": 10,
-          "reason": "Agriculture & Food Security (+1.5): acts as an irreplaceable macronutrient underpinning global food production. Energy Generation & Grid (+1.5): high-purity phosphoric acid is the chemical foundation for LFP (lithium iron phosphate) grid storage and EV batteries. Defense & National Security (+1.5): deployed heavily in incendiary munitions, smoke screens, and tracer rounds. Healthcare & Biomedical (+0.5): acts as a critical intermediary in pharmaceutical DNA/bone structure treatments.\n\n\nSector presence scores total 5.0 across 4 qualifying sectors. The breadth bonus adds +1.5, yielding an objective composite score of 6.5.",
+          "reason": "Agriculture & Food Security (+0.5): acts as an irreplaceable macronutrient underpinning global food production. Energy Generation & Grid (+1.5): high-purity phosphoric acid is the chemical foundation for LFP (lithium iron phosphate) grid storage and EV batteries. Defense & National Security (+1.5): deployed heavily in incendiary munitions, smoke screens, and tracer rounds. Healthcare & Biomedical (+0.5): acts as a critical intermediary in pharmaceutical DNA/bone structure treatments.\n\n\nSector presence scores total 4 across 4 qualifying sectors. The breadth bonus adds +1.5, yielding an objective composite score of 5.5",
           "sub": {
-            "sectoral": 5.0,
+            "sectoral": 4.0,
             "breadth": 1.5
           }
         },
@@ -1382,11 +1382,11 @@
           }
         },
         "end_use": {
-          "composite": 6.5,
+          "composite": 5.5,
           "max": 10,
-          "reason": "Agriculture & Food Security (+1.5): acts as an irreplaceable macronutrient and foundational pillar of mass fertilizer production. Energy Generation & Grid (+1.5): utilized in emerging commercial potassium-ion battery (KIB) architectures. Defense & National Security (+1.0): incorporated into gunpowder formulations, pyrotechnics, and military food rations. Healthcare & Biomedical (+1.0): deployed widely in intravenous fluids and pharmaceutical manufacturing.\n\n\nSector presence scores total 5.0 across 4 qualifying sectors. The breadth bonus adds +1.5, yielding an objective composite score of 6.5.",
+          "reason": "Agriculture & Food Security (+0.5): acts as an irreplaceable macronutrient and foundational pillar of mass fertilizer production. Energy Generation & Grid (+1.5): utilized in emerging commercial potassium-ion battery (KIB) architectures. Defense & National Security (+1.0): incorporated into gunpowder formulations, pyrotechnics, and military food rations. Healthcare & Biomedical (+1.0): deployed widely in intravenous fluids and pharmaceutical manufacturing.\n\n\nSector presence scores total 4.0 across 4 qualifying sectors. The breadth bonus adds +1.5, yielding an objective composite score of 5.5",
           "sub": {
-            "sectoral": 5.0,
+            "sectoral": 4.0,
             "breadth": 1.5
           }
         },
@@ -2207,11 +2207,11 @@
           }
         },
         "end_use": {
-          "composite": 6.0,
+          "composite": 5.0,
           "max": 10,
-          "reason": "Energy Generation & Grid (+1.5): selenium functions as a key material in CIGS thin-film solar cells. Construction & Heavy Industry (+0.5): utilized as a decolorizing agent in glass manufacturing and as a free-machining additive in steel alloys. Healthcare & Biomedical (+1.0): applied in pharmaceutical anti-dandruff shampoos and human dietary supplements. Agriculture & Food Security (+1.5): serves as a major input for livestock dietary supplements and selenium-enriched fertilizers.\n\n\nSector presence scores total 4.5 across 4 qualifying sectors. The breadth bonus for 4 sectors adds +1.5, yielding an objective composite score of 6.0.",
+          "reason": "Energy Generation & Grid (+1.5): selenium functions as a key material in CIGS thin-film solar cells. Construction & Heavy Industry (+0.5): utilized as a decolorizing agent in glass manufacturing and as a free-machining additive in steel alloys. Healthcare & Biomedical (+1.0): applied in pharmaceutical anti-dandruff shampoos and human dietary supplements. Agriculture & Food Security (+0.5): serves as a major input for livestock dietary supplements and selenium-enriched fertilizers.\n\n\nSector presence scores total 3.5 across 4 qualifying sectors. The breadth bonus for 4 sectors adds +1.5, yielding an objective composite score of 5.",
           "sub": {
-            "sectoral": 4.5,
+            "sectoral": 3.5,
             "breadth": 1.5
           }
         },

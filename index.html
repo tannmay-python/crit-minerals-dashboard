@@ -50,9 +50,9 @@
       <div class="problem-eyebrow">Critical Minerals Analysis · India</div>
       <h1 class="problem-headline">Nothing is critical if everything is critical.</h1>
       <div class="overview-intro-block">
-        <p>India's <strong>National Critical Mineral Mission</strong> commits <strong>₹34,300 crore over seven years</strong> to secure a list of 51 minerals. But of the roughly <strong>76 elements the world mines for commercial use</strong>, India designates 51 as critical — two-thirds of the usable periodic table. A label applied that broadly cannot tell the Mission where the next rupee should go. If everything is a priority, nothing is.</p>
-        <p>The deeper problem is that "critical" is a single label stretched over very different problems. It puts copper in the same category as ytterbium — a base metal mined by the megatonne beside a trace rare earth refined almost entirely in one country — obscuring that they share almost nothing about how their supply is secured. A mineral can be hard to secure because it is geologically scarce, because its refining sits in one country, because it has no substitute, or because its price is weaponised. Each calls for a different response. In the scramble to diversify away from China's dominance, that distinction is the first thing lost.</p>
-        <p>India holds large reserves but almost none of the mining and processing capacity to turn them into usable supply. Closing that gap on a fixed budget means knowing not just <em>what</em> is important, but <em>why</em>, <em>where</em> the bottleneck sits, and <em>how</em> to fix it. This dashboard takes the list apart: it scores all 51 minerals across <strong>ten measurable vectors</strong> and reads the <em>shape</em> of each profile — never a single total — to sort them into six groups that each warrant a distinct response. Defining criticality properly is what tells the state where to act, and where it need not act at all.</p>
+        <p>India's <strong>National Critical Mineral Mission</strong> commits <strong>₹34,300 crore over seven years</strong> to secure a list of 51 minerals. But of the roughly <strong>76 elements the world mines for commercial use</strong>, India designates 51 as critical, two-thirds of the usable periodic table. A label applied that broadly cannot tell the Mission where the next rupee should go. If everything is a priority, nothing is.</p>
+        <p>The deeper problem is that "critical" is a single label stretched over very different problems. It puts copper in the same category as ytterbium, a base metal mined by the megatonne sitting beside a trace rare earth refined almost entirely in one country. The two share almost nothing about how their supply is secured. A mineral can be hard to secure because it is geologically scarce, because its refining sits in one country, because it has no substitute, or because its price is weaponised. Each calls for a different response. In the scramble to diversify away from China's dominance, that distinction is the first thing lost.</p>
+        <p>India holds large reserves but almost none of the mining and processing capacity to turn them into usable supply. Closing that gap on a fixed budget means knowing not just <em>what</em> is important, but <em>why</em>, <em>where</em> the bottleneck sits, and <em>how</em> to fix it. This dashboard takes the list apart: it scores all 51 minerals across <strong>ten measurable vectors</strong> and reads the <em>shape</em> of each profile, never a single total, to sort them into six groups that each warrant a distinct response. Defining criticality properly is what tells the state where to act, and where it need not act at all.</p>
       </div>
     </div>
   </section>
@@ -63,7 +63,7 @@
       <div class="pt-head">
         <div class="pt-head-text">
           <h2 class="section-title">How much of the periodic table is "critical"?</h2>
-          <p class="pt-intro">Strip the periodic table down to what is actually mined for commercial use, and India calls two-thirds of what remains critical. Step through the reduction.</p>
+          <p class="pt-intro">Two ways to read the same problem. <strong>India's lens</strong> strips the table down to what is actually mined, then shows how much of it India calls critical. <strong>The world's lists</strong> shows how the same elements pile up across the five major national lists. Use the toggle.</p>
         </div>
         <div class="pt-readout">
           <div class="pt-readout-num" id="pt-num">118</div>
@@ -71,9 +71,15 @@
         </div>
       </div>
 
+      <div class="pt-modes" id="pt-modes">
+        <button class="pt-mode active" data-mode="india">India's lens</button>
+        <button class="pt-mode" data-mode="lists">On the world's lists</button>
+      </div>
+
       <div class="pt-grid" id="pt-grid"></div>
 
-      <div class="pt-controls">
+      <!-- India-lens controls: step through the reduction -->
+      <div class="pt-controls" id="pt-india-controls">
         <button class="pt-arrow" id="pt-prev" aria-label="Previous step">‹</button>
         <div class="pt-steps" id="pt-steps"></div>
         <button class="pt-arrow" id="pt-next" aria-label="Next step">›</button>
@@ -81,13 +87,28 @@
 
       <p class="pt-caption" id="pt-caption"></p>
 
+      <!-- India-lens legend (categories) -->
       <div class="pt-legend" id="pt-legend">
         <span class="pt-legend-item"><span class="pt-swatch pt-sw-critical"></span>Critical (India)</span>
         <span class="pt-legend-item"><span class="pt-swatch pt-sw-mined"></span>Mined, not listed</span>
         <span class="pt-legend-item"><span class="pt-swatch pt-sw-syn"></span>Synthetic</span>
         <span class="pt-legend-item"><span class="pt-swatch pt-sw-rad"></span>Radioactive</span>
         <span class="pt-legend-item"><span class="pt-swatch pt-sw-gas"></span>Gas</span>
-        <span class="pt-legend-item"><span class="pt-swatch pt-sw-hhe"></span>H · He</span>
+        <span class="pt-legend-item"><span class="pt-swatch pt-sw-hhe"></span>H, He</span>
+      </div>
+
+      <!-- World-lists legend (0–5 gradient) -->
+      <div class="pt-listlegend hidden" id="pt-listlegend">
+        <span class="pt-ll-label">On 0 lists</span>
+        <span class="pt-ll-scale">
+          <span class="pt-ll-cell" data-lists="0"></span>
+          <span class="pt-ll-cell" data-lists="1"></span>
+          <span class="pt-ll-cell" data-lists="2"></span>
+          <span class="pt-ll-cell" data-lists="3"></span>
+          <span class="pt-ll-cell" data-lists="4"></span>
+          <span class="pt-ll-cell" data-lists="5"></span>
+        </span>
+        <span class="pt-ll-label">All 5</span>
       </div>
     </section>
 
@@ -108,7 +129,7 @@
     </div>
 
     <div class="overview-note-card">
-      No cumulative score is shown anywhere in this dashboard. The vectors are correlated — summing them manufactures false equivalence. The point is the shape of a mineral's profile, never its total.
+      No cumulative score is shown anywhere in this dashboard. The vectors are correlated, so summing them manufactures false equivalence. The point is the shape of a mineral's profile, never its total.
     </div>
   </div>
 </div><!-- /page-overview -->

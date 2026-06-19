@@ -362,18 +362,33 @@ const PT_STEPS = [
   { num: 118, label: 'known elements', pill: '118 elements',
     caption: 'The periodic table holds 118 known elements. Only a fraction are even candidates for a minerals strategy.' },
   { num: 94, label: 'occur in nature', pill: '−24 synthetic', removes: 'syn',
-    caption: 'Elements 95–118 are synthetic — created in particle accelerators, never mined. Set them aside and 94 occur in nature.' },
+    caption: 'Elements 95 to 118 are synthetic, created in particle accelerators and never mined. Set them aside and 94 occur in nature.' },
   { num: 85, label: 'non-radioactive', pill: '−9 radioactive', removes: 'rad',
-    caption: 'Nine more are radioactive with no commercial supply chain — technetium, polonium, plutonium and the like. That leaves 85.' },
+    caption: 'Nine more are radioactive with no commercial supply chain, like technetium, polonium and plutonium. That leaves 85.' },
   { num: 78, label: 'solids & metals', pill: '−7 gases', removes: 'gas',
-    caption: 'Seven are atmospheric gases — nitrogen, oxygen, the noble gases — not mined as ores. Down to 78.' },
+    caption: 'Seven are atmospheric gases such as nitrogen, oxygen and the noble gases, not mined as ores. Down to 78.' },
   { num: 76, label: 'commercially mined', pill: '−2 H, He', removes: 'hhe',
-    caption: 'Set aside hydrogen and helium, and roughly 76 elements are actually mined for commercial use — the usable periodic table.' },
+    caption: 'Set aside hydrogen and helium, and roughly 76 elements are actually mined for commercial use. That is the usable periodic table.' },
   { num: 51, label: 'designated critical', pill: '51 critical', highlightCritical: true,
-    caption: 'India designates 51 of these 76 as critical — two-thirds. When the label covers that much of what we mine, it can no longer tell policymakers where to act first.' },
+    caption: 'India designates 51 of these 76 as critical, fully two-thirds. When the label covers that much of what we mine, it can no longer tell policymakers where to act first.' },
 ];
 
+/* Number of the five major national critical-mineral lists (US, EU, China,
+   Russia, India) on which each element appears, 0–5. Read from the paper's
+   "elements by number of lists" figure; symbols absent here are on 0 lists.
+   ▸ VERIFY against the author's source spreadsheet and correct any cell. */
+const PT_LISTS = {
+  Li:4, Be:4, B:2, C:2, N:1, O:1, F:3,
+  Na:1, Mg:3, Al:2, Si:3, P:3, S:1, Cl:1,
+  K:1, Ca:1, Sc:3, Ti:4, V:4, Cr:4, Mn:3, Fe:2, Co:5, Ni:4, Cu:4, Zn:2, Ga:5, Ge:4, As:2, Se:3, Br:1,
+  Rb:1, Sr:3, Y:4, Zr:4, Nb:5, Mo:4, Tc:1, Ru:3, Rh:3, Pd:4, Ag:2, Cd:3, In:4, Sn:4, Sb:5, Te:4, I:1,
+  Cs:2, Ba:3, Hf:3, Ta:4, W:5, Re:3, Os:2, Ir:3, Pt:4, Au:1, Hg:2, Tl:1, Pb:2, Bi:3,
+  La:4, Ce:4, Pr:4, Nd:5, Pm:1, Sm:3, Eu:4, Gd:4, Tb:5, Dy:5, Ho:3, Er:4, Tm:3, Yb:4, Lu:4,
+  Th:2, U:3,
+};
+
 let ptStep = 0;
+let ptMode = 'india';   // 'india' (reduction) | 'lists' (count across national lists)
 
 function renderPeriodicTable() {
   const grid = document.getElementById('pt-grid');
@@ -381,14 +396,15 @@ function renderPeriodicTable() {
 
   // Build the cells once
   if (!grid.dataset.built) {
-    grid.innerHTML = PT_ELEMENTS.map(([z, sym, name, row, col, cat, crit]) =>
-      `<div class="pt-cell" data-cat="${cat}" data-crit="${crit}"
+    grid.innerHTML = PT_ELEMENTS.map(([z, sym, name, row, col, cat, crit]) => {
+      const lists = PT_LISTS[sym] || 0;
+      return `<div class="pt-cell" data-cat="${cat}" data-crit="${crit}" data-lists="${lists}"
             style="grid-row:${row};grid-column:${col}"
             title="${name} (${sym}, ${z})">
          <span class="pt-z">${z}</span>
          <span class="pt-sym">${sym}</span>
-       </div>`
-    ).join('');
+       </div>`;
+    }).join('');
 
     // f-block connector labels + a thin spacer row between the main table and the f-block
     grid.insertAdjacentHTML('beforeend',
@@ -406,14 +422,49 @@ function renderPeriodicTable() {
       `<button class="pt-step-pill" data-step="${i}">${s.pill}</button>`
     ).join('');
     stepsEl.querySelectorAll('.pt-step-pill').forEach(btn =>
-      btn.addEventListener('click', () => setPtStep(Number(btn.dataset.step)))
+      btn.addEventListener('click', () => { setPtMode('india'); setPtStep(Number(btn.dataset.step)); })
     );
     document.getElementById('pt-prev').addEventListener('click', () => setPtStep(ptStep - 1));
     document.getElementById('pt-next').addEventListener('click', () => setPtStep(ptStep + 1));
     stepsEl.dataset.built = 'true';
   }
 
-  setPtStep(ptStep);
+  // Wire mode toggle once
+  const modesEl = document.getElementById('pt-modes');
+  if (modesEl && !modesEl.dataset.built) {
+    modesEl.querySelectorAll('.pt-mode').forEach(btn =>
+      btn.addEventListener('click', () => setPtMode(btn.dataset.mode))
+    );
+    modesEl.dataset.built = 'true';
+  }
+
+  setPtMode(ptMode);
+}
+
+/* Switch between the India-reduction view and the national-lists heatmap. */
+function setPtMode(mode) {
+  ptMode = mode;
+  document.querySelectorAll('#pt-modes .pt-mode').forEach(b =>
+    b.classList.toggle('active', b.dataset.mode === mode));
+
+  const isLists = mode === 'lists';
+  document.getElementById('pt-india-controls').classList.toggle('hidden', isLists);
+  document.getElementById('pt-legend').classList.toggle('hidden', isLists);
+  document.getElementById('pt-listlegend').classList.toggle('hidden', !isLists);
+
+  if (isLists) applyListsView();
+  else         setPtStep(ptStep);
+}
+
+/* Colour every cell by how many national lists include it (0–5). */
+function applyListsView() {
+  document.querySelectorAll('#pt-grid .pt-cell').forEach(cell => {
+    cell.dataset.state = 'lists';
+  });
+  document.getElementById('pt-num').textContent   = '5';
+  document.getElementById('pt-label').textContent = 'major lists tracked';
+  document.getElementById('pt-caption').innerHTML =
+    `<strong>The lists are swelling.</strong> Each element is shaded by how many of the five major national lists (US, EU, China, Russia, India) name it. When the same elements land on list after list, "critical" stops telling any one government what to prioritise.`;
 }
 
 function setPtStep(step) {
@@ -443,7 +494,7 @@ function setPtStep(step) {
   document.getElementById('pt-label').textContent = s.label;
   document.getElementById('pt-caption').innerHTML =
     ptStep === PT_STEPS.length - 1
-      ? `<strong>51 of 76 — about 67%.</strong> ${s.caption}`
+      ? `<strong>51 of 76, about 67%.</strong> ${s.caption}`
       : s.caption;
 
   // Pill active states (mark current + completed)
@@ -1037,7 +1088,7 @@ const COMPLETE_BANDS = {
 const ENDUSE_SECTORS = [
   {name:'Defence & National Security',         weight:'+1.5', color:'#c42b1e'},
   {name:'Energy Generation & Grid',            weight:'+1.5', color:'#c05b00'},
-  {name:'Agriculture & Food Security',         weight:'+1.5', color:'#1e7a2e'},
+  {name:'Agriculture & Food Security',         weight:'+0.5', color:'#1e7a2e'},
   {name:'Advanced Semiconductors & Computing', weight:'+1',   color:'#620d3c'},
   {name:'Electrification & Transport',         weight:'+1',   color:'#3d6b7d'},
   {name:'Healthcare & Biomedical',             weight:'+1',   color:'#7d6b9e'},
