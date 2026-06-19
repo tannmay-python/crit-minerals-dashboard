@@ -49,9 +49,9 @@
       <div class="problem-eyebrow">Overview</div>
       <h1 class="problem-headline">Nothing is critical if everything is critical.</h1>
       <div class="overview-intro-block">
-        <p>India designates <strong>51 minerals as critical</strong>, and it is far from alone in casting a wide net. Russia's list runs to 61, the EU's has grown from 14 to 34, and the United States went from 35 minerals in 2018 to 60 in 2025, lately adding commodities as ordinary as copper and metallurgical coal. When the label covers most of what a country mines, it can no longer set priorities. If everything is critical, nothing is.</p>
-        <p>The label is also a single word stretched over very different problems. Copper and terbium sit in the same bucket, yet one is a base metal mined by the megatonne and the other a rare earth refined almost entirely in China. A mineral can be hard to secure because it is geologically scarce, because its refining sits in one country, because it has no substitute, or because its price is volatile. Each of these calls for a different response, and a single label tells you nothing about which one applies.</p>
-        <p>Informed policy has to unpack criticality into the vectors that define each mineral's profile. This dashboard scores all 51 minerals on <strong>ten such vectors</strong> and groups those with similar profiles, producing <strong>six groups</strong> that each point to a different kind of intervention, and to where a programme like the <strong>National Critical Mineral Mission</strong> should spend first.</p>
+        <p>Critical mineral lists have expanded to the point that they no longer work as policy tools. India's list runs to <strong>51 elements</strong>, about two-thirds of all the elements mined for commercial use. The United States went from 35 minerals in 2018 to 60 in 2025; Russia's list tracks 61; the EU's has grown from 14 to 34. If everything is a priority, then effectively nothing is. A label applied this broadly cannot tell a government with limited capital and state capacity where to act.</p>
+        <p>The root problem is that criticality is treated as a single condition when it is really the result of several factors. Copper and ytterbium both carry the label, but they share little: a mineral can be hard to secure because it is geologically scarce, because its refining sits in one country, because it has no substitute, or because its price is weaponised. Each of these calls for a different response.</p>
+        <p>This <strong>Takshashila Institution</strong> analysis takes the list apart. It defines <strong>ten measurable vectors</strong>, scores all 51 minerals against defined, reproducible criteria, and uses the shape of each mineral's profile to sort them into <strong>six groups</strong>. Minerals with similar profiles suffer from similar bottlenecks and need similar interventions, which just as importantly shows where the state need not intervene at all.</p>
       </div>
     </div>
   </section>
@@ -60,10 +60,6 @@
   <div class="container">
     <section class="pt-section">
       <div class="pt-head">
-        <div class="pt-head-text">
-          <h2 class="section-title">How much of the periodic table is "critical"?</h2>
-          <p class="pt-intro">Three ways to read the same problem. <strong>India's lens</strong> strips the table down to what is actually mined, then shows how much of it India calls critical. <strong>The world's lists</strong> shows how the same elements pile up across the five major national lists. <strong>By group</strong> colours each critical mineral by the group its profile places it in. Use the toggle.</p>
-        </div>
         <div class="pt-readout">
           <div class="pt-readout-num" id="pt-num">118</div>
           <div class="pt-readout-label" id="pt-label">known elements</div>
@@ -271,6 +267,15 @@
       <h1 style="font-size:clamp(1.4rem,3vw,2.2rem)">Understanding the Six Groups</h1>
       <p class="hero-sub" style="max-width:760px;">The minerals do not fall into neatly separated natural clusters — they occupy a continuous space. Clustering imposes boundaries on that spectrum rather than discovering gaps in it. The boundaries are nonetheless informative.</p>
     </section>
+
+    <!-- Group profile matrix: average sub-score per group -->
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">Average Profile by Group</h2>
+        <span class="text-muted text-sm">Mean of each sub-score across the minerals in a group · highest in each row is filled</span>
+      </div>
+      <div id="groups-matrix"></div>
+    </div>
 
     <!-- Group detail cards -->
     <div id="groups-detail-list"></div>

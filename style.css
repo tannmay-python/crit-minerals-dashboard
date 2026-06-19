@@ -3391,11 +3391,11 @@ input[type="range"]::-moz-range-thumb {
 .pt-section { margin: 4px 0 30px; }
 .pt-head {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: flex-end;
   gap: 24px;
   flex-wrap: wrap;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 .pt-head-text { flex: 1; min-width: 280px; }
 .pt-intro {
@@ -3638,3 +3638,53 @@ input[type="range"]::-moz-range-thumb {
 .site-footer a { color: var(--accent); font-weight: 600; text-decoration: none; }
 .site-footer a:hover { color: var(--accent-hover); text-decoration: underline; }
 .sf-makers { color: var(--text-dim); }
+
+/* ── Group profile matrix (Groups page) ──────────────────── */
+.gmx {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.gmx-table { border-collapse: collapse; width: 100%; font-size: 0.8rem; }
+.gmx-rowhead, .gmx-label {
+  text-align: left;
+  padding: 9px 14px;
+  white-space: nowrap;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+.gmx-rowhead { font-weight: 700; color: var(--text); background: var(--surface-2); }
+.gmx-label { font-weight: 500; color: var(--text); background: var(--surface); border-top: 1px solid var(--border); }
+.gmx-colhead {
+  padding: 10px 12px;
+  text-align: center;
+  background: var(--surface-2);
+  border-left: 1px solid var(--border);
+  border-bottom: 3px solid var(--gc);
+  cursor: pointer;
+  min-width: 94px;
+  transition: background var(--transition);
+}
+.gmx-colhead:hover { background: var(--surface-3); }
+.gmx-gnum { display: block; font-weight: 800; font-size: 0.78rem; }
+.gmx-gname { display: block; font-size: 0.6rem; color: var(--text-muted); margin-top: 2px; line-height: 1.25; max-width: 110px; }
+.gmx-cell {
+  position: relative;
+  text-align: center;
+  padding: 9px 10px;
+  border-left: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+  font-feature-settings: 'tnum';
+  font-weight: 600;
+  color: var(--text);
+}
+.gmx-bar { position: absolute; left: 0; top: 0; bottom: 0; background: var(--gc); opacity: 0.14; pointer-events: none; }
+.gmx-val { position: relative; }
+.gmx-max { font-weight: 800; }
+/* Column spotlight on hover */
+.gmx-table.gmx-dimmed .gmx-cell:not(.gmx-hot),
+.gmx-table.gmx-dimmed .gmx-colhead:not(.gmx-hot) { opacity: 0.38; }
+.gmx-table.gmx-dimmed .gmx-label { opacity: 0.55; }
+.gmx-table tbody tr:hover .gmx-label { color: var(--accent); }

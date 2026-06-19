@@ -1349,7 +1349,95 @@ function renderCompare() {
    GROUPS PAGE
    ════════════════════════════════════════════════════════════ */
 
+/* Rows of the group-average matrix: [label, accessor, scale max]. */
+const GROUP_MATRIX_ROWS = [
+  ['Current Global Demand',             m => m.vectors.demand?.score, 5],
+  ['Projected Demand Growth',           m => m.vectors.growth?.score, 5],
+  ['Mining Supplier Diversity',         m => m.vectors.supplier_concentration?.sub?.mining_diversity, 5],
+  ['Refining Supplier Diversity',       m => m.vectors.supplier_concentration?.sub?.refining_diversity, 5],
+  ['Global Reserves (time-frame)',      m => m.vectors.reserves?.sub?.timeframe, 5],
+  ['Global Reserves (diversification)', m => m.vectors.reserves?.sub?.diversification, 5],
+  ['End-use Applications (composite)',  m => m.vectors.end_use?.composite, 10],
+  ['Substitutability',                  m => m.vectors.substitutability_recyclability?.sub?.substitutability, 5],
+  ['Recyclability',                     m => m.vectors.substitutability_recyclability?.sub?.recyclability, 5],
+  ['Extraction & Refining',             m => m.vectors.extraction_refining?.score, 5],
+  ['Upcoming Projects',                 m => m.vectors.upcoming_projects?.score, 5],
+  ["India's Position (import dep.)",    m => m.vectors.india_position?.sub?.import_dependence, 5],
+  ["India's Position (strat. posture)", m => m.vectors.india_position?.sub?.strategic_posture, 5],
+  ['Price Volatility',                  m => m.vectors.price_volatility?.score, 5],
+];
+
+/* Average sub-score per group, as an interactive matrix. Highest in each row
+   is filled with the group's colour; other cells get a faint magnitude bar. */
+function renderGroupsMatrix() {
+  const host = document.getElementById('groups-matrix');
+  if (!host || host.dataset.rendered) return;
+  host.dataset.rendered = 'true';
+
+  const groups  = AppData.groups.filter(g => g.id !== 0).sort((a, b) => a.id - b.id);
+  const members = groups.map(g => AppData.minerals.filter(m => getGroup(m.mineral) === g.id));
+  const avg = arr => {
+    const vals = arr.filter(v => v != null && !isNaN(v));
+    return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
+  };
+
+  let html = `<div class="gmx"><table class="gmx-table"><thead><tr>
+    <th class="gmx-rowhead">Vector / sub-score</th>
+    ${groups.map(g => `<th class="gmx-colhead" data-col="${g.id}" style="--gc:${g.color}" title="${g.name}">
+        <span class="gmx-gnum" style="color:${g.color}">Group ${g.id}</span>
+        <span class="gmx-gname">${g.name}</span>
+      </th>`).join('')}
+  </tr></thead><tbody>`;
+
+  GROUP_MATRIX_ROWS.forEach(([label, get, max]) => {
+    const cellAvgs = members.map(ms => avg(ms.map(get)));
+    const rowMax = Math.max(...cellAvgs.filter(v => v != null));
+    html += `<tr><td class="gmx-label">${label}</td>`;
+    cellAvgs.forEach((v, i) => {
+      const g = groups[i];
+      if (v == null) { html += `<td class="gmx-cell" data-col="${g.id}">—</td>`; return; }
+      const isMax = Math.abs(v - rowMax) < 0.005;
+      const pct   = Math.round((v / max) * 100);
+      const light = colorLuminance(g.color) > 150;
+      const style = isMax
+        ? `background:${g.color};color:${light ? '#1a0804' : '#fff'}`
+        : `--gc:${g.color}`;
+      html += `<td class="gmx-cell${isMax ? ' gmx-max' : ''}" data-col="${g.id}" style="${style}">
+        ${isMax ? '' : `<span class="gmx-bar" style="width:${pct}%"></span>`}
+        <span class="gmx-val">${v.toFixed(2)}</span>
+      </td>`;
+    });
+    html += `</tr>`;
+  });
+  host.innerHTML = html + `</tbody></table></div>`;
+
+  // Column hover: spotlight one group, dim the rest
+  const table = host.querySelector('.gmx-table');
+  const clear = () => {
+    table.classList.remove('gmx-dimmed');
+    table.querySelectorAll('.gmx-hot').forEach(x => x.classList.remove('gmx-hot'));
+  };
+  table.addEventListener('mouseover', e => {
+    const el = e.target.closest('[data-col]');
+    if (!el) return;
+    clear();
+    table.classList.add('gmx-dimmed');
+    table.querySelectorAll(`[data-col="${el.dataset.col}"]`).forEach(x => x.classList.add('gmx-hot'));
+  });
+  table.addEventListener('mouseleave', clear);
+
+  // Click a group header to jump to its detail card
+  table.querySelectorAll('.gmx-colhead').forEach(th =>
+    th.addEventListener('click', () => {
+      document.querySelector(`.group-detail-card[data-gid="${th.dataset.col}"]`)
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    })
+  );
+}
+
 function renderGroups() {
+  renderGroupsMatrix();
+
   const list = document.getElementById('groups-detail-list');
   if (list.dataset.rendered) return;
   list.dataset.rendered = 'true';
@@ -1365,7 +1453,7 @@ function renderGroups() {
     const isOut   = g.id === 0;
 
     return `
-      <div class="group-detail-card card" style="--gcolor:${g.color}">
+      <div class="group-detail-card card" data-gid="${g.id}" style="--gcolor:${g.color}">
         <div class="gdc-top">
           <div class="gdc-radar-wrap">
             <canvas class="gdc-radar" width="160" height="160" data-gid="${g.id}"></canvas>
