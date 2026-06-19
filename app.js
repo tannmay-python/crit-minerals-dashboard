@@ -1239,10 +1239,66 @@ function renderCriteria() {
   }).join('') + `
   <div class="crit-methodology card">
     <h3 class="crit-meth-title">Methodology note</h3>
-    <p>Eight of the ten vectors are tied to published quantitative thresholds: tonnes, CAGR bands, market-share percentages, HHI bands, reserve-years, secondary-supply shares, and price-movement percentages. The two qualitative vectors — extraction complexity and strategic posture — are anchored to observable facts (e.g. whether a solvent-extraction cascade is required, or whether an offtake has been signed).</p>
-    <p>The scores are not beyond dispute, but the basis for each is stated, which allows others to challenge a score or substitute their own.</p>
-    <p><strong>No cumulative score is produced.</strong> The vectors are correlated — summing them counts the same underlying risk condition more than once, and any weighting scheme embeds one analyst's priorities while appearing objective.</p>
+    <p>Eight of the ten vectors are tied to published quantitative thresholds: tonnes, CAGR bands, market-share percentages, HHI bands, reserve-years, secondary-supply shares, and price-movement percentages. The two qualitative vectors, extraction complexity and strategic posture, are anchored to observable facts (for example, whether a solvent-extraction cascade is required, or whether an offtake has been signed).</p>
+    <p>We are open to feedback on how to make this better.</p>
+    <div class="crit-shape">
+      <div class="crit-shape-text">
+        <p><strong>Why there is no single criticality score.</strong> Copper, germanium and cerium can add up to the same total, yet their profiles look nothing alike. A single criticality score is not helpful: it strips the analysis of exactly this nuance.</p>
+        <div class="crit-shape-legend">
+          <span class="csl-item"><span class="csl-dot" style="background:#620d3c"></span>Copper</span>
+          <span class="csl-item"><span class="csl-dot" style="background:#f1a222"></span>Germanium</span>
+          <span class="csl-item"><span class="csl-dot" style="background:#3d6b7d"></span>Cerium</span>
+        </div>
+      </div>
+      <div class="crit-shape-chart"><canvas id="crit-shape-radar" width="300" height="300"></canvas></div>
+    </div>
   </div>`;
+
+  const shapeCanvas = document.getElementById('crit-shape-radar');
+  drawOverlayRadar(shapeCanvas, [
+    { name: 'Copper',    color: '#620d3c' },
+    { name: 'Germanium', color: '#f1a222' },
+    { name: 'Cerium',    color: '#3d6b7d' },
+  ]);
+}
+
+/* Overlays several minerals' 10-vector profiles on one radar (shape comparison). */
+function drawOverlayRadar(canvas, items) {
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const cx = canvas.width / 2, cy = canvas.height / 2;
+  const r  = Math.min(cx, cy) - 10;
+  const vecs = AppData.criteriaVectors;
+  const n = vecs.length;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  for (let ring = 1; ring <= 5; ring++) {
+    ctx.beginPath();
+    for (let i = 0; i < n; i++) {
+      const a = (i / n) * Math.PI * 2 - Math.PI / 2, rr = (ring / 5) * r;
+      const x = cx + rr * Math.cos(a), y = cy + rr * Math.sin(a);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath(); ctx.strokeStyle = 'rgba(98,13,60,0.10)'; ctx.lineWidth = 0.6; ctx.stroke();
+  }
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2 - Math.PI / 2;
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + r * Math.cos(a), cy + r * Math.sin(a));
+    ctx.strokeStyle = 'rgba(98,13,60,0.07)'; ctx.lineWidth = 0.5; ctx.stroke();
+  }
+  items.forEach(it => {
+    const m = getMineralByName(it.name);
+    if (!m) return;
+    ctx.beginPath();
+    vecs.forEach((v, i) => {
+      const norm = normalizeToFive(m, v.key) / 5, a = (i / n) * Math.PI * 2 - Math.PI / 2, rr = norm * r;
+      const x = cx + rr * Math.cos(a), y = cy + rr * Math.sin(a);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.closePath();
+    ctx.fillStyle = it.color + '22'; ctx.fill();
+    ctx.strokeStyle = it.color; ctx.lineWidth = 2; ctx.stroke();
+  });
 }
 
 function escapeHtml(str) {

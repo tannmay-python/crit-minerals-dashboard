@@ -3699,3 +3699,13 @@ input[type="range"]::-moz-range-thumb {
 /* Periodic-table: legends now sit above the grid, give them breathing room */
 .pt-legend, .pt-listlegend, .pt-grouplegend { margin-bottom: 14px; }
 .pt-section .pt-grid { margin-top: 2px; }
+
+/* Methodology note: shape-vs-score comparison */
+.crit-shape { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; margin-top: 14px; }
+.crit-shape-text { flex: 1; min-width: 240px; }
+.crit-shape-text p { margin: 0 0 12px; }
+.crit-shape-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.78rem; color: var(--text-muted); }
+.csl-item { display: inline-flex; align-items: center; gap: 6px; }
+.csl-dot { width: 11px; height: 11px; border-radius: 3px; }
+.crit-shape-chart { flex-shrink: 0; }
+.crit-shape-chart canvas { width: 260px; max-width: 100%; height: auto; }
