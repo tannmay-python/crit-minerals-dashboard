@@ -1553,7 +1553,7 @@ function renderGroups() {
         ${desc.policy && desc.policy.length ? `
         <div class="gdc-toggle">
           <button class="gdc-tab active" data-view="char">Characterisation</button>
-          <button class="gdc-tab" data-view="policy">Policy for India</button>
+          <button class="gdc-tab" data-view="policy">Policy choices for India</button>
         </div>` : ''}
         <div class="gdc-view gdc-char">
           ${(desc.body || '').split('\n\n').map(p => `<p class="gdc-body">${p}</p>`).join('')}
