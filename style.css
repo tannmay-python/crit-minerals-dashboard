@@ -2832,17 +2832,10 @@ input[type="range"]::-moz-range-thumb {
   gap: 12px;
 }
 .overview-intro-block p {
-  font-size: 0.88rem;
-  color: var(--text-muted);
+  font-size: 0.95rem;
+  color: var(--text);
   line-height: 1.82;
   margin: 0;
-}
-.overview-intro-block p:first-child {
-  font-size: 0.97rem;
-  color: var(--text);
-  line-height: 1.75;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--border);
 }
 .overview-intro-block strong { color: var(--text); font-weight: 700; }
 .overview-intro-block em { color: var(--accent); font-style: normal; font-weight: 600; }
