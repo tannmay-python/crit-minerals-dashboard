@@ -45,13 +45,24 @@
   <!-- Hero -->
   <section class="problem-hero">
     <div class="container">
-      <div class="problem-eyebrow">Overview</div>
-      <h1 class="problem-headline">Nothing is critical if everything is critical.</h1>
-      <p class="problem-byline">By <a href="https://takshashila.org.in/content/team/tannmay-kumarr-baid.html" target="_blank" rel="noopener">Tannmay Kumarr Baid</a> and <a href="https://takshashila.org.in/content/team/shobhankita-reddy.html" target="_blank" rel="noopener">Shobhankita Reddy</a> · Takshashila Institution</p>
-      <div class="overview-intro-block">
-        <p>Critical mineral lists have expanded to the point that they no longer work as policy tools. India's list runs to <strong>51 elements</strong>, about two-thirds of all the elements mined for commercial use. The United States went from 35 minerals in 2018 to 60 in 2025; Russia's list tracks 61; the EU's has grown from 14 to 34. If everything is a priority, then effectively nothing is. A label applied this broadly cannot tell a government with limited capital and state capacity where to act.</p>
-        <p>The root problem is that criticality is treated as a single condition when it is really the result of several factors. Copper and ytterbium both carry the label, but they share little: a mineral can be hard to secure because it is geologically scarce, because its refining sits in one country, because it has no substitute, or because its price is weaponised. Each of these calls for a different response.</p>
-        <p>This analysis takes the list apart. It defines <strong>ten measurable vectors</strong>, scores all 51 minerals against defined, reproducible criteria, and uses the shape of each mineral's profile to sort them into <strong>six groups</strong>. Minerals with similar profiles suffer from similar bottlenecks and need similar interventions, which just as importantly shows where the state need not intervene at all.</p>
+      <div class="problem-hero-grid">
+        <div class="problem-hero-text">
+          <div class="problem-eyebrow">Overview</div>
+          <h1 class="problem-headline">Nothing is critical if everything is critical.</h1>
+          <p class="problem-byline">By <a href="https://takshashila.org.in/content/team/tannmay-kumarr-baid.html" target="_blank" rel="noopener">Tannmay Kumarr Baid</a> and <a href="https://takshashila.org.in/content/team/shobhankita-reddy.html" target="_blank" rel="noopener">Shobhankita Reddy</a> · Takshashila Institution</p>
+          <div class="overview-intro-block">
+            <p>Critical mineral lists have expanded to the point that they no longer work as policy tools. India's list runs to <strong>51 elements</strong>, about two-thirds of all the elements mined for commercial use. The United States went from 35 minerals in 2018 to 60 in 2025; Russia's list tracks 61; the EU's has grown from 14 to 34. If everything is a priority, then effectively nothing is. A label applied this broadly cannot tell a government with limited capital and state capacity where to act.</p>
+            <p>The root problem is that criticality is treated as a single condition when it is really the result of several factors. Copper and ytterbium both carry the label, but they share little: a mineral can be hard to secure because it is geologically scarce, because its refining sits in one country, because it has no substitute, or because its price is weaponised. Each of these calls for a different response.</p>
+            <p>This analysis takes the list apart. It defines <strong>ten measurable vectors</strong>, scores all 51 minerals against defined, reproducible criteria, and uses the shape of each mineral's profile to sort them into <strong>six groups</strong>. Minerals with similar profiles suffer from similar bottlenecks and need similar interventions, which just as importantly shows where the state need not intervene at all.</p>
+          </div>
+        </div>
+        <aside class="problem-hero-aside">
+          <div class="lists-chart-card">
+            <div class="lcc-title">The lists keep swelling</div>
+            <div class="lcc-sub">Elements on each country's critical-minerals list, over time</div>
+            <div class="lcc-canvas-wrap"><canvas id="lists-line-chart"></canvas></div>
+          </div>
+        </aside>
       </div>
     </div>
   </section>
@@ -271,7 +282,6 @@
     <div class="section">
       <div class="section-header">
         <h2 class="section-title">Average Profile by Group</h2>
-        <span class="text-muted text-sm">Mean of each sub-score across the minerals in a group · highest in each row is filled</span>
       </div>
       <div id="groups-matrix"></div>
     </div>
@@ -296,6 +306,7 @@
         &amp;
         <a href="https://takshashila.org.in/content/team/shobhankita-reddy.html" target="_blank" rel="noopener">Shobhankita Reddy</a>
       </span>
+      <span class="sf-makers">Experimental: <a href="dendrogram.html">how the 51 minerals cluster →</a></span>
     </div>
   </footer>
 </main>

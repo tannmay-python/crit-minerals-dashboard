@@ -327,6 +327,75 @@ function init() {
 
 function renderOverview() {
   renderPeriodicTable();
+  renderListsChart();
+}
+
+/* Hero line chart: how many elements sit on each country's critical-minerals
+   list over time. India is highlighted; single-year lists show just a marker. */
+let listsChart = null;
+function renderListsChart() {
+  const canvas = document.getElementById('lists-line-chart');
+  if (!canvas || listsChart) return;
+
+  const series = [
+    { label: 'European Union', color: '#3d6b7d', pt: 'circle',   data: [[2011,14],[2014,20],[2017,27],[2020,30],[2023,34]] },
+    { label: 'United States',  color: '#c42b1e', pt: 'rect',     data: [[2018,35],[2022,50],[2025,60]] },
+    { label: 'Australia',      color: '#7d6b9e', pt: 'crossRot', data: [[2019,24],[2023,31]] },
+    { label: 'Canada',         color: '#8a5a44', pt: 'triangle', data: [[2021,31],[2024,34]] },
+    { label: 'Russia',         color: '#2e8b57', pt: 'rectRot',  data: [[2024,61]] },
+    { label: 'India',          color: '#620d3c', pt: 'triangle', data: [[2023,51]], india: true },
+  ];
+
+  const datasets = series.map(s => ({
+    label: s.label,
+    data: s.data.map(([x, y]) => ({ x, y })),
+    borderColor: s.color,
+    backgroundColor: s.color,
+    pointStyle: s.pt,
+    pointRadius: s.india ? 8 : 4.5,
+    pointHoverRadius: s.india ? 10 : 6.5,
+    borderWidth: s.india ? 0 : 2,
+    showLine: s.data.length > 1,
+    tension: 0.25,
+  }));
+
+  listsChart = new Chart(canvas.getContext('2d'), {
+    type: 'line',
+    data: { datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'nearest', intersect: true },
+      layout: { padding: { top: 4, right: 8 } },
+      scales: {
+        x: {
+          type: 'linear', min: 2010, max: 2026,
+          ticks: { stepSize: 4, color: '#9a7040', font: { size: 10, family: 'Hanken Grotesk' }, callback: (v) => `${v}` },
+          grid: { color: 'rgba(98,13,60,0.06)' },
+          title: { display: false },
+        },
+        y: {
+          min: 0, max: 70,
+          ticks: { stepSize: 20, color: '#9a7040', font: { size: 10, family: 'Hanken Grotesk' } },
+          grid: { color: 'rgba(98,13,60,0.06)' },
+          title: { display: true, text: 'Elements on list', color: '#9a7040', font: { size: 10, family: 'Hanken Grotesk' } },
+        },
+      },
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { usePointStyle: true, boxWidth: 7, padding: 12, color: '#6b4020', font: { size: 11, family: 'Hanken Grotesk' } },
+        },
+        tooltip: {
+          backgroundColor: '#fff', titleColor: '#1a0804', bodyColor: '#6b4020',
+          borderColor: '#e4d49c', borderWidth: 1, padding: 8, usePointStyle: true,
+          callbacks: {
+            title: items => items.length ? items[0].parsed.x : '',
+            label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} elements`,
+          },
+        },
+      },
+    },
+  });
 }
 
 /* Methodology page = the scoring framework (criteria). */

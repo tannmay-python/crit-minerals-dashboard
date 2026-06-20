@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How the 51 minerals cluster · Dendrogram · Takshashila</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,400..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --accent:#620d3c; --accent-2:#f1a222; --surface:#fff; --surface-2:#fdf4d0;
+    --text:#1a0804; --text-muted:#6b4020; --text-dim:#9a7040; --border:#e4d49c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Hanken Grotesk',sans-serif; color:var(--text);
+    background-color:#fbf4d6;
+    background-image:
+      radial-gradient(1200px 500px at 80% -5%, rgba(241,162,34,.10), transparent 60%),
+      linear-gradient(180deg,#fffdf2,#fbf4d6);
+    background-attachment:fixed;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+  header{position:sticky;top:0;z-index:20;background:var(--accent);border-bottom:1px solid rgba(255,255,255,.12)}
+  .hd{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:1180px;margin:0 auto;padding:0 24px}
+  .hd img{height:34px;display:block}
+  .hd .back{color:#fff;font-size:.82rem;font-weight:600;opacity:.85}
+  .hd .back:hover{opacity:1;text-decoration:none}
+
+  .hero{padding:64px 0 8px}
+  .eyebrow{display:inline-block;font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);border:1px solid var(--border);background:var(--surface-2);padding:5px 14px;border-radius:100px;margin-bottom:18px}
+  .badge-test{margin-left:8px;background:var(--accent);color:#fff;border-color:var(--accent)}
+  h1{font-family:'Newsreader',serif;font-weight:600;font-size:clamp(2rem,4.5vw,3.2rem);line-height:1.04;letter-spacing:-.01em;max-width:14ch}
+  .lede{font-size:1.05rem;color:var(--text-muted);max-width:62ch;margin-top:18px}
+  .prose p{font-size:.98rem;color:var(--text-muted);max-width:64ch;margin:16px 0}
+  .prose strong{color:var(--text);font-weight:700}
+  .prose .k{font-weight:700;color:var(--accent)}
+
+  .read{display:flex;gap:14px 30px;flex-wrap:wrap;margin:30px 0 4px;padding:16px 20px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent-2);border-radius:12px}
+  .read .it{display:flex;gap:10px;align-items:flex-start;font-size:.85rem;color:var(--text-muted);max-width:330px}
+  .read .it b{color:var(--text)}
+  .rn{flex:none;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center}
+
+  /* Scrollytelling scene */
+  .scene{position:relative;height:360vh;margin-top:30px}
+  .sticky{position:sticky;top:64px;height:calc(100vh - 64px);display:flex;flex-direction:column;justify-content:center}
+  .stage{background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:0 18px 50px -28px rgba(98,13,60,.5);padding:14px 14px 6px;overflow:hidden}
+  .stage svg{width:100%;height:auto;display:block}
+  .scene-cap{display:flex;align-items:center;gap:18px;margin:14px 4px 0;min-height:46px}
+  .cap-stat{flex:none;text-align:center;min-width:96px}
+  .cap-num{font-family:'Newsreader',serif;font-size:2.1rem;font-weight:600;color:var(--accent);line-height:1}
+  .cap-lbl{font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-dim);margin-top:3px}
+  .cap-text{font-size:.95rem;color:var(--text);max-width:70ch}
+  .cap-text b{color:var(--accent)}
+
+  .scrollhint{text-align:center;color:var(--text-dim);font-size:.78rem;letter-spacing:.06em;margin-top:8px;animation:bob 1.8s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+
+  /* dendrogram element styles */
+  .merge{fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity .35s ease}
+  .leaf-lab{font-size:7.6px;font-weight:600;font-family:'Hanken Grotesk',sans-serif}
+  .leaf-tick{stroke-width:2.4;stroke-linecap:round}
+  .axis-lab{font-size:11px;fill:var(--text-dim);font-family:'Hanken Grotesk'}
+  .grid-l{stroke:rgba(98,13,60,.07);stroke-width:1}
+  .grid-t{font-size:9px;fill:var(--text-dim)}
+  .sweep{stroke:var(--accent);stroke-width:1.4;stroke-dasharray:5 5;opacity:.0;transition:opacity .3s}
+
+  .legend{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;margin:26px 0 4px;font-size:.78rem;color:var(--text-muted)}
+  .legend .li{display:inline-flex;align-items:center;gap:7px}
+  .legend .sw{width:13px;height:13px;border-radius:4px}
+
+  .closing{padding:18px 0 90px}
+  .callouts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:8px}
+  .co{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--gc,var(--accent));border-radius:14px;padding:16px 18px}
+  .co h3{font-size:.92rem;color:var(--gc,var(--accent));margin-bottom:6px}
+  .co p{font-size:.85rem;color:var(--text-muted)}
+  footer{border-top:1px solid var(--border);background:var(--surface-2);padding:22px 0 40px;text-align:center;font-size:.8rem;color:var(--text-muted)}
+  @media (max-width:720px){ .sticky{top:64px} .scene{height:300vh} .cap-text{font-size:.85rem} }
+</style>
+</head>
+<body>
+<header>
+  <div class="hd">
+    <a href="https://takshashila.org.in" target="_blank" rel="noopener"><img src="assets/takshashila-logo.svg" alt="Takshashila Institution" /></a>
+    <a class="back" href="index.html">← Back to the dashboard</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <span class="eyebrow">Methodology<span class="eyebrow badge-test" style="margin:0 0 0 8px">Test feature</span></span>
+    <h1>How the 51 minerals cluster</h1>
+    <p class="lede">The six groups are not drawn by hand. They fall out of the data, by measuring how similar each mineral's 14-dimensional profile is to every other's, and letting the similar ones join up. This is that process, drawn as a tree.</p>
+    <div class="prose">
+      <p>A <span class="k">dendrogram</span> is a family tree for data. Every mineral starts alone at the bottom. The two most similar are joined first, then the next two, and so on, until everything sits under a single root. The <strong>height</strong> at which two things join is how different they were when they merged: join low, and they were near-identical; join high, and the link is a stretch.</p>
+      <p>We use <strong>Ward's method</strong>, which at each step merges the two clusters that add the least new spread, so the groups come out compact and comparably sized. Scroll down to watch the tree build itself, from 51 lonely minerals up to one.</p>
+    </div>
+    <div class="read">
+      <div class="it"><span class="rn">1</span><div><b>Bottom = each mineral.</b> 51 leaves, one per critical mineral, coloured by the group it lands in.</div></div>
+      <div class="it"><span class="rn">2</span><div><b>Height = dissimilarity.</b> The taller the bracket joining two clusters, the less alike they are.</div></div>
+      <div class="it"><span class="rn">3</span><div><b>Cut the tree to choose groups.</b> A low cut gives many tight clusters; a high cut, a few broad ones. We cut at six.</div></div>
+    </div>
+    <div class="scrollhint">scroll to grow the tree ↓</div>
+  </section>
+
+  <section class="scene" id="scene">
+    <div class="sticky wrap">
+      <div class="stage"><svg id="dendro" viewBox="0 0 1200 620" preserveAspectRatio="xMidYMid meet" aria-label="Dendrogram of 51 critical minerals"></svg></div>
+      <div class="scene-cap">
+        <div class="cap-stat"><div class="cap-num" id="cap-num">51</div><div class="cap-lbl" id="cap-lbl">clusters</div></div>
+        <div class="cap-text" id="cap-text">Each mineral begins as its own cluster.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap closing">
+    <div class="legend" id="legend"></div>
+    <div class="prose">
+      <p>Read the finished tree from the bottom up. Coloured sub-trees are the six groups: each is a knot of minerals that merge cheaply among themselves, because their profiles rhyme. The <strong>grey</strong> links higher up are the expensive joins, where two unlike groups are forced together only because the tree must eventually have one root.</p>
+      <p><span class="k">Promethium</span> is the giveaway. It hangs off on its own and only joins anything near the very top, the clearest sign in the picture that it does not really belong with the commercial minerals at all.</p>
+    </div>
+    <div class="callouts" id="callouts"></div>
+  </section>
+</main>
+
+<footer>
+  A <a href="https://takshashila.org.in" target="_blank" rel="noopener">Takshashila Institution</a> analysis · experimental view ·
+  <a href="index.html">return to the dashboard</a>
+</footer>
+
+<script src="dendrogram-data.js"></script>
+<script>
+(function(){
+  const NS='http://www.w3.org/2000/svg';
+  const svg=document.getElementById('dendro');
+  const W=1200,H=620, M={top:28,right:26,bottom:128,left:54};
+  const plotW=W-M.left-M.right, plotH=H-M.top-M.bottom;
+  const maxH=DENDRO.maxHeight, n=DENDRO.n;
+  const xpx=x=>M.left+(x/(n-1))*plotW;
+  const ypx=h=>M.top+(1-h/maxH)*plotH;
+  const mk=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+
+  // y grid + axis
+  for(let g=0; g<=Math.ceil(maxH); g+=4){
+    svg.appendChild(mk('line',{class:'grid-l',x1:M.left,x2:M.left+plotW,y1:ypx(g),y2:ypx(g)}));
+    const tx=mk('text',{class:'grid-t',x:M.left-8,y:ypx(g)+3,'text-anchor':'end'});tx.textContent=g;svg.appendChild(tx);
+  }
+  const yl=mk('text',{class:'axis-lab',x:16,y:M.top+plotH/2,'text-anchor':'middle',transform:`rotate(-90 16 ${M.top+plotH/2})`});
+  yl.textContent='Dissimilarity  (Ward linkage distance)';svg.appendChild(yl);
+
+  // sweep line (current cut level)
+  const sweep=mk('line',{class:'sweep',x1:M.left,x2:M.left+plotW,y1:ypx(0),y2:ypx(0)});svg.appendChild(sweep);
+
+  // merges
+  const mergeEls=DENDRO.merges.map(m=>{
+    const d=`M ${xpx(m.ax)} ${ypx(m.ah)} L ${xpx(m.ax)} ${ypx(m.top)} L ${xpx(m.bx)} ${ypx(m.top)} L ${xpx(m.bx)} ${ypx(m.bh)}`;
+    const p=mk('path',{class:'merge',d:d,stroke:m.color});
+    svg.appendChild(p);return p;
+  });
+
+  // leaf ticks + labels
+  const baseY=M.top+plotH;
+  DENDRO.leaves.forEach(lf=>{
+    const x=xpx(lf.x);
+    svg.appendChild(mk('line',{class:'leaf-tick',x1:x,x2:x,y1:baseY,y2:baseY+6,stroke:lf.color}));
+    const t=mk('text',{class:'leaf-lab',x:x,y:baseY+12,fill:lf.color,'text-anchor':'end',transform:`rotate(-52 ${x} ${baseY+12})`});
+    t.textContent=lf.name; t.appendChild(mk('title',{})).textContent=lf.name;
+    svg.appendChild(t);
+  });
+
+  // legend + callouts
+  const legend=document.getElementById('legend');
+  DENDRO.groups.forEach(g=>{
+    const s=document.createElement('span');s.className='li';
+    s.innerHTML=`<span class="sw" style="background:${g.color}"></span>Group ${g.id} · ${g.name}`;
+    legend.appendChild(s);
+  });
+  legend.insertAdjacentHTML('beforeend',`<span class="li"><span class="sw" style="background:#cdbfa6"></span>Cross-group joins</span>`);
+
+  const callData=[
+    {g:DENDRO.groups.find(x=>x.id===2), h:'Heavy rare earths fuse early', p:'Dysprosium, terbium, the yttriums: their profiles are so alike they join near the floor of the tree, the tightest knot in the picture.'},
+    {g:DENDRO.groups.find(x=>x.id===1), h:'Base metals stand apart', p:'Copper, nickel, lithium and the other high-volume metals form their own branch and only meet the rest very high up.'},
+    {g:DENDRO.groups.find(x=>x.id===5), h:'A late, low cut would split hairs', p:'Cut the tree lower than six groups and tight clusters like the rising-demand processing minerals start fracturing into ever-finer pairs.'},
+  ];
+  const co=document.getElementById('callouts');
+  callData.forEach(c=>{const d=document.createElement('div');d.className='co';d.style.setProperty('--gc',c.g?c.g.color:'#620d3c');d.innerHTML=`<h3>${c.h}</h3><p>${c.p}</p>`;co.appendChild(d);});
+
+  // scroll → reveal
+  const scene=document.getElementById('scene');
+  const capNum=document.getElementById('cap-num'), capLbl=document.getElementById('cap-lbl'), capText=document.getElementById('cap-text');
+  const bands=[
+    {t:.12,txt:'Each mineral begins as its own cluster. The most similar pairs join first, low down where dissimilarity is small.'},
+    {t:.42,txt:'Similar minerals snap together into small, tight clusters, the cores of the eventual groups.'},
+    {t:.72,txt:'Now the clusters themselves merge. The <b>six groups</b> take shape as distinct coloured sub-trees.'},
+    {t:1.01,txt:'At the very top everything joins under one root through grey, low-similarity links. We cut the tree to leave <b>six groups</b>.'}
+  ];
+  let ticking=false;
+  function update(){
+    ticking=false;
+    const rect=scene.getBoundingClientRect();
+    const total=scene.offsetHeight-window.innerHeight;
+    const prog=Math.min(1,Math.max(0,(-rect.top)/total));
+    const T=prog*maxH*1.05;
+    let revealed=0;
+    mergeEls.forEach((el,i)=>{ const on=DENDRO.merges[i].height<=T; el.style.opacity=on?1:0; if(on)revealed++; });
+    const clusters=Math.max(1,n-revealed);
+    capNum.textContent=clusters;
+    capLbl.textContent=clusters===1?'cluster':'clusters';
+    sweep.style.opacity = prog>0.02 && prog<0.99 ? .8 : 0;
+    const sy=ypx(Math.min(T,maxH)); sweep.setAttribute('y1',sy); sweep.setAttribute('y2',sy);
+    capText.innerHTML=(bands.find(b=>prog<b.t)||bands[bands.length-1]).txt;
+  }
+  function onScroll(){ if(!ticking){ticking=true;requestAnimationFrame(update);} }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll);
+  update();
+})();
+</script>
+</body>
+</html>
