@@ -3663,10 +3663,20 @@ input[type="range"]::-moz-range-thumb {
   min-width: 94px;
   transition: background var(--transition);
 }
-.gmx-gname { min-height: 2.4em; }
 .gmx-colhead:hover { background: var(--surface-3); }
 .gmx-gnum { display: block; font-weight: 800; font-size: 0.78rem; }
-.gmx-gname { display: block; font-size: 0.6rem; color: var(--text-muted); margin-top: 2px; line-height: 1.25; max-width: 110px; }
+.gmx-gname {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 2.6em;
+  margin: 5px auto 0;
+  max-width: 120px;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
 .gmx-cell {
   position: relative;
   text-align: center;
