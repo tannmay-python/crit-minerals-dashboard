@@ -40,31 +40,59 @@ const COMPARE_COLORS = ['#620d3c', '#f1a222', '#3d6b7d'];
 const GROUP_DESCRIPTIONS = {
   1: {
     tagline: 'Scale defines their criticality, not monopoly leverage.',
-    body: `Every mineral here is consumed in hundreds of thousands to millions of tonnes annually. Supply is comparatively diffuse — no single country monopolises mining, and while China dominates refining for some, none approaches the leverage it holds over rare earths. The binding risk is sheer volume: these minerals power construction, energy, transport, and agriculture so broadly that a sustained shortfall would transmit immediately across the entire economy.\n\nCobalt and lithium sit here despite their high import dependence and price volatility because their defining feature is the same as the others — the criticality arises from the scale of demand, not from a chokepoint that one supplier controls. The policy question for this group is not who controls them but whether India has sufficient industrial processing capacity and strategic reserves to absorb a price spike or temporary disruption.`,
+    body: `Every mineral here is consumed in hundreds of thousands to millions of tonnes annually. Supply is comparatively diffuse: no single country monopolises mining, and while China dominates refining for some, none approaches the leverage it holds over rare earths. The binding risk is sheer volume: these minerals power construction, energy, transport, and agriculture so broadly that a sustained shortfall would transmit immediately across the entire economy.\n\nCobalt and lithium sit here despite their high import dependence and price volatility because their defining feature is the same as the others: the criticality arises from the scale of demand, not from a chokepoint that one supplier controls. The policy question for this group is not who controls them but whether India has sufficient industrial processing capacity and strategic reserves to absorb a price spike or temporary disruption.`,
+    policy: [
+      `Aggressively scale up midstream processing infrastructure: target capital-intensive midstream, specifically chemical refining, smelting and precursor manufacturing. Incentivise KABIL and private conglomerates to move beyond upstream mining exploration and invest in overseas processing facilities within resource-rich, friendly nations.`,
+      `Diversify supply through international partnerships.`,
+      `Scale secondary scrap infrastructure and enforce strict extended producer responsibility (EPR) targets.`,
+    ],
   },
   2: {
     tagline: 'Substitution sometime away.',
     body: `This is the tightest group in the dataset, and the one where India's exposure is most acute and its options fewest. Every member scores at or near the maximum on three vectors simultaneously: refining concentration, reserve concentration, and extraction complexity. Reserves are locked in ion-adsorption clay deposits in southern China and Myanmar. The refining process, multi-stage solvent extraction of chemically near-identical elements, requires capability that no Western or Indian facility possesses at commercial scale. Substitution is either technically impossible or requires a fundamental product redesign that takes years.\n\nChina's monopoly in these minerals is the hardest to dent in the immediate term. The April 2025 export controls caused Western market prices to triple within weeks, and Indian automotive and EV manufacturers were among the first firms denied licenses. Tellurium is not a rare earth, but it belongs here: its refining is monopolised, its recycling negligible, and its substitution limited.`,
+    policy: [
+      `Aggressively execute the Sintered Rare Earth Permanent Magnet (REPM) scheme.`,
+      `Pursue joint stockpiling through international partnerships.`,
+      `Ultimately, the way out may be to make these minerals obsolete, specifically via Synchronous Reluctance Motors (SynRM) and induction motors that eliminate rare-earth permanent magnets entirely.`,
+    ],
   },
   3: {
     tagline: 'High recycling rates and high-value applications define this group.',
-    body: `The commonality in this group lies in high recycling. Reserves for minerals here tend to be concentrated, but are also long-lived relative to demand. This group largely consists of platinum group elements (PGEs) alongside indium, beryllium, and hafnium, all of which follow similar characterisations: technically demanding to produce, expensive, and consumed in small volumes for high-value applications.\n\nBecause they are expensive and widely deployed in industrial catalysts, electronics, and medical devices, secondary recovery is commercially viable in a way it is not for cheaper, more widely dispersed minerals. This does not make them without risk — reserves are concentrated and extraction barriers are high — but the closed-loop dynamic gives the supply chain a resilience that the heavy rare earths group lacks entirely. The intervention point for this group is maintaining and deepening recycling infrastructure rather than upstream mining investment.`,
+    body: `The commonality in this group lies in high recycling. Reserves for minerals here tend to be concentrated, but are also long-lived relative to demand. This group largely consists of platinum group elements (PGEs) alongside indium, beryllium, and hafnium, all of which follow similar characterisations: technically demanding to produce, expensive, and consumed in small volumes for high-value applications.\n\nBecause they are expensive and widely deployed in industrial catalysts, electronics, and medical devices, secondary recovery is commercially viable in a way it is not for cheaper, more widely dispersed minerals. This does not make them without risk, reserves are concentrated and extraction barriers are high, but the closed-loop dynamic gives the supply chain a resilience that the heavy rare earths group lacks entirely. The intervention point for this group is maintaining and deepening recycling infrastructure rather than upstream mining investment.`,
+    policy: [
+      `Double down on recycling. India's transition to Bharat Stage VI (BS-VI) emission standards means a massive, rapidly maturing pool of platinum, palladium and rhodium riding inside vehicle catalytic converters. The National Green Hydrogen Mission also relies heavily on Proton Exchange Membrane (PEM) electrolyzers, which need some of these minerals.`,
+      `Streamline collection networks through cross-border B2B "strategic scrap" exchange, introduce specific EPR credits, and expand recycling facilities.`,
+    ],
   },
   4: {
     tagline: 'High concentration. Low volatility. The monopoly not being exercised.',
     body: `This group is a direct corrective to the assumption that concentration automatically signals danger. Every member here is dominated by a single country or producer, yet this group records the lowest price volatility and weakest demand growth of any of the six. The monopoly is real; it is simply not being exercised, at least not yet.\n\nThe reasons differ by mineral. Brazil's CBMM manages niobium supply with deliberate discipline, holding prices stable at around $26/kg over years. Lanthanum and cerium come out of the ground mainly as by-products of mining the more valuable neodymium, so they pile up in oversupply whether or not anyone needs them. Vanadium prices fell 27% in 2024 on weak Chinese steel demand. Europium has so few uses left that almost no one buys it. For policy, what matters is that these minerals could become dangerous if geopolitics shift, but this is not happening currently. Monitoring rather than urgent intervention may be the appropriate posture.`,
+    policy: [
+      `Leverage early-warning tools to track global shifts, such as Chinese real-estate/steel demand (for vanadium) or production shifts at Brazil's CBMM (for niobium), and implement a "just-in-time" blueprint: if China suddenly weaponises its vanadium or lanthanum supply, a pre-drafted policy automatically triggers, such as fast-tracked waivers for steel-slag processing or immediate customs-duty draw-backs for alternative imports.`,
+      `Passive stockpiling: lanthanum and cerium are produced as by-products when processing monazite sands for high-value magnet rare earths (NdPr). As IREL expands NdPr production, lanthanum and cerium will accumulate naturally.`,
+      `Steel-slag harvesting: for vanadium, mandate that domestic steel giants (like SAIL or JSW) monitor and catalogue the vanadium content in their industrial slag.`,
+      `Because Brazil's CBMM deliberately keeps niobium prices stable ($26/kg) to protect market share, India's private infrastructure and defence conglomerates should sign long-term, fixed-price offtake agreements, and the government could use bilateral diplomacy to secure "preferred buyer" status. This locks in supply via state-to-state paperwork rather than capital-heavy asset acquisition.`,
+    ],
   },
   5: {
-    tagline: 'Available geology, captured refining, and demand that is growing fast.',
-    body: `This group is characterised by extreme refining concentration paired with rapid demand growth and a diversified reserve base. The reserves are well distributed across multiple countries — so the geological base is not the constraint. Demand is large and accelerating, driven by EV batteries, solar panels, and semiconductor fabs. Several members score at the maximum on the growth vector.\n\nThe midstream gap is not static here — it is widening. Graphite: China controls 90% of battery-grade processing while India targets 150 GW of new battery capacity. Silicon: prices spiked 273% in 2022 when Chinese power rationing shut domestic plants, then collapsed equally fast. Neodymium and praseodymium: every EV motor and wind turbine generator depends on them, and the April 2025 export controls hit this supply chain directly. Gallium: India is the world's fourth-largest bauxite producer but has never recovered a commercial gram of gallium, because the extraction requires dedicated recovery circuits in Bayer-process alumina plants. Phosphorus is the only major plant nutrient that cannot be synthesised. The raw resource is globally available in each case; the processing chokepoint is the problem, and it is actively widening.`,
+    tagline: 'Reserves are everywhere; the processing chokepoint is widening.',
+    body: `This group is characterised by extreme refining concentration paired with rapid demand growth and a diversified reserve base. The reserves are well distributed across multiple countries, so geology is not the constraint. Demand is large and accelerating, driven by EV batteries, solar panels, and semiconductor fabs. Several members score at the maximum on the growth vector. The midstream gap is widening.\n\nGraphite: China controls 90% of battery-grade processing while India targets 150 GW of new battery capacity. Silicon: prices spiked 273% in 2022 when Chinese power rationing shut domestic plants, then collapsed equally fast. Neodymium and praseodymium: every EV motor and wind turbine generator depends on them, and the April 2025 export controls hit this supply chain directly. Gallium: India is the world's fourth-largest bauxite producer but lacks processing capacity, because the extraction requires dedicated recovery circuits in Bayer-process alumina plants. Phosphorus is the only major plant nutrient that cannot be synthesised. The raw resource is globally available in each case; the processing chokepoint is the problem, and it is actively widening.`,
+    policy: [
+      `Leverage international partnerships for processing capacity-building. Given that clearances are a big hurdle for heavy chemical refining, set up environmentally-compliant, pre-cleared industrial zones specifically designated for critical-mineral hydro-metallurgical refining to expedite the process.`,
+    ],
   },
   6: {
-    tagline: 'The least constrained group — risk is mild and diffuse.',
-    body: `These are the least concentrated minerals supply-wise, and also have the lowest scores on the end-use criticality vector. The profile that holds them together is the absence of any extreme: demand is moderate, supply concentration is low to middling, reserves are adequate, and extraction is comparatively undemanding. None presents a single sharp bottleneck that would justify urgent strategic intervention.\n\nSome minerals in this group do have isolated extreme features — antimony and germanium have high price volatility scores, and rhenium has no substitute in fighter engine superalloys — but they still share the defining feature of low overall constraint. Interestingly, a majority are mined as by-products of other major minerals: bismuth, germanium, and cadmium are by-products of lead and zinc; selenium and rhenium are by-products of copper. Their availability is governed less by dedicated supply chains than by the economics of the host metals they accompany. Targeted attention is warranted for specific niche uses within this group, but not for the group as a whole.`,
+    tagline: 'No single sharp bottleneck; mostly mined as by-products.',
+    body: `These are the least concentrated minerals supply-wise, and also have the lowest scores on the end-use criticality vector. The profile that holds them together is the absence of any extreme: demand is moderate, supply concentration is low to middling, reserves are adequate, and extraction is comparatively undemanding. None presents a single sharp bottleneck that would justify urgent strategic intervention.\n\nSome minerals in this group do have isolated extreme features: antimony and germanium have high price volatility scores, and rhenium has no substitute in fighter engine superalloys, but they still share the defining feature of low overall constraint. Interestingly, a majority are mined as by-products of other major minerals: bismuth, germanium, and cadmium are by-products of lead and zinc; selenium and rhenium are by-products of copper. Their availability is governed less by dedicated supply chains than by the economics of the host metals they accompany.`,
+    policy: [
+      `Tighten "companionability reporting" for base-metal miners to log concentrations of bismuth, germanium and cadmium in their zinc/lead ores, and selenium/rhenium in their copper ores.`,
+      `Introduce a "royalty-offset credit" system: if a domestic zinc smelter invests its own capital to install advanced hydrometallurgical circuits to isolate germanium or bismuth, the government offers a matching discount on its primary zinc mining royalties. Processing and recycling of these minerals should also feature in India's international partnerships to insulate against price volatility.`,
+      `Build joint "micro-reserves" for select minerals like rhenium.`,
+    ],
   },
   0: {
     tagline: 'Not a commercial mineral. A genuine singleton.',
-    body: `When the clustering separates minerals more finely, promethium is the only element that splits off entirely on its own — and the reason explains itself. Promethium is not a commercial mineral. It is radioactive, has no stable isotope, does not occur naturally in extractable quantities, and is produced in gram-scale quantities as a fission by-product in nuclear reactors. The US Department of Energy's Isotope Program is the sole global commercial supplier. There is no commodity market, no price index, and no supply chain in the conventional sense.\n\nIts presence on India's critical minerals list, and on most others, is an artefact of completeness rather than of strategic concern. The data records it as what it is.`,
+    body: `When the clustering separates minerals more finely, promethium is the only element that splits off entirely on its own. Promethium is not a commercial mineral. It is radioactive, has no stable isotope, does not occur naturally in extractable quantities, and is produced in gram-scale quantities as a fission by-product in nuclear reactors. The US Department of Energy's Isotope Program is the sole global commercial supplier. There is no commodity market, no price index, and no supply chain in the conventional sense. Its presence on India's critical minerals list, and on most others, appears to be an artefact of completeness.`,
   },
 };
 
@@ -1526,9 +1554,31 @@ function renderGroups() {
             ).join('')}</div>
           </div>
         </div>
-        ${desc.body ? `<p class="gdc-body">${desc.body}</p>` : ''}
+        ${desc.policy && desc.policy.length ? `
+        <div class="gdc-toggle">
+          <button class="gdc-tab active" data-view="char">Characterisation</button>
+          <button class="gdc-tab" data-view="policy">Policy for India</button>
+        </div>` : ''}
+        <div class="gdc-view gdc-char">
+          ${(desc.body || '').split('\n\n').map(p => `<p class="gdc-body">${p}</p>`).join('')}
+        </div>
+        ${desc.policy && desc.policy.length ? `
+        <div class="gdc-view gdc-policy hidden">
+          <ul class="gdc-policy-list">${desc.policy.map(p => `<li>${p}</li>`).join('')}</ul>
+        </div>` : ''}
       </div>`;
   }).join('');
+
+  // Characterisation / Policy toggle within each card
+  list.addEventListener('click', e => {
+    const tab = e.target.closest('.gdc-tab');
+    if (!tab) return;
+    const card = tab.closest('.group-detail-card');
+    card.querySelectorAll('.gdc-tab').forEach(t => t.classList.toggle('active', t === tab));
+    const view = tab.dataset.view;
+    card.querySelector('.gdc-char')?.classList.toggle('hidden', view !== 'char');
+    card.querySelector('.gdc-policy')?.classList.toggle('hidden', view !== 'policy');
+  });
 
   // Draw radars
   list.querySelectorAll('.gdc-radar').forEach(canvas => {
@@ -1547,12 +1597,12 @@ function renderGroups() {
   const why = document.getElementById('groups-why');
   why.innerHTML = `
     <div class="card groups-prose-card">
-      <h2 class="groups-section-title">Why the Groups Are Distinct</h2>
-      <p>The six groups are not arbitrary slices of a spectrum — they are separated by a specific combination of answers to three structural questions. It is the combination, rather than any single vector, that makes them mutually exclusive.</p>
-      <p>The <strong>first question</strong> is whether the binding constraint is <em>volume or vulnerability</em> — whether a mineral matters because of how much is consumed or because of how exposed its supply is. Group 1 answers volume. Every other group answers vulnerability, consisting of minerals consumed in far smaller quantities.</p>
-      <p>The <strong>second question</strong> is where in the supply chain the constraint sits. For Group 2 it sits nowhere in particular — the vulnerability is diffuse. For Groups 3, 4, 5 and 6 it sits at the refining stage, but for different reasons: in Group 3 the reserves are also concentrated; in Groups 4 and 6 the reserves are not the problem; in Group 5 the refining is concentrated but the constraint is dormant rather than active.</p>
-      <p>The <strong>third question</strong> is whether the constraint is currently active. Groups 4 and 6 are both abundant-reserve, captured-refining minerals — but Group 6's demand is large and rising while Group 4's is small and flat. Similarly Groups 3 and 5 both contain heavily concentrated minerals, but Group 3's are volatile and exit-less while Group 5's are calm and oversupplied.</p>
-      <p>Minerals that a summed score would place side by side — niobium and dysprosium both appear severe, copper and cerium both total 44 — separate cleanly once the <em>shape</em> of their criticality is read rather than its height.</p>
+      <h2 class="groups-section-title">Why the groups are distinct</h2>
+      <p>The six groups are reasonably distinct on three grounds.</p>
+      <p><strong>First, is the binding constraint volume or vulnerability,</strong> whether a mineral matters because of how much is consumed or because of how exposed its supply is. Group 1 answers volume. Every other group answers vulnerability, and consists of minerals consumed in far smaller quantities.</p>
+      <p><strong>Second, where the supply-chain constraint sits.</strong> For Group 6 it sits nowhere in particular; the vulnerability is diffuse. For Groups 2, 3, 4 and 5 it sits at the refining stage, but for different reasons: in Group 2 the reserves are concentrated too; in Group 3 the reserves are concentrated but recycling provides an escape; in Groups 4 and 5 the reserves are not the problem at all.</p>
+      <p><strong>Third, whether the constraint is currently active.</strong> Groups 4 and 5 are both abundant-reserve, captured-refining minerals, but Group 5's demand is large and rising and its chokepoint is widening, while Group 4's demand is small and flat and its monopoly sits unexercised. Group 2's monopoly, by contrast, is being used right now.</p>
+      <p>Minerals that a summed score would place side by side, niobium and dysprosium both appear severe, copper and cerium both total 44, separate cleanly once the <em>shape</em> of their criticality is read rather than its height.</p>
     </div>`;
 
   // Methodology section
@@ -1563,13 +1613,13 @@ function renderGroups() {
       <h3 class="groups-sub-title">Inputs</h3>
       <p>Each mineral is represented by the fourteen scored sub-vectors. Composite roll-ups are not used as inputs, since they would double-count their constituents. Because the vectors are measured on different scales, each was standardised to zero mean and unit variance before any distance was computed, so that no vector influences the grouping merely by having a wider range.</p>
       <h3 class="groups-sub-title">Clustering</h3>
-      <p>Minerals were grouped using agglomerative hierarchical clustering with Ward's linkage and Euclidean distance on the standardised profiles. Ward's method builds a tree by repeatedly merging the two clusters whose combination increases total within-cluster variance the least, producing compact, comparably sized groups. Hierarchical clustering was preferred over methods requiring the number of groups to be fixed in advance, because it allows the structure to be examined at every level of granularity.</p>
-      <h3 class="groups-sub-title">How Many Groups</h3>
-      <p>The number of groups was not assumed. The clustering tree was examined at cuts from three to nine groups. Two diagnostics informed the choice. <strong>Stability:</strong> the six-group solution is robust — the same groups persist when the tree is cut at five, six and seven, with only edge members reassigned. <strong>Interpretability:</strong> at six groups, every cluster corresponds to a profile that can be described in supply-chain terms. The one substantive change between six and seven groups is that Promethium separates as a singleton — the basis for treating it as an outlier.</p>
-      <h3 class="groups-sub-title">An Honest Limitation</h3>
-      <p>Standard measures of cluster quality — the silhouette score (all approximately 0.15–0.20) and cophenetic correlation (0.55) — indicate that these groups are imposed on a continuous distribution rather than discovered as naturally separated clouds. A principal-component analysis explains why: a single dominant axis accounts for more than 28% of all variation and runs continuously from high-volume, easily-processed minerals at one end to small-volume, concentrated, hard-to-process ones at the other. The minerals form a spectrum, not a set of islands. This does not invalidate the groups, but they should be understood as a useful partition of a continuum, not as natural kinds.</p>
-      <h3 class="groups-sub-title">Manual Adjustment</h3>
-      <p>The statistical output was treated as a strong prior rather than a verdict. A small number of placements were settled on reasoning where a mineral sat near a boundary. These judgement calls are flagged in the group descriptions above: the inclusion of Tellurium with the heavy rare earths, the placement of Scandium with the rising-demand processing group rather than with the other rare earths, and the treatment of Promethium as an outlier. In each case the statistical assignment and the reasoning agreed.</p>
+      <p>We sorted the minerals into groups based on how similar their profiles were. Instead of guessing how many groups we needed upfront, we used agglomerative hierarchical clustering with Ward's linkage, a method that builds a "family tree" of the minerals step by step. It naturally pairs up the most similar minerals first, creating neat, well-balanced groups, and lets us read the data from both a big-picture and a fine-grained view.</p>
+      <h3 class="groups-sub-title">How many groups</h3>
+      <p>The clustering tree was examined at cuts from three to nine groups. <strong>Stability:</strong> the six-group solution is robust, the same groups persist when the tree is cut at five, six and seven, with only edge members reassigned. <strong>Interpretability:</strong> at six groups, every cluster corresponds to a profile that can be described in supply-chain terms. The one substantive change between six and seven groups is that promethium separates as a singleton, the basis for treating it as an outlier.</p>
+      <h3 class="groups-sub-title">An honest limitation</h3>
+      <p>Standard measures of cluster quality, the silhouette score (about 0.15–0.20) and cophenetic correlation (0.55), indicate that these groups are not naturally separated "clouds"; they are carved out of a continuous distribution. A principal-component analysis shows why: a single dominant axis accounts for more than 28% of all variation, running continuously from high-volume, easily-processed minerals at one end to small-volume, concentrated, hard-to-process ones at the other. The minerals form a spectrum, not a set of islands. This does not invalidate the groups, but they should be understood as a useful partition of a continuum rather than natural kinds.</p>
+      <h3 class="groups-sub-title">A few manual tweaks</h3>
+      <p>The statistical output was treated as a prior rather than a verdict. A small number of placements were settled on reasoning, especially where a mineral sat near a boundary. These judgement calls are flagged in the group descriptions above: the inclusion of Tellurium with the heavy rare earths, the placement of Scandium with the rising-demand processing group rather than with the other rare earths, and the treatment of promethium as an outlier. In each case the statistical assignment and the reasoning agreed.</p>
     </div>`;
 }
 

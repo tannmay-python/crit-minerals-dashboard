@@ -3709,3 +3709,22 @@ input[type="range"]::-moz-range-thumb {
 .csl-dot { width: 11px; height: 11px; border-radius: 3px; }
 .crit-shape-chart { flex-shrink: 0; }
 .crit-shape-chart canvas { width: 260px; max-width: 100%; height: auto; }
+
+/* Group card: Characterisation / Policy toggle */
+.gdc-toggle { display: flex; gap: 6px; margin: 4px 0 14px; }
+.gdc-tab {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid var(--gcolor, var(--border-2));
+  background: transparent;
+  color: var(--gcolor, var(--text-muted));
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.gdc-tab.active { background: var(--gcolor, var(--accent)); color: #fff; }
+.gdc-policy-list { margin: 0; padding-left: 18px; }
+.gdc-policy-list li { font-size: 0.86rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 10px; }
+.gdc-policy-list li::marker { color: var(--gcolor, var(--accent)); font-weight: 700; }
+.gdc-policy-list li:last-child { margin-bottom: 0; }
