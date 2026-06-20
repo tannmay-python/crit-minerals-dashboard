@@ -46,6 +46,15 @@
   .read .it b{color:var(--text)}
   .rn{flex:none;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center}
 
+  /* hero two-column + mini example */
+  .hero-grid{display:grid;grid-template-columns:1.12fr .88fr;gap:40px;align-items:center}
+  .hero-aside{min-width:0}
+  .mini-card{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--accent-2);border-radius:16px;box-shadow:0 16px 44px -28px rgba(98,13,60,.5);padding:16px 18px 14px}
+  .mini-title{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:800;margin-bottom:4px}
+  .mini-svg{width:100%;height:auto;display:block}
+  .mini-foot{font-size:.78rem;color:var(--text-muted);border-top:1px solid var(--border);padding-top:10px;margin-top:4px}
+  @media (max-width:860px){ .hero-grid{grid-template-columns:1fr} .hero-aside{max-width:420px} }
+
   /* Scrollytelling scene */
   .scene{position:relative;height:360vh;margin-top:30px}
   .sticky{position:sticky;top:64px;height:calc(100vh - 64px);display:flex;flex-direction:column;justify-content:center}
@@ -93,19 +102,49 @@
 
 <main>
   <section class="hero wrap">
-    <span class="eyebrow">Methodology<span class="eyebrow badge-test" style="margin:0 0 0 8px">Test feature</span></span>
-    <h1>How the 51 minerals cluster</h1>
-    <p class="lede">The six groups are not drawn by hand. They fall out of the data, by measuring how similar each mineral's 14-dimensional profile is to every other's, and letting the similar ones join up. This is that process, drawn as a tree.</p>
-    <div class="prose">
-      <p>A <span class="k">dendrogram</span> is a family tree for data. Every mineral starts alone at the bottom. The two most similar are joined first, then the next two, and so on, until everything sits under a single root. The <strong>height</strong> at which two things join is how different they were when they merged: join low, and they were near-identical; join high, and the link is a stretch.</p>
-      <p>We use <strong>Ward's method</strong>, which at each step merges the two clusters that add the least new spread, so the groups come out compact and comparably sized. Scroll down to watch the tree build itself, from 51 lonely minerals up to one.</p>
+    <div class="hero-grid">
+      <div class="hero-text">
+        <span class="eyebrow">Methodology</span>
+        <h1>How the 51 minerals cluster</h1>
+        <p class="lede">The six groups are not drawn by hand. They fall out of the data, by measuring how similar each mineral's 14-dimensional profile is to every other's, and letting the similar ones join up. This is that process, drawn as a tree.</p>
+        <div class="prose">
+          <p>A <span class="k">dendrogram</span> is a family tree for data. Every mineral starts alone at the bottom. The two most similar are joined first, then the next two, and so on, until everything sits under a single root. The <strong>height</strong> at which two things join is how different they were when they merged: join low, and they were near-identical; join high, and the link is a stretch.</p>
+          <p>We use <strong>Ward's method</strong>, which at each step merges the two clusters that add the least new spread, so the groups come out compact and comparably sized. Scroll down to watch the tree build itself, from 51 lonely minerals up to one.</p>
+        </div>
+        <div class="scrollhint">scroll to grow the tree ↓</div>
+      </div>
+
+      <aside class="hero-aside">
+        <div class="mini-card">
+          <div class="mini-title">How to read it</div>
+          <svg class="mini-svg" viewBox="0 0 380 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A small example dendrogram">
+            <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#cdbfa6"/></marker></defs>
+            <!-- y axis -->
+            <line x1="52" y1="266" x2="52" y2="78" stroke="#cdbfa6" stroke-width="1.5" marker-end="url(#ar)"/>
+            <text x="40" y="176" transform="rotate(-90 40 176)" text-anchor="middle" font-size="11" fill="#9a7040" font-family="Hanken Grotesk">more different →</text>
+            <!-- brackets -->
+            <path d="M120 266 V198 H166 V266" fill="none" stroke="#620d3c" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+            <path d="M236 266 V184 H282 V266" fill="none" stroke="#3d6b7d" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+            <path d="M143 198 V104 H259 V184" fill="none" stroke="#cdbfa6" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+            <!-- leaves -->
+            <g font-size="10.5" font-family="Hanken Grotesk" font-weight="700">
+              <circle cx="120" cy="266" r="3.6" fill="#620d3c"/><text x="120" y="284" text-anchor="middle" fill="#620d3c">Nd</text>
+              <circle cx="166" cy="266" r="3.6" fill="#620d3c"/><text x="166" y="284" text-anchor="middle" fill="#620d3c">Pr</text>
+              <circle cx="236" cy="266" r="3.6" fill="#3d6b7d"/><text x="236" y="284" text-anchor="middle" fill="#3d6b7d">Pt</text>
+              <circle cx="282" cy="266" r="3.6" fill="#3d6b7d"/><text x="282" y="284" text-anchor="middle" fill="#3d6b7d">Pd</text>
+            </g>
+            <text x="201" y="306" text-anchor="middle" font-size="10.5" fill="#9a7040" font-family="Hanken Grotesk">each leaf is one mineral</text>
+            <!-- callout: low -->
+            <line x1="143" y1="198" x2="98" y2="212" stroke="#620d3c" stroke-width="1" stroke-dasharray="3 3"/>
+            <text x="94" y="209" text-anchor="end" font-size="10.5" fill="#620d3c" font-weight="700" font-family="Hanken Grotesk">joins low:</text>
+            <text x="94" y="222" text-anchor="end" font-size="10" fill="#6b4020" font-family="Hanken Grotesk">nearly alike</text>
+            <!-- callout: high -->
+            <text x="201" y="92" text-anchor="middle" font-size="10.5" fill="#8a5a44" font-weight="700" font-family="Hanken Grotesk">joins high: very different</text>
+          </svg>
+          <div class="mini-foot">Two near-identical pairs fuse low down; the unlike pairs only meet high up.</div>
+        </div>
+      </aside>
     </div>
-    <div class="read">
-      <div class="it"><span class="rn">1</span><div><b>Bottom = each mineral.</b> 51 leaves, one per critical mineral, coloured by the group it lands in.</div></div>
-      <div class="it"><span class="rn">2</span><div><b>Height = dissimilarity.</b> The taller the bracket joining two clusters, the less alike they are.</div></div>
-      <div class="it"><span class="rn">3</span><div><b>Cut the tree to choose groups.</b> A low cut gives many tight clusters; a high cut, a few broad ones. We cut at six.</div></div>
-    </div>
-    <div class="scrollhint">scroll to grow the tree ↓</div>
   </section>
 
   <section class="scene" id="scene">
@@ -129,7 +168,7 @@
 </main>
 
 <footer>
-  A <a href="https://takshashila.org.in" target="_blank" rel="noopener">Takshashila Institution</a> analysis · experimental view ·
+  A <a href="https://takshashila.org.in" target="_blank" rel="noopener">Takshashila Institution</a> analysis ·
   <a href="index.html">return to the dashboard</a>
 </footer>
 
