@@ -1481,13 +1481,9 @@ function renderGroupsMatrix() {
       const g = groups[i];
       if (v == null) { html += `<td class="gmx-cell" data-col="${g.id}">—</td>`; return; }
       const isMax = Math.abs(v - rowMax) < 0.005;
-      const pct   = Math.round((v / max) * 100);
-      const light = colorLuminance(g.color) > 150;
-      const style = isMax
-        ? `background:${g.color};color:${light ? '#1a0804' : '#fff'}`
-        : `--gc:${g.color}`;
+      // Numbers only; highlight each row's max by colouring its number, no fill.
+      const style = isMax ? `color:${g.color}` : '';
       html += `<td class="gmx-cell${isMax ? ' gmx-max' : ''}" data-col="${g.id}" style="${style}">
-        ${isMax ? '' : `<span class="gmx-bar" style="width:${pct}%"></span>`}
         <span class="gmx-val">${v.toFixed(2)}</span>
       </td>`;
     });

@@ -3682,7 +3682,6 @@ input[type="range"]::-moz-range-thumb {
   font-weight: 600;
   color: var(--text);
 }
-.gmx-bar { position: absolute; left: 0; top: 0; bottom: 0; background: var(--gc); opacity: 0.14; pointer-events: none; }
 .gmx-val { position: relative; }
 .gmx-max { font-weight: 800; }
 /* Column spotlight on hover */
