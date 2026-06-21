@@ -3862,3 +3862,19 @@ input[type="range"]::-moz-range-thumb {
   font-size: 0.78rem;
   color: var(--text-muted);
 }
+
+
+.problem-meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin: 6px 0 18px;
+}
+.problem-meta-row .problem-byline { margin: 0; }
+.tour-launch-hero {
+  padding: 5px 13px;
+  font-size: 0.74rem;
+  background: rgba(241,162,34,0.12);
+  border-color: rgba(241,162,34,0.45);
+}
