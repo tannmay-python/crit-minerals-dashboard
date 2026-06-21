@@ -1826,9 +1826,6 @@ function buildTourWelcome() {
       <div class="tw-mark">Guided tour</div>
       <h2>A quick way into the framework.</h2>
       <p>In about a minute, this tour will walk you through the key things to focus on.</p>
-      <div class="tw-route" aria-hidden="true">
-        <span>List</span><i></i><span>Vectors</span><i></i><span>Mineral</span><i></i><span>Policy</span>
-      </div>
       <div class="tw-actions">
         <button class="tw-skip">Skip for now</button>
         <button class="tw-start">Start the tour →</button>
