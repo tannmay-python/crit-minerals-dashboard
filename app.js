@@ -247,7 +247,8 @@ function init() {
   document.getElementById('mp-back-btn').addEventListener('click', () => navigate('explorer'));
 
   // Guided tour launcher (footer)
-  document.getElementById('tour-btn')?.addEventListener('click', startTour);
+  document.getElementById('tour-btn')?.addEventListener('click', () => startTour({ manual: true }));
+  if (!localStorage.getItem('critminTourSeen')) setTimeout(() => startTour(), 700);
 
 
   // Mineral page: open the group + policy drawer for this mineral's group
@@ -1766,7 +1767,11 @@ function buildTourCard() {
 function clearTourSpot() {
   document.querySelectorAll('.tour-spot').forEach(e => e.classList.remove('tour-spot'));
 }
-function startTour() { buildTourCard(); tourShow(0); }
+function startTour(opts = {}) {
+  buildTourCard();
+  if (opts.manual) localStorage.removeItem('critminTourSeen');
+  tourShow(0);
+}
 function tourShow(i) {
   tourIdx = Math.max(0, Math.min(TOUR_STEPS.length - 1, i));
   const s = TOUR_STEPS[tourIdx];
@@ -1786,6 +1791,7 @@ function tourShow(i) {
   }, 140);
 }
 function endTour() {
+  localStorage.setItem('critminTourSeen', '1');
   clearTourSpot();
   if (tourCard) tourCard.style.display = 'none';
   document.body.style.overflow = '';
