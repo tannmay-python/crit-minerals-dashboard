@@ -247,8 +247,8 @@ function init() {
   document.getElementById('mp-back-btn').addEventListener('click', () => navigate('explorer'));
 
   // Guided tour launcher (footer)
-  document.getElementById('tour-btn')?.addEventListener('click', () => startTour({ manual: true }));
-  if (!localStorage.getItem('critminTourSeen')) setTimeout(() => startTour(), 700);
+  document.getElementById('tour-btn')?.addEventListener('click', () => showTourWelcome({ manual: true }));
+  if (!localStorage.getItem('critminTourSeen')) setTimeout(() => showTourWelcome(), 650);
 
 
   // Mineral page: open the group + policy drawer for this mineral's group
@@ -1734,7 +1734,45 @@ const TOUR_STEPS = [
   { page: 'overview', target: null, title: "That's the idea",
     text: "Take India's list apart, group by the kind of problem, and you get specific guidance on where to act, and where not to. Explore freely from here." },
 ];
-let tourIdx = -1, tourCard = null;
+let tourIdx = -1, tourCard = null, tourWelcome = null;
+
+
+function buildTourWelcome() {
+  if (tourWelcome) return;
+  tourWelcome = document.createElement('div');
+  tourWelcome.className = 'tour-welcome';
+  tourWelcome.innerHTML = `
+    <div class="tw-card">
+      <div class="tw-eyebrow">New to the dashboard?</div>
+      <h2>A quick tour can help.</h2>
+      <p>This takes about a minute. It shows why a single critical-minerals list is not enough, how the ten-vector framework works, and where the group-level policy choices sit.</p>
+      <div class="tw-actions">
+        <button class="tw-skip">Skip for now</button>
+        <button class="tw-start">Start the tour →</button>
+      </div>
+    </div>`;
+  document.body.appendChild(tourWelcome);
+  tourWelcome.querySelector('.tw-skip').addEventListener('click', dismissTourWelcome);
+  tourWelcome.querySelector('.tw-start').addEventListener('click', () => {
+    hideTourWelcome();
+    startTour();
+  });
+  tourWelcome.addEventListener('click', e => {
+    if (e.target === tourWelcome) dismissTourWelcome();
+  });
+}
+function showTourWelcome(opts = {}) {
+  buildTourWelcome();
+  if (opts.manual) localStorage.removeItem('critminTourSeen');
+  tourWelcome.classList.add('open');
+}
+function hideTourWelcome() {
+  if (tourWelcome) tourWelcome.classList.remove('open');
+}
+function dismissTourWelcome() {
+  localStorage.setItem('critminTourSeen', '1');
+  hideTourWelcome();
+}
 
 function buildTourCard() {
   if (tourCard) return;
@@ -1767,9 +1805,9 @@ function buildTourCard() {
 function clearTourSpot() {
   document.querySelectorAll('.tour-spot').forEach(e => e.classList.remove('tour-spot'));
 }
-function startTour(opts = {}) {
+function startTour() {
+  localStorage.removeItem('critminTourSeen');
   buildTourCard();
-  if (opts.manual) localStorage.removeItem('critminTourSeen');
   tourShow(0);
 }
 function tourShow(i) {
@@ -1791,6 +1829,7 @@ function tourShow(i) {
   }, 140);
 }
 function endTour() {
+  hideTourWelcome();
   localStorage.setItem('critminTourSeen', '1');
   clearTourSpot();
   if (tourCard) tourCard.style.display = 'none';

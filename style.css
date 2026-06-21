@@ -3820,6 +3820,66 @@ input[type="range"]::-moz-range-thumb {
 .gm-chip--active { font-weight: 700; }
 
 
+
+/* Tour welcome gate */
+.tour-welcome {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+  background: rgba(26,8,4,0.46);
+  backdrop-filter: blur(3px);
+}
+.tour-welcome.open { display: flex; }
+.tw-card {
+  width: min(520px, 94vw);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent-2);
+  border-radius: 18px;
+  padding: 24px 26px;
+  box-shadow: 0 28px 70px -24px rgba(98,13,60,0.72);
+}
+.tw-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+.tw-card h2 {
+  margin: 0 0 10px;
+  font-size: 1.45rem;
+  color: var(--accent);
+}
+.tw-card p {
+  margin: 0;
+  font-size: 0.94rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+.tw-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+.tw-skip, .tw-start {
+  font-size: 0.82rem;
+  font-weight: 700;
+  border-radius: 100px;
+  padding: 8px 18px;
+  cursor: pointer;
+}
+.tw-skip { border: 1px solid var(--border-2); background: var(--surface); color: var(--text-muted); }
+.tw-skip:hover { border-color: var(--accent); color: var(--accent); }
+.tw-start { border: 1px solid var(--accent); background: var(--accent); color: #fff; }
+.tw-start:hover { background: var(--accent-hover); }
+
 /* ── Guided tour ─────────────────────────────────────────── */
 .tour-launch {
   font-size: 0.78rem; font-weight: 700; color: var(--accent);
