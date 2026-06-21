@@ -246,6 +246,13 @@ function init() {
   // Mineral page back button
   document.getElementById('mp-back-btn').addEventListener('click', () => navigate('explorer'));
 
+
+  // Mineral page: open the group + policy drawer for this mineral's group
+  document.getElementById('mp-group-policy').addEventListener('click', () => {
+    const name = AppState.selectedMineral;
+    if (name) openGroupModal(getGroup(name), name);
+  });
+
   // Group modal close
   document.getElementById('gm-close').addEventListener('click', closeGroupModal);
   document.getElementById('gm-overlay').addEventListener('click', e => {
@@ -643,7 +650,7 @@ function setPtStep(step) {
 
 /* ── Group modal drawer ──────────────────────────────────────── */
 
-function openGroupModal(gid) {
+function openGroupModal(gid, activeMineral) {
   const g = AppData.groups.find(gg => gg.id === Number(gid));
   if (!g) return;
   const members = AppData.minerals.filter(m => getGroup(m.mineral) === Number(gid));
@@ -671,15 +678,25 @@ function openGroupModal(gid) {
   const bodyEl = document.getElementById('gm-body');
   bodyEl.innerHTML = (desc.body || '').split('\n\n').map(p => `<p>${p}</p>`).join('');
 
+  // Policy choices for India
+  const policyEl = document.getElementById('gm-policy');
+  if (policyEl) {
+    policyEl.innerHTML = (desc.policy && desc.policy.length)
+      ? `<div class="gm-policy-label" style="color:${g.color}">Policy choices for India</div>
+         <ul class="gm-policy-list" style="--gc:${g.color}">${desc.policy.map(p => `<li>${p}</li>`).join('')}</ul>`
+      : '';
+  }
+
   // Radar
   const canvas = document.getElementById('gm-radar');
   if (canvas && members.length) drawGroupAvgRadar(canvas, members, g.color);
 
-  // Mineral chips
+  // Mineral chips (highlight the active one if opened from a mineral page)
   const chipsEl = document.getElementById('gm-chips');
-  chipsEl.innerHTML = members.map(m =>
-    `<span class="gm-chip" data-mineral="${m.mineral}" style="color:${g.color};border-color:${g.color}">${m.mineral}</span>`
-  ).join('');
+  chipsEl.innerHTML = members.map(m => {
+    const on = m.mineral === activeMineral;
+    return `<span class="gm-chip${on ? ' gm-chip--active' : ''}" data-mineral="${m.mineral}" style="${on ? `background:${g.color};color:#fff;border-color:${g.color}` : `color:${g.color};border-color:${g.color}`}">${m.mineral}</span>`;
+  }).join('');
   chipsEl.querySelectorAll('.gm-chip').forEach(chip => {
     chip.addEventListener('click', () => {
       closeGroupModal();
@@ -954,12 +971,13 @@ function renderMineralPage(mineralName) {
       options: {
         responsive: true,
         maintainAspectRatio: true,
+        layout: { padding: 18 },
         scales: {
           r: {
             min: 0, max: 5,
             ticks: { display: false, stepSize: 1 },
             grid: { color: 'rgba(98,13,60,0.08)' },
-            pointLabels: { color: '#6b4020', font: { size: 8, family: 'Hanken Grotesk' } },
+            pointLabels: { color: '#6b4020', font: { size: 8, family: 'Hanken Grotesk' }, padding: 4 },
             angleLines: { color: 'rgba(98,13,60,0.06)' }
           }
         },
@@ -1024,7 +1042,7 @@ function renderMineralScorecard(m) {
         <div class="sc-head" role="button" tabindex="0" onclick="toggleScRow(this)">
           <span class="sc-name">${v.name}</span>
           <span class="sc-score" style="color:${barColor}">${valDisplay}<span class="sc-max"> / ${v.max}</span></span>
-          <span class="sc-arrow">▸</span>
+          <span class="sc-expand">Why this score?<span class="sc-chev">▾</span></span>
         </div>
         <div class="sc-bar-track">
           <div class="sc-bar-fill" style="width:${pct.toFixed(1)}%;background:${barColor}"></div>
@@ -1044,11 +1062,11 @@ function renderMineralScorecard(m) {
 window.toggleScRow = function(head) {
   const row  = head.closest('.sc-row');
   const body = row && row.querySelector('.sc-body');
-  const arr  = head.querySelector('.sc-arrow');
+  const exp  = head.querySelector('.sc-expand');
   if (!body) return;
   const isHidden = body.style.display === 'none' || body.style.display === '';
   body.style.display = isHidden ? 'block' : 'none';
-  if (arr) arr.textContent = isHidden ? '▾' : '▸';
+  if (exp) exp.firstChild.textContent = isHidden ? 'Hide reasoning' : 'Why this score?';
   row.classList.toggle('sc-row--open', isHidden);
 };
 
@@ -1586,8 +1604,6 @@ function renderGroupsMatrix() {
 }
 
 function renderGroups() {
-  renderGroupsMatrix();
-
   const list = document.getElementById('groups-detail-list');
   if (list.dataset.rendered) return;
   list.dataset.rendered = 'true';

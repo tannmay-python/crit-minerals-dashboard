@@ -213,10 +213,16 @@
   <div class="container">
     <div class="mp-topbar">
       <button class="mp-back-btn" id="mp-back-btn">← Explorer</button>
-      <button class="modal-add-compare" id="mp-add-compare">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-        Add to Compare
-      </button>
+      <div class="mp-topbar-actions">
+        <button class="mp-group-policy-btn" id="mp-group-policy">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          Group &amp; policy
+        </button>
+        <button class="modal-add-compare" id="mp-add-compare">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          Add to Compare
+        </button>
+      </div>
     </div>
 
     <div class="mp-header">
@@ -241,6 +247,7 @@
       <div class="mp-right">
         <div class="card mp-scorecard-card">
           <div class="mp-card-title">Dimension Scorecard</div>
+          <p class="mp-scorecard-hint">Click any dimension to expand the reasoning behind its score.</p>
           <div id="mp-scorecard"></div>
         </div>
       </div>
@@ -272,7 +279,7 @@
       </span>
       <span class="dendro-cta-txt">
         <strong>How the 51 minerals cluster into groups</strong>
-        <span>An interactive tree of the grouping, built from the same scores</span>
+        <span>An interactive tree of the grouping</span>
       </span>
       <span class="dendro-cta-go">→</span>
     </a>
@@ -292,13 +299,17 @@
       <p class="hero-sub" style="max-width:760px;">We have bucketed the minerals into six groupings based on common characteristics. While not perfect, we believe this is informative.</p>
     </section>
 
-    <!-- Group profile matrix: average sub-score per group -->
-    <div class="section">
-      <div class="section-header">
-        <h2 class="section-title">Average Profile by Group</h2>
-      </div>
-      <div id="groups-matrix"></div>
-    </div>
+    <!-- Group profile matrix link -->
+    <a class="dendro-cta" href="group-profiles.html">
+      <span class="dendro-cta-tree" aria-hidden="true">
+        <svg viewBox="0 0 40 34" width="40" height="34"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 7h30M5 17h30M5 27h30"/><path d="M14 5v24M25 5v24"/></g></svg>
+      </span>
+      <span class="dendro-cta-txt">
+        <strong>Average profile by group</strong>
+        <span>The full table: mean of every sub-score across each group</span>
+      </span>
+      <span class="dendro-cta-go">→</span>
+    </a>
 
     <!-- Group detail cards -->
     <div id="groups-detail-list"></div>
@@ -339,6 +350,7 @@
       <p class="gm-tagline" id="gm-tagline"></p>
       <canvas class="gm-radar-canvas" id="gm-radar" width="240" height="240"></canvas>
       <p class="gm-body" id="gm-body"></p>
+      <div class="gm-policy" id="gm-policy"></div>
       <div class="gm-chips-label">Minerals in this group</div>
       <div class="gm-chips" id="gm-chips"></div>
     </div>

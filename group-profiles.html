@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Average profile by group · Takshashila</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,400..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --accent:#620d3c; --accent-2:#f1a222; --surface:#fff; --surface-2:#fdf4d0; --surface-3:#f5e8b8;
+    --text:#1a0804; --text-muted:#6b4020; --text-dim:#9a7040; --border:#e4d49c; --border-2:#c9b060;
+    --radius:14px; --transition:.18s ease;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Hanken Grotesk',sans-serif;color:var(--text);background-color:#fbf4d6;
+    background-image:radial-gradient(1100px 460px at 82% -6%,rgba(241,162,34,.10),transparent 60%);
+    line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+  header{position:sticky;top:0;z-index:20;background:var(--accent);border-bottom:1px solid rgba(255,255,255,.12)}
+  .hd{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:1180px;margin:0 auto;padding:0 24px}
+  .hd img{height:34px;display:block}
+  .hd .back{color:#fff;font-size:.82rem;font-weight:600;opacity:.85} .hd .back:hover{opacity:1;text-decoration:none}
+  .hero{padding:56px 0 26px}
+  .eyebrow{display:inline-block;font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);border:1px solid var(--border);background:var(--surface-2);padding:5px 14px;border-radius:100px;margin-bottom:16px}
+  h1{font-family:'Newsreader',serif;font-weight:600;font-size:clamp(1.9rem,4vw,2.9rem);line-height:1.05;letter-spacing:-.01em}
+  .lede{font-size:1.02rem;color:var(--text-muted);max-width:70ch;margin-top:16px}
+  .lede b{color:var(--text)}
+  .note{font-size:.86rem;color:var(--text-muted);max-width:70ch;margin:14px 0 0}
+
+  /* matrix */
+  .gmx{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);margin:6px 0 60px}
+  .gmx-table{border-collapse:collapse;width:100%;font-size:.82rem}
+  .gmx-rowhead,.gmx-label{text-align:left;padding:10px 16px;white-space:nowrap;position:sticky;left:0;z-index:1}
+  .gmx-rowhead{font-weight:700;color:var(--text);background:var(--surface-2)}
+  .gmx-label{font-weight:500;color:var(--text);background:var(--surface);border-top:1px solid var(--border)}
+  .gmx-colhead{padding:10px 12px;text-align:center;vertical-align:top;background:var(--surface-2);border-left:1px solid var(--border);border-bottom:3px solid var(--gc);min-width:98px;transition:background var(--transition)}
+  .gmx-gnum{display:block;font-weight:800;font-size:.78rem}
+  .gmx-gname{display:flex;align-items:center;justify-content:center;text-align:center;height:2.6em;margin:5px auto 0;max-width:120px;font-size:.6rem;color:var(--text-muted);line-height:1.2}
+  .gmx-cell{position:relative;text-align:center;padding:11px 10px;border-left:1px solid var(--border);border-top:1px solid var(--border);font-feature-settings:'tnum';font-weight:600;color:var(--text)}
+  .gmx-max{font-weight:800}
+  .gmx-table.gmx-dimmed .gmx-cell:not(.gmx-hot),.gmx-table.gmx-dimmed .gmx-colhead:not(.gmx-hot){opacity:.38}
+  .gmx-table.gmx-dimmed .gmx-label{opacity:.55}
+  .gmx-table tbody tr:hover .gmx-label{color:var(--accent)}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0 0 18px;font-size:.78rem;color:var(--text-muted)}
+  .legend .li{display:inline-flex;align-items:center;gap:7px} .legend .sw{width:13px;height:13px;border-radius:4px}
+  footer{border-top:1px solid var(--border);background:var(--surface-2);padding:22px 0 40px;text-align:center;font-size:.8rem;color:var(--text-muted)}
+</style>
+</head>
+<body>
+<header>
+  <div class="hd">
+    <a href="https://takshashila.org.in" target="_blank" rel="noopener"><img src="assets/takshashila-logo.svg" alt="Takshashila Institution" /></a>
+    <a class="back" href="index.html">← Back to the dashboard</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <span class="eyebrow">Grouping</span>
+    <h1>Average profile by group</h1>
+    <p class="lede">Each of the six groups has a characteristic shape. This table is the plain version of it: for every one of the fourteen sub-scores, the <b>mean across the minerals in a group</b>. The highest value in each row is highlighted in that group's colour, so you can read across a row to see which group leads on a given dimension.</p>
+    <p class="note">Hover a column to spotlight one group. The numbers are means, so they can sit between the 1–5 / 1–10 band scores. They are never summed.</p>
+  </section>
+
+  <section class="wrap">
+    <div class="legend" id="legend"></div>
+    <div id="matrix-host"></div>
+  </section>
+</main>
+
+<footer>
+  A <a href="https://takshashila.org.in" target="_blank" rel="noopener">Takshashila Institution</a> analysis ·
+  <a href="index.html">return to the dashboard</a>
+</footer>
+
+<script src="matrix-data.js"></script>
+<script>
+(function(){
+  const G=MATRIX.groups;
+  const lum=h=>{h=h.replace('#','');return .299*parseInt(h.slice(0,2),16)+.587*parseInt(h.slice(2,4),16)+.114*parseInt(h.slice(4,6),16);};
+  let html=`<div class="gmx"><table class="gmx-table"><thead><tr><th class="gmx-rowhead">Vector / sub-score</th>`;
+  G.forEach(g=>{html+=`<th class="gmx-colhead" data-col="${g.id}" style="--gc:${g.color}" title="${g.name}"><span class="gmx-gnum" style="color:${g.color}">Group ${g.id}</span><span class="gmx-gname">${g.name}</span></th>`;});
+  html+=`</tr></thead><tbody>`;
+  MATRIX.rows.forEach(r=>{
+    html+=`<tr><td class="gmx-label">${r.label}</td>`;
+    r.cells.forEach(c=>{
+      const g=G.find(x=>x.id===c.g);
+      if(c.v==null){html+=`<td class="gmx-cell" data-col="${c.g}">—</td>`;return;}
+      const style=c.max?`background:${g.color}33;color:${lum(g.color)<=150?g.color:'#1a0804'}`:'';
+      html+=`<td class="gmx-cell${c.max?' gmx-max':''}" data-col="${c.g}" style="${style}">${c.v.toFixed(2)}</td>`;
+    });
+    html+=`</tr>`;
+  });
+  document.getElementById('matrix-host').innerHTML=html+`</tbody></table></div>`;
+
+  const leg=document.getElementById('legend');
+  leg.innerHTML=G.map(g=>`<span class="li"><span class="sw" style="background:${g.color}"></span>Group ${g.id} · ${g.name}</span>`).join('');
+
+  const table=document.querySelector('.gmx-table');
+  const clear=()=>{table.classList.remove('gmx-dimmed');table.querySelectorAll('.gmx-hot').forEach(x=>x.classList.remove('gmx-hot'));};
+  table.addEventListener('mouseover',e=>{const el=e.target.closest('[data-col]');if(!el)return;clear();table.classList.add('gmx-dimmed');table.querySelectorAll(`[data-col="${el.dataset.col}"]`).forEach(x=>x.classList.add('gmx-hot'));});
+  table.addEventListener('mouseleave',clear);
+})();
+</script>
+</body>
+</html>
