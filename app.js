@@ -1758,7 +1758,7 @@ window.addEventListener('resize', () => {
 const TOUR_STEPS = [
   { page: 'overview', target: '#pt-grid', icon: '01', kicker: 'Start with the list', title: 'India calls 51 elements critical',
     text: "The periodic table shows the starting problem. A large share of commercially mined elements now carries the same label, so the list alone cannot inform prioritisation and policy action." },
-  { page: 'methodology', target: '#criteria-vectors-list', icon: '02', kicker: 'Open the method', title: 'How we score criticality',
+  { page: 'methodology', target: '.criteria-picker-grid', icon: '02', kicker: 'Open the method', title: 'How we score criticality',
     text: "We score each mineral across ten separate questions: demand, supply concentration, substitutes, processing, India's position, and more. We never add them into a single composite score." },
   { page: 'mineral', mineral: 'Copper', target: '.mp-body', icon: '03', kicker: 'Inspect one mineral', title: 'Every score has reasoning',
     text: "On a mineral page, the radar shows how that mineral performs across the ten questions. Each score can expand to show the reasoning, and the Group & policy button connects the mineral to the wider response." },
@@ -1866,48 +1866,16 @@ function startTour() {
   if (tourVeil) tourVeil.classList.add('open');
   tourShow(0);
 }
-function positionTourCard(target) {
+function positionTourCard() {
   if (!tourCard) return;
-  const pad = 20;
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
-  const cardW = Math.min(520, Math.round(vw * 0.92));
-  tourCard.style.width = `${cardW}px`;
-
-  if (!target || vw < 760) {
-    tourCard.style.left = '50%';
-    tourCard.style.top = 'auto';
-    tourCard.style.right = 'auto';
-    tourCard.style.bottom = '18px';
-    tourCard.style.transform = 'translateX(-50%)';
-    return;
-  }
-
-  const r = target.getBoundingClientRect();
-  const h = tourCard.offsetHeight || 260;
-  let left, top;
-  if (r.right + cardW + pad < vw) {
-    left = r.right + pad;
-    top = Math.min(Math.max(r.top + r.height / 2 - h / 2, pad), vh - h - pad);
-  } else if (r.left - cardW - pad > 0) {
-    left = r.left - cardW - pad;
-    top = Math.min(Math.max(r.top + r.height / 2 - h / 2, pad), vh - h - pad);
-  } else if (r.bottom + h + pad < vh) {
-    left = Math.min(Math.max(r.left + r.width / 2 - cardW / 2, pad), vw - cardW - pad);
-    top = r.bottom + pad;
-  } else if (r.top - h - pad > 0) {
-    left = Math.min(Math.max(r.left + r.width / 2 - cardW / 2, pad), vw - cardW - pad);
-    top = r.top - h - pad;
-  } else {
-    left = Math.min(Math.max(vw - cardW - pad, pad), vw - cardW - pad);
-    top = Math.max(vh - h - pad, pad);
-  }
-  tourCard.style.left = `${left}px`;
-  tourCard.style.top = `${top}px`;
+  tourCard.style.left = '50%';
+  tourCard.style.top = 'auto';
   tourCard.style.right = 'auto';
-  tourCard.style.bottom = 'auto';
-  tourCard.style.transform = 'none';
+  tourCard.style.bottom = '18px';
+  tourCard.style.transform = 'translateX(-50%)';
+  tourCard.style.width = `${Math.min(760, Math.round(window.innerWidth * 0.92))}px`;
 }
+
 function tourShow(i) {
   tourIdx = Math.max(0, Math.min(TOUR_STEPS.length - 1, i));
   const s = TOUR_STEPS[tourIdx];
@@ -1921,7 +1889,7 @@ function tourShow(i) {
     const t = s.target && document.querySelector(s.target);
     if (t) {
       t.classList.add('tour-spot');
-      t.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      t.scrollIntoView({ behavior: 'smooth', block: t.offsetHeight > window.innerHeight * 0.72 ? 'start' : 'center' });
     } else {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -1933,7 +1901,7 @@ function tourShow(i) {
     tourCard.querySelector('.tour-prev').disabled = tourIdx === 0;
     tourCard.querySelector('.tour-next').textContent = tourIdx === TOUR_STEPS.length - 1 ? 'Finish tour' : 'Next →';
     tourCard.querySelector('.tour-progress span').style.width = `${((tourIdx + 1) / TOUR_STEPS.length) * 100}%`;
-    setTimeout(() => positionTourCard(t), 260);
+    setTimeout(() => positionTourCard(), 180);
   }, 160);
 }
 function endTour() {
@@ -1947,7 +1915,7 @@ function endTour() {
   tourIdx = -1;
 }
 window.addEventListener('resize', () => {
-  if (tourIdx >= 0) positionTourCard(document.querySelector(TOUR_STEPS[tourIdx].target));
+  if (tourIdx >= 0) positionTourCard();
 });
 
 /* ════════════════════════════════════════════════════════════
