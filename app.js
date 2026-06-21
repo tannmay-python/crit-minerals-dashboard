@@ -1804,7 +1804,7 @@ function buildTourWelcome() {
       </div>
       <div class="tw-mark">Guided tour</div>
       <h2>A quick way into the framework.</h2>
-      <p>In about a minute, this walks through the argument: India's list is broad, so we break it into clearer scores, mineral groups, and policy choices.</p>
+      <p>In about a minute, this tour will walk you through the key things to focus on.</p>
       <div class="tw-route" aria-hidden="true">
         <span>List</span><i></i><span>Vectors</span><i></i><span>Mineral</span><i></i><span>Policy</span>
       </div>
