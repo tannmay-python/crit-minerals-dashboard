@@ -2839,15 +2839,6 @@ input[type="range"]::-moz-range-thumb {
 }
 .overview-intro-block strong { color: var(--text); font-weight: 700; }
 .overview-intro-block em { color: var(--accent); font-style: normal; font-weight: 600; }
-.overview-intro-block p.overview-lede {
-  font-size: 1.18rem;
-  font-weight: 600;
-  line-height: 1.5;
-  color: var(--text);
-  padding-bottom: 14px;
-  margin-bottom: 2px;
-  border-bottom: 1px solid var(--border);
-}
 
 /* ════════════════════════════════════════════════════════════
    SCORECARD — clean sc-* classes (no legacy CSS conflicts)
