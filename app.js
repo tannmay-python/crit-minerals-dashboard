@@ -348,10 +348,10 @@ function renderListsChart() {
   if (!canvas || listsChart) return;
 
   const series = [
-    { label: 'European Union', color: '#3d6b7d', pt: 'circle',   data: [[2011,14],[2014,20],[2017,27],[2020,30],[2023,49]] },
+    { label: 'European Union', color: '#3d6b7d', pt: 'circle',   data: [[2011,33],[2014,36],[2017,42],[2020,45],[2023,49]] },
     { label: 'United States',  color: '#c42b1e', pt: 'rect',     data: [[2018,35],[2022,50],[2025,60]] },
     { label: 'Australia',      color: '#7d6b9e', pt: 'crossRot', data: [[2019,24],[2024,51]] },
-    { label: 'Canada',         color: '#8a5a44', pt: 'triangle', data: [[2021,31],[2024,54]] },
+    { label: 'Canada',         color: '#8a5a44', pt: 'triangle', data: [[2021,51],[2024,54]] },
     { label: 'Russia',         color: '#2e8b57', pt: 'rectRot',  data: [[2024,61]] },
     { label: 'India',          color: '#620d3c', pt: 'triangle', data: [[2023,51]], india: true },
   ];
@@ -366,7 +366,7 @@ function renderListsChart() {
     pointHoverRadius: s.india ? 10 : 6.5,
     borderWidth: s.india ? 0 : 2,
     showLine: s.data.length > 1,
-    tension: 0.25,
+    tension: 0,
   }));
 
   listsChart = new Chart(canvas.getContext('2d'), {
@@ -400,7 +400,7 @@ function renderListsChart() {
           borderColor: '#e4d49c', borderWidth: 1, padding: 8, usePointStyle: true,
           callbacks: {
             title: items => items.length ? items[0].parsed.x : '',
-            label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} elements`,
+            label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} expanded elements`,
           },
         },
       },
