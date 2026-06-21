@@ -1757,11 +1757,11 @@ window.addEventListener('resize', () => {
 
 const TOUR_STEPS = [
   { page: 'overview', target: '#pt-grid', icon: '01', kicker: 'Start with the list', title: 'India calls 51 elements critical',
-    text: "The periodic table shows the starting problem. A large share of commercially mined elements now carries the same label, so the list alone cannot tell India where to spend first." },
-  { page: 'methodology', target: '#criteria-vectors-list', icon: '02', kicker: 'Open the method', title: 'Criticality is a profile',
-    text: "Instead of one composite score, the dashboard keeps ten vectors visible. This preserves the difference between volume, concentration, substitution, processing, and India's own position." },
+    text: "The periodic table shows the starting problem. A large share of commercially mined elements now carries the same label, so the list alone cannot inform prioritisation and policy action." },
+  { page: 'methodology', target: '#criteria-vectors-list', icon: '02', kicker: 'Open the method', title: 'How we score criticality',
+    text: "We score each mineral across ten separate questions: demand, supply concentration, substitutes, processing, India's position, and more. We never add them into a single composite score." },
   { page: 'mineral', mineral: 'Copper', target: '.mp-body', icon: '03', kicker: 'Inspect one mineral', title: 'Every score has reasoning',
-    text: "On a mineral page, the radar gives the profile and each score can expand to show the basis for that judgement. The Group & policy button connects the mineral to the wider response." },
+    text: "On a mineral page, the radar shows how that mineral performs across the ten questions. Each score can expand to show the reasoning, and the Group & policy button connects the mineral to the wider response." },
   { page: 'groups', target: '.groups-picker-grid', icon: '04', kicker: 'Move from data to policy', title: 'Similar bottlenecks sit together',
     text: "The groups are a practical way to read the list. Open any card to see the shared constraint and the policy choices for India." },
   { page: 'overview', target: '.lists-chart-card', icon: '05', kicker: 'See the wider pattern', title: 'The lists keep growing',
@@ -1781,7 +1781,7 @@ function buildTourWelcome() {
       </div>
       <div class="tw-mark">Guided tour</div>
       <h2>A quick way into the dashboard.</h2>
-      <p>In about a minute, this walks through the argument: India's list is broad, so the dashboard breaks it into profiles, groups, and policy choices.</p>
+      <p>In about a minute, this walks through the argument: India's list is broad, so the dashboard breaks it into clearer scores, mineral groups, and policy choices.</p>
       <div class="tw-route" aria-hidden="true">
         <span>List</span><i></i><span>Vectors</span><i></i><span>Mineral</span><i></i><span>Policy</span>
       </div>
