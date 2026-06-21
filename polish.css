@@ -223,6 +223,11 @@ nav { gap: 2px; }
 /* ── Overview intro prose — editorial measure ─────────── */
 .overview-intro-block p,
 .overview-intro-block p:first-child { font-size: 0.95rem; line-height: 1.82; color: var(--text); }
+.overview-intro-block p.overview-lede,
+.overview-intro-block p.overview-lede:first-child {
+  font-size: 1.18rem; font-weight: 600; line-height: 1.5;
+  padding-bottom: 14px; margin-bottom: 2px; border-bottom: 1px solid var(--border);
+}
 
 /* ── Group cards (overview) ───────────────────────────── */
 .overview-group-card {
