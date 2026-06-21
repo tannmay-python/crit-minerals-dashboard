@@ -1617,67 +1617,43 @@ function renderGroups() {
     if (a.id === 0) return 1; if (b.id === 0) return -1; return a.id - b.id;
   });
 
-  list.innerHTML = ordered.map(g => {
+  const mainGroups = ordered.filter(g => g.id !== 0);
+  const outlier = ordered.find(g => g.id === 0);
+
+  const cardHTML = g => {
     const members = AppData.minerals.filter(m => getGroup(m.mineral) === g.id);
-    const desc    = GROUP_DESCRIPTIONS[g.id] || {};
-    const isOut   = g.id === 0;
-
+    const desc = GROUP_DESCRIPTIONS[g.id] || {};
     return `
-      <div class="group-detail-card card" data-gid="${g.id}" style="--gcolor:${g.color}">
-        <div class="gdc-top">
-          <div class="gdc-radar-wrap">
-            <canvas class="gdc-radar" width="160" height="160" data-gid="${g.id}"></canvas>
-            <div class="gdc-radar-label" style="color:${g.color}">Avg. profile</div>
-          </div>
-          <div class="gdc-info">
-            <div class="gdc-badge-row">
-              <span class="gdc-badge" style="background:${g.color}18;color:${g.color};border-color:${g.color}40;">${isOut ? 'Outlier' : `Group ${g.id}`}</span>
-              <h2 class="gdc-name" style="color:${g.color}">${g.name}</h2>
-            </div>
-            ${desc.tagline ? `<p class="gdc-tagline">${desc.tagline}</p>` : ''}
-            <div class="gdc-members">${members.map(m =>
-              `<span class="gdc-member" data-mineral="${m.mineral}">${m.mineral}</span>`
-            ).join('')}</div>
-          </div>
+      <button class="group-picker-card" data-gid="${g.id}" style="--gcolor:${g.color}">
+        <div class="gpc-topline">
+          <span class="gpc-badge">${g.id === 0 ? 'Outlier' : `Group ${g.id}`}</span>
+          <span class="gpc-count">${members.length} mineral${members.length === 1 ? '' : 's'}</span>
         </div>
-        ${desc.policy && desc.policy.length ? `
-        <div class="gdc-toggle">
-          <button class="gdc-tab active" data-view="char">Characterisation</button>
-          <button class="gdc-tab" data-view="policy">Policy choices for India</button>
-        </div>` : ''}
-        <div class="gdc-view gdc-char">
-          ${(desc.body || '').split('\n\n').map(p => `<p class="gdc-body">${p}</p>`).join('')}
-        </div>
-        ${desc.policy && desc.policy.length ? `
-        <div class="gdc-view gdc-policy hidden">
-          <ul class="gdc-policy-list">${desc.policy.map(p => `<li>${p}</li>`).join('')}</ul>
-        </div>` : ''}
-      </div>`;
-  }).join('');
+        <h2 class="gpc-name">${g.name}</h2>
+        ${desc.tagline ? `<p class="gpc-tagline">${desc.tagline}</p>` : ''}
+        <div class="gpc-members">${members.map(m =>
+          `<span class="gpc-member" data-mineral="${m.mineral}">${m.mineral}</span>`
+        ).join('')}</div>
+        <span class="gpc-open">View characterisation + policy →</span>
+      </button>`;
+  };
 
-  // Characterisation / Policy toggle within each card
+  list.innerHTML = `
+    <div class="groups-picker-grid">
+      ${mainGroups.map(cardHTML).join('')}
+    </div>
+    ${outlier ? `<div class="groups-outlier-picker">${cardHTML(outlier)}</div>` : ''}`;
+
   list.addEventListener('click', e => {
-    const tab = e.target.closest('.gdc-tab');
-    if (!tab) return;
-    const card = tab.closest('.group-detail-card');
-    card.querySelectorAll('.gdc-tab').forEach(t => t.classList.toggle('active', t === tab));
-    const view = tab.dataset.view;
-    card.querySelector('.gdc-char')?.classList.toggle('hidden', view !== 'char');
-    card.querySelector('.gdc-policy')?.classList.toggle('hidden', view !== 'policy');
+    const mineral = e.target.closest('.gpc-member');
+    if (mineral) {
+      e.stopPropagation();
+      navigate('mineral', mineral.dataset.mineral);
+      return;
+    }
+    const card = e.target.closest('.group-picker-card');
+    if (card) openGroupModal(card.dataset.gid);
   });
-
-  // Draw radars
-  list.querySelectorAll('.gdc-radar').forEach(canvas => {
-    const gid     = Number(canvas.dataset.gid);
-    const col     = groupColor(gid);
-    const members = AppData.minerals.filter(m => getGroup(m.mineral) === gid);
-    if (members.length) drawGroupAvgRadar(canvas, members, col);
-  });
-
-  // Member chip clicks
-  list.querySelectorAll('.gdc-member').forEach(el =>
-    el.addEventListener('click', () => navigate('mineral', el.dataset.mineral))
-  );
 
   // "Why distinct" section
   const why = document.getElementById('groups-why');
@@ -1729,7 +1705,7 @@ const TOUR_STEPS = [
     text: "Instead of one “critical” tag, we score every mineral on ten measurable dimensions against fixed, stated criteria: demand, supply concentration, substitutes, India's position, and more. We never add them into a single number; the shape of the scores is the point." },
   { page: 'mineral', mineral: 'Copper', target: '.mp-body', title: 'Every mineral is a shape',
     text: "Here is one mineral's profile. Two minerals can score the same total yet look nothing alike and need completely different responses. Click “Why this score?” on any row for the reasoning, or “Group & policy” for what India should do." },
-  { page: 'groups', target: '.group-detail-card', title: 'Six groups, six playbooks',
+  { page: 'groups', target: '.groups-picker-grid', title: 'Six groups, six playbooks',
     text: "Minerals with similar shapes fall into six groups, each with a shared bottleneck. Flip any card to “Policy choices for India” to see the response that fits the whole group." },
   { page: 'overview', target: null, title: "That's the idea",
     text: "Take India's list apart, group by the kind of problem, and you get specific guidance on where to act, and where not to. Explore freely from here." },

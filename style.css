@@ -3922,3 +3922,63 @@ input[type="range"]::-moz-range-thumb {
   font-size: 0.78rem;
   color: var(--text-muted);
 }
+
+/* Groups page: compact selector cards instead of long stacked essays */
+.groups-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 20px 0 18px;
+}
+.group-picker-card {
+  --gcolor: var(--accent);
+  text-align: left;
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--gcolor);
+  border-radius: 14px;
+  background: var(--surface);
+  padding: 18px;
+  min-height: 245px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+.group-picker-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--gcolor) 55%, var(--border));
+  box-shadow: 0 18px 40px -26px var(--gcolor);
+}
+.gpc-topline { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.gpc-badge {
+  color: var(--gcolor);
+  background: color-mix(in srgb, var(--gcolor) 10%, #fff);
+  border: 1px solid color-mix(in srgb, var(--gcolor) 30%, var(--border));
+  border-radius: 100px;
+  padding: 3px 10px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+.gpc-count { font-size: 0.68rem; color: var(--text-dim); font-weight: 700; }
+.gpc-name { margin: 0; color: var(--gcolor); font-size: 1rem; font-weight: 850; line-height: 1.18; }
+.gpc-tagline { margin: 0; color: var(--text-muted); font-size: 0.8rem; line-height: 1.48; }
+.gpc-members { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; }
+.gpc-member {
+  border: 1px solid color-mix(in srgb, var(--gcolor) 45%, var(--border));
+  color: var(--gcolor);
+  background: var(--surface-2);
+  border-radius: 100px;
+  padding: 3px 8px;
+  font-size: 0.63rem;
+  font-weight: 700;
+}
+.gpc-member:hover { background: color-mix(in srgb, var(--gcolor) 10%, #fff); }
+.gpc-open { color: var(--gcolor); font-size: 0.75rem; font-weight: 800; margin-top: 2px; }
+.groups-outlier-picker { max-width: 420px; margin: 2px 0 24px; }
+.groups-outlier-picker .group-picker-card { min-height: 170px; }
+@media (max-width: 980px) { .groups-picker-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .groups-picker-grid { grid-template-columns: 1fr; } }
