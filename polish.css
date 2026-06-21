@@ -404,3 +404,92 @@ button:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   MOBILE / PHONE OPTIMISATION  (≤ 640px)
+   Desktop is untouched: the hamburger is hidden above this breakpoint
+   and every rule below lives inside the media query.
+   ════════════════════════════════════════════════════════════════ */
+
+/* Hamburger is hidden on desktop at all widths by default */
+.nav-toggle { display: none; }
+
+@media (max-width: 640px) {
+  /* ---- Header + hamburger nav ---- */
+  :root { --header-h: 56px; }
+  .header-inner { padding: 0 14px; position: relative; }
+  .logo-img { height: 38px; }
+
+  .nav-toggle {
+    display: flex; flex-direction: column; justify-content: center; gap: 5px;
+    width: 44px; height: 40px; padding: 9px 10px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.22); border-radius: 9px;
+    cursor: pointer; flex: 0 0 auto;
+  }
+  .nav-toggle span {
+    display: block; height: 2px; width: 100%; background: #fff; border-radius: 2px;
+    transition: transform .22s ease, opacity .18s ease;
+  }
+  #header.nav-open .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  #header.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+  #header.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  #main-nav {
+    position: absolute; top: 100%; left: 0; right: 0;
+    flex-direction: column; gap: 3px;
+    background: #620d3c; border-top: 1px solid rgba(255,255,255,0.14);
+    padding: 10px 14px 16px;
+    box-shadow: 0 22px 34px -18px rgba(0,0,0,0.55);
+    display: none;
+  }
+  #header.nav-open #main-nav { display: flex; }
+  #main-nav .nav-btn {
+    width: 100%; text-align: left; padding: 13px 14px;
+    font-size: 0.98rem; border-radius: 9px;
+  }
+}
+
+@media (max-width: 640px) {
+  /* ---- Periodic table: swipe horizontally instead of breaking the page ---- */
+  .pt-grid-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -14px;
+    padding: 2px 14px 8px;
+    scrollbar-width: thin;
+  }
+  .pt-grid-scroll .pt-grid { min-width: 472px; }
+
+  /* ---- Modals fill the small screen comfortably ---- */
+  .crit-overlay, .gm-overlay--center { padding: 14px; }
+  .crit-panel { max-height: 90vh; border-radius: 14px; }
+  .crit-panel-inner { padding: 30px 18px 26px; }
+  .gm-overlay--center .gm-panel { width: 94vw; max-height: 90vh; }
+
+  /* ---- Tour: keep the card and welcome within the viewport ---- */
+  .tw-card { width: calc(100vw - 28px); padding: 24px 20px 22px; }
+  .tw-card h2 { font-size: 1.5rem; }
+}
+
+@media (max-width: 640px) {
+  /* ---- Explorer cards: stack name over chip so they never collide ---- */
+  .mineral-card .card-header { flex-direction: column; gap: 6px; align-items: flex-start; }
+  .mineral-card .group-chip { max-width: 100%; }
+}
+
+@media (max-width: 640px) {
+  /* ---- Criteria modal: show all five bands (2-up) on phone ---- */
+  .crit-panel .crit-scale { grid-template-columns: repeat(2, 1fr) !important; }
+  .crit-panel .crit-scale-cell:nth-child(n+4) { display: flex !important; }
+}
+
+@media (max-width: 640px) {
+  /* ---- Mineral page: tidy the top action bar ---- */
+  .mp-topbar { flex-direction: column; align-items: stretch; gap: 10px; padding: 16px 0 14px; }
+  .mp-back-btn { align-self: flex-start; }
+  .mp-topbar-actions { width: 100%; flex-wrap: nowrap; }
+  .mp-topbar-actions > button {
+    flex: 1 1 0; display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+}

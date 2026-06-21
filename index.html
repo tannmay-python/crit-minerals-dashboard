@@ -26,6 +26,9 @@
     <a class="logo" href="https://takshashila.org.in" target="_blank" rel="noopener" aria-label="Takshashila Institution">
       <img class="logo-img" src="assets/takshashila-logo.svg" alt="Takshashila Institution" />
     </a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav">
+      <span></span><span></span><span></span>
+    </button>
     <nav id="main-nav">
       <button class="nav-btn active" data-page="overview">Overview</button>
       <button class="nav-btn" data-page="methodology">Methodology</button>
@@ -120,7 +123,9 @@
       <!-- By-group legend (built in JS from the group palette) -->
       <div class="pt-grouplegend hidden" id="pt-grouplegend"></div>
 
-      <div class="pt-grid" id="pt-grid"></div>
+      <div class="pt-grid-scroll">
+        <div class="pt-grid" id="pt-grid"></div>
+      </div>
     </section>
   </div>
 </div><!-- /page-overview -->

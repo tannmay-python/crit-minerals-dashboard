@@ -251,6 +251,14 @@ function parseHash() {
   return { page: 'overview' };
 }
 
+/* Close the mobile hamburger menu (no-op visually on desktop). */
+function closeMobileNav() {
+  const header = document.getElementById('header');
+  if (!header) return;
+  header.classList.remove('nav-open');
+  document.getElementById('nav-toggle')?.setAttribute('aria-expanded', 'false');
+}
+
 /* React to back/forward and manual hash edits. */
 function handleHash() {
   const { page, mineral } = parseHash();
@@ -266,7 +274,20 @@ function init() {
   // Nav clicks
   document.getElementById('main-nav').addEventListener('click', e => {
     const btn = e.target.closest('.nav-btn');
-    if (btn?.dataset.page) navigate(btn.dataset.page);
+    if (btn?.dataset.page) { navigate(btn.dataset.page); closeMobileNav(); }
+  });
+
+  // Mobile hamburger menu (phone only; no effect on desktop layout)
+  const navToggle = document.getElementById('nav-toggle');
+  navToggle?.addEventListener('click', () => {
+    const header = document.getElementById('header');
+    const open = header.classList.toggle('nav-open');
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  // Close the menu when tapping outside it
+  document.addEventListener('click', e => {
+    const header = document.getElementById('header');
+    if (header.classList.contains('nav-open') && !e.target.closest('#header')) closeMobileNav();
   });
 
   // Mineral page back button
