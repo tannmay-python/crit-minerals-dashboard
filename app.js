@@ -209,7 +209,7 @@ function buildGroupLegendHTML(clickable = false) {
    NAVIGATION
    ════════════════════════════════════════════════════════════ */
 
-function navigate(page, mineralName) {
+function navigate(page, mineralName, fromHash) {
   if (page === 'mineral' && mineralName) {
     AppState.selectedMineral = mineralName;
   }
@@ -230,7 +230,32 @@ function navigate(page, mineralName) {
     case 'methodology': renderMethodology(); break;
     case 'groups':      renderGroups();      break;
   }
+
+  // Keep the URL in sync so every page (and mineral) has its own address.
+  if (!fromHash) {
+    const hash = (page === 'mineral' && mineralName)
+      ? `#mineral/${encodeURIComponent(mineralName)}` : `#${page}`;
+    if (location.hash !== hash) location.hash = hash;
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* Parse the current URL hash into a route. */
+function parseHash() {
+  const h = (location.hash || '').replace(/^#/, '');
+  if (h.startsWith('mineral/')) {
+    const name = decodeURIComponent(h.slice('mineral/'.length));
+    return getMineralByName(name) ? { page: 'mineral', mineral: name } : { page: 'explorer' };
+  }
+  if (['overview', 'methodology', 'explorer', 'groups'].includes(h)) return { page: h };
+  return { page: 'overview' };
+}
+
+/* React to back/forward and manual hash edits. */
+function handleHash() {
+  const { page, mineral } = parseHash();
+  if (page === AppState.currentPage && (page !== 'mineral' || mineral === AppState.selectedMineral)) return;
+  navigate(page, mineral, true);
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -330,7 +355,10 @@ function init() {
     updateCompareTray();
   });
 
-  navigate('overview');
+  // Routing: each page / mineral gets its own URL hash
+  window.addEventListener('hashchange', handleHash);
+  const route = parseHash();
+  navigate(route.page, route.mineral);
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -655,12 +683,15 @@ function setPtStep(step) {
 
 /* ── Group modal drawer ──────────────────────────────────────── */
 
-function openGroupModal(gid, activeMineral) {
+function openGroupModal(gid, activeMineral, mode) {
   const g = AppData.groups.find(gg => gg.id === Number(gid));
   if (!g) return;
   const members = AppData.minerals.filter(m => getGroup(m.mineral) === Number(gid));
   const desc = GROUP_DESCRIPTIONS[Number(gid)] || {};
   const isOut = Number(gid) === 0;
+
+  // 'center' = centered popup (groups page) · 'side' = drawer (mineral page)
+  document.getElementById('gm-overlay').classList.toggle('gm-overlay--center', mode === 'center');
 
   // Reset scroll
   document.getElementById('gm-panel').scrollTop = 0;
@@ -854,9 +885,6 @@ function buildMineralCard(m) {
   const gid  = getGroup(m.mineral);
   const col  = groupColor(gid);
   const gname = groupName(gid);
-  const sc   = getVectorValue(m, 'supplier_concentration');
-  const ip   = getVectorValue(m, 'india_position');
-  const pv   = getVectorValue(m, 'price_volatility');
 
   return `
     <div class="mineral-card" data-mineral="${m.mineral}" role="button" tabindex="0">
@@ -865,11 +893,6 @@ function buildMineralCard(m) {
         <span class="group-chip" style="background:${col}18;color:${col};border-color:${col}40;">${gname}</span>
       </div>
       <canvas class="mini-10-radar" width="120" height="120"></canvas>
-      <div class="card-vector-row">
-        <div class="card-vec"><span class="card-vec-label">Supply</span><span class="card-vec-val">${sc ?? '—'}/10</span></div>
-        <div class="card-vec"><span class="card-vec-label">India</span><span class="card-vec-val">${ip ?? '—'}/10</span></div>
-        <div class="card-vec"><span class="card-vec-label">Volatility</span><span class="card-vec-val">${pv ?? '—'}/5</span></div>
-      </div>
     </div>`;
 }
 
@@ -1415,7 +1438,7 @@ function renderCriteria() {
           <span class="csl-item"><span class="csl-dot" style="background:#3d6b7d"></span>Cerium</span>
         </div>
       </div>
-      <div class="crit-shape-chart"><canvas id="crit-shape-canvas" width="260" height="260"></canvas></div>
+      <div class="crit-shape-chart"><div class="crit-shape-canvas-wrap"><canvas id="crit-shape-canvas"></canvas></div></div>
     </div>
   </div>`;
 
@@ -1709,7 +1732,7 @@ function renderGroups() {
       return;
     }
     const card = e.target.closest('.group-picker-card');
-    if (card) openGroupModal(card.dataset.gid);
+    if (card) openGroupModal(card.dataset.gid, null, 'center');
   });
 
   // "Why distinct" section
@@ -1757,7 +1780,7 @@ window.addEventListener('resize', () => {
 
 const TOUR_STEPS = [
   { page: 'overview', target: '#pt-grid', icon: '01', kicker: 'Start with the list', title: 'India calls 51 elements critical',
-    text: "The periodic table shows the starting problem. A large share of commercially mined elements now carries the same label, so the list alone cannot inform prioritisation and policy action." },
+    text: "India's critical minerals list is broad. We do a mineral-by-mineral analysis to group these 51 minerals into six groups that can help inform policy choices." },
   { page: 'methodology', target: '.criteria-picker-grid', icon: '02', kicker: 'Open the method', title: 'How we score criticality',
     text: "We score each mineral across ten separate questions: demand, supply concentration, substitutes, processing, India's position, and more. We never add them into a single composite score." },
   { page: 'mineral', mineral: 'Copper', target: '.mp-body', icon: '03', kicker: 'Inspect one mineral', title: 'Every score has reasoning',
@@ -1765,7 +1788,7 @@ const TOUR_STEPS = [
   { page: 'groups', target: '.groups-picker-grid', icon: '04', kicker: 'Move from data to policy', title: 'Similar bottlenecks sit together',
     text: "The groups are a practical way to read the list. Open any card to see the shared constraint and the policy choices for India." },
   { page: 'overview', target: '.lists-chart-card', icon: '05', kicker: 'See the wider pattern', title: 'The lists keep growing',
-    text: "Other countries show the same drift: more minerals, broader lists, less prioritisation. The dashboard is built to make India's list more useful, not simply longer." },
+    text: "Other countries show the same drift: more minerals, broader lists, less prioritisation. This framework, and our whole attempt, is to make India's list more useful, not simply longer." },
 ];
 let tourIdx = -1, tourCard = null, tourWelcome = null, tourVeil = null;
 
@@ -1780,8 +1803,8 @@ function buildTourWelcome() {
         <small>minerals</small>
       </div>
       <div class="tw-mark">Guided tour</div>
-      <h2>A quick way into the dashboard.</h2>
-      <p>In about a minute, this walks through the argument: India's list is broad, so the dashboard breaks it into clearer scores, mineral groups, and policy choices.</p>
+      <h2>A quick way into the framework.</h2>
+      <p>In about a minute, this walks through the argument: India's list is broad, so we break it into clearer scores, mineral groups, and policy choices.</p>
       <div class="tw-route" aria-hidden="true">
         <span>List</span><i></i><span>Vectors</span><i></i><span>Mineral</span><i></i><span>Policy</span>
       </div>
