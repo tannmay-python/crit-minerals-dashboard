@@ -3819,3 +3819,40 @@ input[type="range"]::-moz-range-thumb {
 .gm-policy-list li:last-child { margin-bottom: 0; }
 .gm-chip--active { font-weight: 700; }
 
+
+/* ── Guided tour ─────────────────────────────────────────── */
+.tour-launch {
+  font-size: 0.78rem; font-weight: 700; color: var(--accent);
+  background: rgba(98,13,60,0.06); border: 1px solid rgba(98,13,60,0.22);
+  padding: 6px 15px; border-radius: 100px; cursor: pointer;
+  transition: all var(--transition);
+}
+.tour-launch:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+.tour-spot {
+  position: relative; z-index: 9990;
+  box-shadow: 0 0 0 3px var(--accent-2), 0 0 0 9999px rgba(26,8,4,0.5);
+  border-radius: 14px;
+  transition: box-shadow 0.3s ease;
+}
+.tour-card {
+  position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+  z-index: 100000; width: min(580px, 92vw);
+  background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--accent-2);
+  border-radius: 16px; box-shadow: 0 26px 64px -22px rgba(98,13,60,0.65);
+  padding: 18px 22px; display: none;
+}
+.tour-card .tour-count { font-family: 'Space Mono', monospace; font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); }
+.tour-card .tour-title { font-size: 1.05rem; font-weight: 800; color: var(--accent); margin: 5px 0 7px; }
+.tour-card .tour-text { font-size: 0.9rem; color: var(--text-muted); line-height: 1.62; }
+.tour-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 16px; }
+.tour-actions .right { display: flex; gap: 8px; }
+.tour-skip { background: transparent; border: none; color: var(--text-dim); font-size: 0.78rem; cursor: pointer; }
+.tour-skip:hover { color: var(--accent); }
+.tour-prev, .tour-next { font-size: 0.8rem; font-weight: 700; padding: 7px 17px; border-radius: 100px; cursor: pointer; transition: all var(--transition); }
+.tour-prev { border: 1px solid var(--border-2); background: var(--surface); color: var(--text-muted); }
+.tour-prev:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.tour-prev:disabled { opacity: 0.4; cursor: default; }
+.tour-next { border: 1px solid var(--accent); background: var(--accent); color: #fff; }
+.tour-next:hover { background: var(--accent-hover); }
+@media (max-width: 600px){ .tour-card { bottom: 12px; padding: 15px 17px; } }

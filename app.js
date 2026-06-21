@@ -246,6 +246,9 @@ function init() {
   // Mineral page back button
   document.getElementById('mp-back-btn').addEventListener('click', () => navigate('explorer'));
 
+  // Guided tour launcher (footer)
+  document.getElementById('tour-btn')?.addEventListener('click', startTour);
+
 
   // Mineral page: open the group + policy drawer for this mineral's group
   document.getElementById('mp-group-policy').addEventListener('click', () => {
@@ -1713,6 +1716,81 @@ window.addEventListener('resize', () => {
     // Canvas radars redraw on navigation; nothing layout-critical depends on resize.
   }, 180);
 });
+
+/* ════════════════════════════════════════════════════════════
+   GUIDED TOUR (experimental)
+   ════════════════════════════════════════════════════════════ */
+
+const TOUR_STEPS = [
+  { page: 'overview', target: '.pt-section', title: 'The problem',
+    text: "India calls 51 minerals “critical”, about two-thirds of everything mined for commercial use. When a label is that broad, it cannot tell a government where to spend first. This dashboard is an attempt to fix that. The three toggles on this table show the same problem three ways." },
+  { page: 'methodology', target: '#criteria-vectors-list .crit-card', title: "We score, we don't sum",
+    text: "Instead of one “critical” tag, we score every mineral on ten measurable dimensions against fixed, stated criteria: demand, supply concentration, substitutes, India's position, and more. We never add them into a single number; the shape of the scores is the point." },
+  { page: 'mineral', mineral: 'Copper', target: '.mp-body', title: 'Every mineral is a shape',
+    text: "Here is one mineral's profile. Two minerals can score the same total yet look nothing alike and need completely different responses. Click “Why this score?” on any row for the reasoning, or “Group & policy” for what India should do." },
+  { page: 'groups', target: '.group-detail-card', title: 'Six groups, six playbooks',
+    text: "Minerals with similar shapes fall into six groups, each with a shared bottleneck. Flip any card to “Policy choices for India” to see the response that fits the whole group." },
+  { page: 'overview', target: null, title: "That's the idea",
+    text: "Take India's list apart, group by the kind of problem, and you get specific guidance on where to act, and where not to. Explore freely from here." },
+];
+let tourIdx = -1, tourCard = null;
+
+function buildTourCard() {
+  if (tourCard) return;
+  tourCard = document.createElement('div');
+  tourCard.className = 'tour-card';
+  tourCard.innerHTML = `
+    <div class="tour-count"></div>
+    <div class="tour-title"></div>
+    <div class="tour-text"></div>
+    <div class="tour-actions">
+      <button class="tour-skip">Skip tour</button>
+      <div class="right">
+        <button class="tour-prev">← Back</button>
+        <button class="tour-next">Next →</button>
+      </div>
+    </div>`;
+  document.body.appendChild(tourCard);
+  tourCard.querySelector('.tour-skip').addEventListener('click', endTour);
+  tourCard.querySelector('.tour-prev').addEventListener('click', () => tourShow(tourIdx - 1));
+  tourCard.querySelector('.tour-next').addEventListener('click', () => {
+    if (tourIdx >= TOUR_STEPS.length - 1) endTour(); else tourShow(tourIdx + 1);
+  });
+  document.addEventListener('keydown', e => {
+    if (tourIdx < 0) return;
+    if (e.key === 'Escape') endTour();
+    else if (e.key === 'ArrowRight') { if (tourIdx < TOUR_STEPS.length - 1) tourShow(tourIdx + 1); }
+    else if (e.key === 'ArrowLeft')  { if (tourIdx > 0) tourShow(tourIdx - 1); }
+  });
+}
+function clearTourSpot() {
+  document.querySelectorAll('.tour-spot').forEach(e => e.classList.remove('tour-spot'));
+}
+function startTour() { buildTourCard(); tourShow(0); }
+function tourShow(i) {
+  tourIdx = Math.max(0, Math.min(TOUR_STEPS.length - 1, i));
+  const s = TOUR_STEPS[tourIdx];
+  clearTourSpot();
+  closeGroupModal();
+  if (s.page === 'mineral') navigate('mineral', s.mineral); else navigate(s.page);
+  tourCard.style.display = 'block';
+  setTimeout(() => {
+    const t = s.target && document.querySelector(s.target);
+    if (t) { t.classList.add('tour-spot'); t.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
+    tourCard.querySelector('.tour-count').textContent = `Step ${tourIdx + 1} of ${TOUR_STEPS.length}`;
+    tourCard.querySelector('.tour-title').textContent = s.title;
+    tourCard.querySelector('.tour-text').textContent = s.text;
+    tourCard.querySelector('.tour-prev').disabled = tourIdx === 0;
+    tourCard.querySelector('.tour-next').textContent = tourIdx === TOUR_STEPS.length - 1 ? 'Finish' : 'Next →';
+  }, 140);
+}
+function endTour() {
+  clearTourSpot();
+  if (tourCard) tourCard.style.display = 'none';
+  document.body.style.overflow = '';
+  tourIdx = -1;
+}
 
 /* ════════════════════════════════════════════════════════════
    BOOTSTRAP
