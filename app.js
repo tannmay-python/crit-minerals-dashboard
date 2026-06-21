@@ -1722,7 +1722,7 @@ window.addEventListener('resize', () => {
    ════════════════════════════════════════════════════════════ */
 
 const TOUR_STEPS = [
-  { page: 'overview', target: '.pt-section', title: 'The problem',
+  { page: 'overview', target: '#pt-modes', title: 'The problem',
     text: "India calls 51 minerals “critical”, about two-thirds of everything mined for commercial use. When a label is that broad, it cannot tell a government where to spend first. This dashboard is an attempt to fix that. The three toggles on this table show the same problem three ways." },
   { page: 'methodology', target: '#criteria-vectors-list .crit-card', title: "We score, we don't sum",
     text: "Instead of one “critical” tag, we score every mineral on ten measurable dimensions against fixed, stated criteria: demand, supply concentration, substitutes, India's position, and more. We never add them into a single number; the shape of the scores is the point." },
