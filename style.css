@@ -3856,3 +3856,9 @@ input[type="range"]::-moz-range-thumb {
 .tour-next { border: 1px solid var(--accent); background: var(--accent); color: #fff; }
 .tour-next:hover { background: var(--accent-hover); }
 @media (max-width: 600px){ .tour-card { bottom: 12px; padding: 15px 17px; } }
+
+.methodology-source-note {
+  margin: 22px 0 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
