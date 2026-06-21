@@ -31,6 +31,7 @@ const AppState = {
   explorerSort:       '',
   radarChartMineral:  null, // Chart.js instance
   radarChartCompare:  null, // Chart.js instance
+  radarChartCriteria: null, // Chart.js instance
 };
 
 /* ── Compare series colors ─────────────────────────────────── */
@@ -1430,6 +1431,52 @@ function renderCriteria() {
   drawCriteriaShapeChart();
 }
 
+
+function drawCriteriaShapeChart() {
+  const canvas = document.getElementById('crit-shape-canvas');
+  if (!canvas) return;
+  if (AppState.radarChartCriteria) { AppState.radarChartCriteria.destroy(); AppState.radarChartCriteria = null; }
+
+  const names = ['Copper', 'Germanium', 'Cerium'];
+  const minerals = names.map(getMineralByName).filter(Boolean);
+  if (!minerals.length) return;
+
+  const labels = AppData.criteriaVectors.map(v => v.name.split(' ').slice(0, 2).join(' '));
+  const datasets = minerals.map((m, i) => {
+    const col = COMPARE_COLORS[i] || groupColor(getGroup(m.mineral));
+    return {
+      label: m.mineral,
+      data: AppData.criteriaVectors.map(v => normalizeToFive(m, v.key)),
+      backgroundColor: col + '16',
+      borderColor: col,
+      borderWidth: 1.6,
+      pointBackgroundColor: col,
+      pointRadius: 2,
+      pointHoverRadius: 4,
+    };
+  });
+
+  AppState.radarChartCriteria = new Chart(canvas.getContext('2d'), {
+    type: 'radar',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      layout: { padding: 10 },
+      scales: {
+        r: {
+          min: 0, max: 5,
+          ticks: { display: false, stepSize: 1 },
+          grid: { color: 'rgba(98,13,60,0.08)' },
+          pointLabels: { color: '#6b4020', font: { size: 8, family: 'Hanken Grotesk' }, padding: 3 },
+          angleLines: { color: 'rgba(98,13,60,0.06)' }
+        }
+      },
+      plugins: { legend: { display: false }, tooltip: { enabled: false } }
+    }
+  });
+}
+
 function escapeHtml(str) {
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
@@ -1709,19 +1756,18 @@ window.addEventListener('resize', () => {
    ════════════════════════════════════════════════════════════ */
 
 const TOUR_STEPS = [
-  { page: 'overview', target: '#pt-grid', title: 'The problem',
-    text: "India calls 51 minerals “critical”, about two-thirds of everything mined for commercial use. When a label is that broad, it cannot tell a government where to spend first. This dashboard is an attempt to fix that. The three toggles on this table show the same problem three ways." },
-  { page: 'methodology', target: '#criteria-vectors-list .crit-picker-card', title: "We score, we don't sum",
-    text: "Instead of one “critical” tag, we score every mineral on ten measurable dimensions against fixed, stated criteria: demand, supply concentration, substitutes, India's position, and more. We never add them into a single number; the shape of the scores is the point." },
-  { page: 'mineral', mineral: 'Copper', target: '.mp-body', title: 'Every mineral is a shape',
-    text: "Here is one mineral's profile. Two minerals can score the same total yet look nothing alike and need completely different responses. Click “Why this score?” on any row for the reasoning, or “Group & policy” for what India should do." },
-  { page: 'groups', target: '.groups-picker-grid', title: 'Six groups, six playbooks',
-    text: "Minerals with similar shapes fall into six groups, each with a shared bottleneck. Flip any card to “Policy choices for India” to see the response that fits the whole group." },
-  { page: 'overview', target: null, title: "That's the idea",
-    text: "Take India's list apart, group by the kind of problem, and you get specific guidance on where to act, and where not to. Explore freely from here." },
+  { page: 'overview', target: '#pt-grid', icon: '01', kicker: 'Start with the list', title: 'India calls 51 elements critical',
+    text: "The periodic table shows the starting problem. A large share of commercially mined elements now carries the same label, so the list alone cannot tell India where to spend first." },
+  { page: 'methodology', target: '#criteria-vectors-list', icon: '02', kicker: 'Open the method', title: 'Criticality is a profile',
+    text: "Instead of one composite score, the dashboard keeps ten vectors visible. This preserves the difference between volume, concentration, substitution, processing, and India's own position." },
+  { page: 'mineral', mineral: 'Copper', target: '.mp-body', icon: '03', kicker: 'Inspect one mineral', title: 'Every score has reasoning',
+    text: "On a mineral page, the radar gives the profile and each score can expand to show the basis for that judgement. The Group & policy button connects the mineral to the wider response." },
+  { page: 'groups', target: '.groups-picker-grid', icon: '04', kicker: 'Move from data to policy', title: 'Similar bottlenecks sit together',
+    text: "The groups are a practical way to read the list. Open any card to see the shared constraint and the policy choices for India." },
+  { page: 'overview', target: '.lists-chart-card', icon: '05', kicker: 'See the wider pattern', title: 'The lists keep growing',
+    text: "Other countries show the same drift: more minerals, broader lists, less prioritisation. The dashboard is built to make India's list more useful, not simply longer." },
 ];
-let tourIdx = -1, tourCard = null, tourWelcome = null;
-
+let tourIdx = -1, tourCard = null, tourWelcome = null, tourVeil = null;
 
 function buildTourWelcome() {
   if (tourWelcome) return;
@@ -1729,9 +1775,16 @@ function buildTourWelcome() {
   tourWelcome.className = 'tour-welcome';
   tourWelcome.innerHTML = `
     <div class="tw-card">
-      <div class="tw-eyebrow">New to the dashboard?</div>
-      <h2>A quick tour can help.</h2>
-      <p>This takes about a minute. It shows why a single critical-minerals list is not enough, how the ten-vector framework works, and where the group-level policy choices sit.</p>
+      <div class="tw-rail" aria-hidden="true">
+        <span>51</span>
+        <small>minerals</small>
+      </div>
+      <div class="tw-mark">Guided tour</div>
+      <h2>A quick way into the dashboard.</h2>
+      <p>In about a minute, this walks through the argument: India's list is broad, so the dashboard breaks it into profiles, groups, and policy choices.</p>
+      <div class="tw-route" aria-hidden="true">
+        <span>List</span><i></i><span>Vectors</span><i></i><span>Mineral</span><i></i><span>Policy</span>
+      </div>
       <div class="tw-actions">
         <button class="tw-skip">Skip for now</button>
         <button class="tw-start">Start the tour →</button>
@@ -1751,9 +1804,11 @@ function showTourWelcome(opts = {}) {
   buildTourWelcome();
   if (opts.manual) localStorage.removeItem('critminTourSeen');
   tourWelcome.classList.add('open');
+  document.body.classList.add('tour-welcome-open');
 }
 function hideTourWelcome() {
   if (tourWelcome) tourWelcome.classList.remove('open');
+  document.body.classList.remove('tour-welcome-open');
 }
 function dismissTourWelcome() {
   localStorage.setItem('critminTourSeen', '1');
@@ -1762,12 +1817,24 @@ function dismissTourWelcome() {
 
 function buildTourCard() {
   if (tourCard) return;
+  tourVeil = document.createElement('div');
+  tourVeil.className = 'tour-veil';
+  document.body.appendChild(tourVeil);
+
   tourCard = document.createElement('div');
   tourCard.className = 'tour-card';
   tourCard.innerHTML = `
-    <div class="tour-count"></div>
+    <button class="tour-close" aria-label="Close tour">×</button>
+    <div class="tour-head">
+      <span class="tour-icon"></span>
+      <div class="tour-meta">
+        <span class="tour-count"></span>
+        <span class="tour-kicker"></span>
+      </div>
+    </div>
     <div class="tour-title"></div>
     <div class="tour-text"></div>
+    <div class="tour-progress"><span></span></div>
     <div class="tour-actions">
       <button class="tour-skip">Skip tour</button>
       <div class="right">
@@ -1776,6 +1843,7 @@ function buildTourCard() {
       </div>
     </div>`;
   document.body.appendChild(tourCard);
+  tourCard.querySelector('.tour-close').addEventListener('click', endTour);
   tourCard.querySelector('.tour-skip').addEventListener('click', endTour);
   tourCard.querySelector('.tour-prev').addEventListener('click', () => tourShow(tourIdx - 1));
   tourCard.querySelector('.tour-next').addEventListener('click', () => {
@@ -1794,7 +1862,51 @@ function clearTourSpot() {
 function startTour() {
   localStorage.removeItem('critminTourSeen');
   buildTourCard();
+  document.body.classList.add('tour-active');
+  if (tourVeil) tourVeil.classList.add('open');
   tourShow(0);
+}
+function positionTourCard(target) {
+  if (!tourCard) return;
+  const pad = 20;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const cardW = Math.min(520, Math.round(vw * 0.92));
+  tourCard.style.width = `${cardW}px`;
+
+  if (!target || vw < 760) {
+    tourCard.style.left = '50%';
+    tourCard.style.top = 'auto';
+    tourCard.style.right = 'auto';
+    tourCard.style.bottom = '18px';
+    tourCard.style.transform = 'translateX(-50%)';
+    return;
+  }
+
+  const r = target.getBoundingClientRect();
+  const h = tourCard.offsetHeight || 260;
+  let left, top;
+  if (r.right + cardW + pad < vw) {
+    left = r.right + pad;
+    top = Math.min(Math.max(r.top + r.height / 2 - h / 2, pad), vh - h - pad);
+  } else if (r.left - cardW - pad > 0) {
+    left = r.left - cardW - pad;
+    top = Math.min(Math.max(r.top + r.height / 2 - h / 2, pad), vh - h - pad);
+  } else if (r.bottom + h + pad < vh) {
+    left = Math.min(Math.max(r.left + r.width / 2 - cardW / 2, pad), vw - cardW - pad);
+    top = r.bottom + pad;
+  } else if (r.top - h - pad > 0) {
+    left = Math.min(Math.max(r.left + r.width / 2 - cardW / 2, pad), vw - cardW - pad);
+    top = r.top - h - pad;
+  } else {
+    left = Math.min(Math.max(vw - cardW - pad, pad), vw - cardW - pad);
+    top = Math.max(vh - h - pad, pad);
+  }
+  tourCard.style.left = `${left}px`;
+  tourCard.style.top = `${top}px`;
+  tourCard.style.right = 'auto';
+  tourCard.style.bottom = 'auto';
+  tourCard.style.transform = 'none';
 }
 function tourShow(i) {
   tourIdx = Math.max(0, Math.min(TOUR_STEPS.length - 1, i));
@@ -1803,25 +1915,40 @@ function tourShow(i) {
   closeGroupModal();
   if (s.page === 'mineral') navigate('mineral', s.mineral); else navigate(s.page);
   tourCard.style.display = 'block';
+  document.body.classList.add('tour-active');
+  if (tourVeil) tourVeil.classList.add('open');
   setTimeout(() => {
     const t = s.target && document.querySelector(s.target);
-    if (t) { t.classList.add('tour-spot'); t.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-    else window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (t) {
+      t.classList.add('tour-spot');
+      t.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    tourCard.querySelector('.tour-icon').textContent = s.icon || String(tourIdx + 1).padStart(2, '0');
     tourCard.querySelector('.tour-count').textContent = `Step ${tourIdx + 1} of ${TOUR_STEPS.length}`;
+    tourCard.querySelector('.tour-kicker').textContent = s.kicker || '';
     tourCard.querySelector('.tour-title').textContent = s.title;
     tourCard.querySelector('.tour-text').textContent = s.text;
     tourCard.querySelector('.tour-prev').disabled = tourIdx === 0;
-    tourCard.querySelector('.tour-next').textContent = tourIdx === TOUR_STEPS.length - 1 ? 'Finish' : 'Next →';
-  }, 140);
+    tourCard.querySelector('.tour-next').textContent = tourIdx === TOUR_STEPS.length - 1 ? 'Finish tour' : 'Next →';
+    tourCard.querySelector('.tour-progress span').style.width = `${((tourIdx + 1) / TOUR_STEPS.length) * 100}%`;
+    setTimeout(() => positionTourCard(t), 260);
+  }, 160);
 }
 function endTour() {
   hideTourWelcome();
   localStorage.setItem('critminTourSeen', '1');
   clearTourSpot();
   if (tourCard) tourCard.style.display = 'none';
+  if (tourVeil) tourVeil.classList.remove('open');
+  document.body.classList.remove('tour-active');
   document.body.style.overflow = '';
   tourIdx = -1;
 }
+window.addEventListener('resize', () => {
+  if (tourIdx >= 0) positionTourCard(document.querySelector(TOUR_STEPS[tourIdx].target));
+});
 
 /* ════════════════════════════════════════════════════════════
    BOOTSTRAP
