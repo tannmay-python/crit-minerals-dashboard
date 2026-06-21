@@ -1247,115 +1247,160 @@ function buildEndUseHTML(fc) {
   </div>`;
 }
 
+function criteriaScoringHTML(v, fc) {
+  switch (v.key) {
+    case 'demand':
+      return buildScaleHTML(COMPLETE_BANDS.demand);
+    case 'growth':
+      return buildScaleHTML(COMPLETE_BANDS.growth);
+
+    case 'supplier_concentration':
+      return `<div class="crit-subscales">
+        ${['Mining concentration','Refining concentration'].map(name => `
+          <div class="crit-subscale">
+            <div class="crit-subscale-label">
+              <span class="crit-subscale-name">${name}</span>
+              <span class="crit-subscale-max" style="color:${fc}">/5</span>
+            </div>
+            ${buildScaleHTML(COMPLETE_BANDS.supplier_sub)}
+          </div>`).join('')}
+      </div>`;
+
+    case 'reserves':
+      return `<div class="crit-subscales">
+        <div class="crit-subscale">
+          <div class="crit-subscale-label">
+            <span class="crit-subscale-name">Reserve time-frame</span>
+            <span class="crit-subscale-max" style="color:${fc}">/5</span>
+          </div>
+          ${buildScaleHTML(COMPLETE_BANDS.timeframe)}
+        </div>
+        <div class="crit-subscale">
+          <div class="crit-subscale-label">
+            <span class="crit-subscale-name">Reserve diversification</span>
+            <span class="crit-subscale-max" style="color:${fc}">/5 — scored by HHI (Herfindahl–Hirschman Index)</span>
+          </div>
+          <p class="crit-hhi-note">HHI = sum of squared country shares of global reserves. HHI = 1.0 if one country holds 100%; HHI = 0.10 if ten countries each hold 10%. Higher HHI = more concentrated.</p>
+          ${buildScaleHTML(COMPLETE_BANDS.diversification)}
+        </div>
+      </div>`;
+
+    case 'end_use':
+      return buildEndUseHTML(fc);
+
+    case 'substitutability_recyclability':
+      return `<div class="crit-subscales">
+        <div class="crit-subscale">
+          <div class="crit-subscale-label">
+            <span class="crit-subscale-name">Substitutability</span>
+            <span class="crit-subscale-max" style="color:${fc}">/5</span>
+          </div>
+          ${buildScaleHTML(COMPLETE_BANDS.substitutability)}
+        </div>
+        <div class="crit-subscale">
+          <div class="crit-subscale-label">
+            <span class="crit-subscale-name">Recyclability</span>
+            <span class="crit-subscale-max" style="color:${fc}">/5</span>
+          </div>
+          ${buildScaleHTML(COMPLETE_BANDS.recyclability)}
+        </div>
+      </div>`;
+
+    case 'extraction_refining':
+      return buildScaleHTML(COMPLETE_BANDS.extraction_refining);
+    case 'upcoming_projects':
+      return buildScaleHTML(COMPLETE_BANDS.upcoming_projects);
+
+    case 'india_position':
+      return `<div class="crit-subscales">
+        <div class="crit-subscale">
+          <div class="crit-subscale-label">
+            <span class="crit-subscale-name">Import dependence</span>
+            <span class="crit-subscale-max" style="color:${fc}">/5</span>
+          </div>
+          ${buildScaleHTML(COMPLETE_BANDS.import_dependence)}
+        </div>
+        <div class="crit-subscale">
+          <div class="crit-subscale-label">
+            <span class="crit-subscale-name">Strategic posture</span>
+            <span class="crit-subscale-max" style="color:${fc}">/5</span>
+          </div>
+          ${buildScaleHTML(COMPLETE_BANDS.strategic_posture)}
+        </div>
+      </div>`;
+
+    case 'price_volatility':
+      return buildScaleHTML(COMPLETE_BANDS.price_volatility);
+  }
+  return '';
+}
+
+function ensureCriteriaDrawer() {
+  let overlay = document.getElementById('crit-overlay');
+  if (overlay) return overlay;
+  overlay = document.createElement('div');
+  overlay.id = 'crit-overlay';
+  overlay.className = 'crit-overlay';
+  overlay.innerHTML = `
+    <div class="crit-panel" id="crit-panel">
+      <button class="crit-close" id="crit-close">✕</button>
+      <div class="crit-panel-inner">
+        <div class="crit-panel-head">
+          <span class="crit-panel-num" id="crit-panel-num"></span>
+          <div>
+            <h2 id="crit-panel-name"></h2>
+            <span id="crit-panel-family"></span>
+          </div>
+          <span class="crit-panel-max" id="crit-panel-max"></span>
+        </div>
+        <p class="crit-panel-what" id="crit-panel-what"></p>
+        <div id="crit-panel-scoring"></div>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeCriteriaDrawer(); });
+  overlay.querySelector('#crit-close').addEventListener('click', closeCriteriaDrawer);
+  return overlay;
+}
+
+function openCriteriaDrawer(v, idx, fc) {
+  const overlay = ensureCriteriaDrawer();
+  overlay.style.setProperty('--crit-color', fc);
+  overlay.querySelector('#crit-panel-num').textContent = idx + 1;
+  overlay.querySelector('#crit-panel-name').textContent = v.name;
+  overlay.querySelector('#crit-panel-family').textContent = v.family;
+  overlay.querySelector('#crit-panel-family').style.cssText = `color:${fc};background:${fc}12;border-color:${fc}30`;
+  overlay.querySelector('#crit-panel-max').textContent = `/${v.max}`;
+  overlay.querySelector('#crit-panel-what').textContent = v.what;
+  overlay.querySelector('#crit-panel-scoring').innerHTML = criteriaScoringHTML(v, fc);
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCriteriaDrawer() {
+  document.getElementById('crit-overlay')?.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
 function renderCriteria() {
   const container = document.getElementById('criteria-vectors-list');
   if (container.dataset.rendered) return;
   container.dataset.rendered = 'true';
 
-  container.innerHTML = AppData.criteriaVectors.map((v, idx) => {
-    const fc = FAMILY_COLOR[v.family] || '#620d3c';
-    let scoringHTML = '';
-
-    switch (v.key) {
-      case 'demand':
-        scoringHTML = buildScaleHTML(COMPLETE_BANDS.demand); break;
-      case 'growth':
-        scoringHTML = buildScaleHTML(COMPLETE_BANDS.growth); break;
-
-      case 'supplier_concentration':
-        // Split: Mining /5 + Refining /5, both use same band scale
-        scoringHTML = `<div class="crit-subscales">
-          ${['Mining concentration','Refining concentration'].map(name => `
-            <div class="crit-subscale">
-              <div class="crit-subscale-label">
-                <span class="crit-subscale-name">${name}</span>
-                <span class="crit-subscale-max" style="color:${fc}">/5</span>
-              </div>
-              ${buildScaleHTML(COMPLETE_BANDS.supplier_sub)}
-            </div>`).join('')}
-        </div>`; break;
-
-      case 'reserves':
-        scoringHTML = `<div class="crit-subscales">
-          <div class="crit-subscale">
-            <div class="crit-subscale-label">
-              <span class="crit-subscale-name">Reserve time-frame</span>
-              <span class="crit-subscale-max" style="color:${fc}">/5</span>
-            </div>
-            ${buildScaleHTML(COMPLETE_BANDS.timeframe)}
-          </div>
-          <div class="crit-subscale">
-            <div class="crit-subscale-label">
-              <span class="crit-subscale-name">Reserve diversification</span>
-              <span class="crit-subscale-max" style="color:${fc}">/5 — scored by HHI (Herfindahl–Hirschman Index)</span>
-            </div>
-            <p class="crit-hhi-note">HHI = sum of squared country shares of global reserves. HHI = 1.0 if one country holds 100%; HHI = 0.10 if ten countries each hold 10%. Higher HHI = more concentrated.</p>
-            ${buildScaleHTML(COMPLETE_BANDS.diversification)}
-          </div>
-        </div>`; break;
-
-      case 'end_use':
-        scoringHTML = buildEndUseHTML(fc); break;
-
-      case 'substitutability_recyclability':
-        scoringHTML = `<div class="crit-subscales">
-          <div class="crit-subscale">
-            <div class="crit-subscale-label">
-              <span class="crit-subscale-name">Substitutability</span>
-              <span class="crit-subscale-max" style="color:${fc}">/5</span>
-            </div>
-            ${buildScaleHTML(COMPLETE_BANDS.substitutability)}
-          </div>
-          <div class="crit-subscale">
-            <div class="crit-subscale-label">
-              <span class="crit-subscale-name">Recyclability</span>
-              <span class="crit-subscale-max" style="color:${fc}">/5</span>
-            </div>
-            ${buildScaleHTML(COMPLETE_BANDS.recyclability)}
-          </div>
-        </div>`; break;
-
-      case 'extraction_refining':
-        scoringHTML = buildScaleHTML(COMPLETE_BANDS.extraction_refining); break;
-      case 'upcoming_projects':
-        scoringHTML = buildScaleHTML(COMPLETE_BANDS.upcoming_projects); break;
-
-      case 'india_position':
-        scoringHTML = `<div class="crit-subscales">
-          <div class="crit-subscale">
-            <div class="crit-subscale-label">
-              <span class="crit-subscale-name">Import dependence</span>
-              <span class="crit-subscale-max" style="color:${fc}">/5</span>
-            </div>
-            ${buildScaleHTML(COMPLETE_BANDS.import_dependence)}
-          </div>
-          <div class="crit-subscale">
-            <div class="crit-subscale-label">
-              <span class="crit-subscale-name">Strategic posture</span>
-              <span class="crit-subscale-max" style="color:${fc}">/5</span>
-            </div>
-            ${buildScaleHTML(COMPLETE_BANDS.strategic_posture)}
-          </div>
-        </div>`; break;
-
-      case 'price_volatility':
-        scoringHTML = buildScaleHTML(COMPLETE_BANDS.price_volatility); break;
-    }
-
-    return `
-      <div class="crit-card card">
-        <div class="crit-card-top">
-          <div class="crit-num-wrap" style="background:${fc}"><span class="crit-num">${idx + 1}</span></div>
-          <div class="crit-card-meta">
-            <h3 class="crit-name" style="color:${fc}">${v.name}</h3>
-            <span class="crit-family" style="color:${fc};background:${fc}12;border-color:${fc}30">${v.family}</span>
-          </div>
-          <span class="crit-max" style="color:${fc}">/${v.max}</span>
+  container.innerHTML = `<div class="criteria-picker-grid">
+    ${AppData.criteriaVectors.map((v, idx) => {
+      const fc = FAMILY_COLOR[v.family] || '#620d3c';
+      return `<button class="crit-picker-card" data-idx="${idx}" style="--crit-color:${fc}">
+        <div class="crit-picker-top">
+          <span class="crit-picker-num">${idx + 1}</span>
+          <span class="crit-picker-max">/${v.max}</span>
         </div>
-        <p class="crit-what">${v.what}</p>
-        ${scoringHTML}
-      </div>`;
-  }).join('') + `
+        <h3>${v.name}</h3>
+        <span class="crit-picker-family">${v.family}</span>
+        <span class="crit-picker-open">View scoring criteria →</span>
+      </button>`;
+    }).join('')}
+  </div>
   <div class="crit-methodology card">
     <h3 class="crit-meth-title">Methodology note</h3>
     <p>Eight of the ten vectors are tied to published quantitative thresholds: tonnes, CAGR bands, market-share percentages, HHI bands, reserve-years, secondary-supply shares, and price-movement percentages. The two qualitative vectors, extraction complexity and strategic posture, are anchored to observable facts (for example, whether a solvent-extraction cascade is required, or whether an offtake has been signed).</p>
@@ -1369,55 +1414,20 @@ function renderCriteria() {
           <span class="csl-item"><span class="csl-dot" style="background:#3d6b7d"></span>Cerium</span>
         </div>
       </div>
-      <div class="crit-shape-chart"><canvas id="crit-shape-radar" width="300" height="300"></canvas></div>
+      <div class="crit-shape-chart"><canvas id="crit-shape-canvas" width="260" height="260"></canvas></div>
     </div>
   </div>`;
 
-  const shapeCanvas = document.getElementById('crit-shape-radar');
-  drawOverlayRadar(shapeCanvas, [
-    { name: 'Copper',    color: '#620d3c' },
-    { name: 'Germanium', color: '#f1a222' },
-    { name: 'Cerium',    color: '#3d6b7d' },
-  ]);
-}
-
-/* Overlays several minerals' 10-vector profiles on one radar (shape comparison). */
-function drawOverlayRadar(canvas, items) {
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const cx = canvas.width / 2, cy = canvas.height / 2;
-  const r  = Math.min(cx, cy) - 10;
-  const vecs = AppData.criteriaVectors;
-  const n = vecs.length;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  for (let ring = 1; ring <= 5; ring++) {
-    ctx.beginPath();
-    for (let i = 0; i < n; i++) {
-      const a = (i / n) * Math.PI * 2 - Math.PI / 2, rr = (ring / 5) * r;
-      const x = cx + rr * Math.cos(a), y = cy + rr * Math.sin(a);
-      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-    }
-    ctx.closePath(); ctx.strokeStyle = 'rgba(98,13,60,0.10)'; ctx.lineWidth = 0.6; ctx.stroke();
-  }
-  for (let i = 0; i < n; i++) {
-    const a = (i / n) * Math.PI * 2 - Math.PI / 2;
-    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + r * Math.cos(a), cy + r * Math.sin(a));
-    ctx.strokeStyle = 'rgba(98,13,60,0.07)'; ctx.lineWidth = 0.5; ctx.stroke();
-  }
-  items.forEach(it => {
-    const m = getMineralByName(it.name);
-    if (!m) return;
-    ctx.beginPath();
-    vecs.forEach((v, i) => {
-      const norm = normalizeToFive(m, v.key) / 5, a = (i / n) * Math.PI * 2 - Math.PI / 2, rr = norm * r;
-      const x = cx + rr * Math.cos(a), y = cy + rr * Math.sin(a);
-      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  container.querySelectorAll('.crit-picker-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const idx = Number(card.dataset.idx);
+      const v = AppData.criteriaVectors[idx];
+      const fc = FAMILY_COLOR[v.family] || '#620d3c';
+      openCriteriaDrawer(v, idx, fc);
     });
-    ctx.closePath();
-    ctx.fillStyle = it.color + '22'; ctx.fill();
-    ctx.strokeStyle = it.color; ctx.lineWidth = 2; ctx.stroke();
   });
+
+  drawCriteriaShapeChart();
 }
 
 function escapeHtml(str) {
@@ -1701,7 +1711,7 @@ window.addEventListener('resize', () => {
 const TOUR_STEPS = [
   { page: 'overview', target: '#pt-grid', title: 'The problem',
     text: "India calls 51 minerals “critical”, about two-thirds of everything mined for commercial use. When a label is that broad, it cannot tell a government where to spend first. This dashboard is an attempt to fix that. The three toggles on this table show the same problem three ways." },
-  { page: 'methodology', target: '#criteria-vectors-list .crit-card', title: "We score, we don't sum",
+  { page: 'methodology', target: '#criteria-vectors-list .crit-picker-card', title: "We score, we don't sum",
     text: "Instead of one “critical” tag, we score every mineral on ten measurable dimensions against fixed, stated criteria: demand, supply concentration, substitutes, India's position, and more. We never add them into a single number; the shape of the scores is the point." },
   { page: 'mineral', mineral: 'Copper', target: '.mp-body', title: 'Every mineral is a shape',
     text: "Here is one mineral's profile. Two minerals can score the same total yet look nothing alike and need completely different responses. Click “Why this score?” on any row for the reasoning, or “Group & policy” for what India should do." },
