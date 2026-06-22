@@ -1452,7 +1452,7 @@ function renderCriteria() {
     <p>We are open to feedback on how to make this better.</p>
     <div class="crit-shape">
       <div class="crit-shape-text">
-        <p><strong>Why there is no single criticality score.</strong> Copper, germanium and cerium can add up to the same total, yet their profiles look nothing alike. A single criticality score is not helpful: it strips the analysis of exactly this nuance.</p>
+        <p><strong>No single composite score.</strong> Copper, germanium and cerium can add up to the same total, yet their profiles look nothing alike. A single criticality score is not helpful: it strips the analysis of exactly this nuance.</p>
         <div class="crit-shape-legend">
           <span class="csl-item"><span class="csl-dot" style="background:#620d3c"></span>Copper</span>
           <span class="csl-item"><span class="csl-dot" style="background:#f1a222"></span>Germanium</span>

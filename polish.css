@@ -457,8 +457,15 @@ button:focus-visible {
   .pt-grid-scroll .pt-grid { min-width: 472px; }
 
   /* ---- Modals fill the small screen comfortably ---- */
-  .crit-overlay, .gm-overlay--center { padding: 14px; }
-  .crit-panel { max-height: 90vh; border-radius: 14px; }
+  /* Scroll the whole overlay so a tall criteria panel is always reachable */
+  .crit-overlay {
+    padding: 14px;
+    align-items: flex-start;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .gm-overlay--center { padding: 14px; }
+  .crit-panel { max-height: none; border-radius: 14px; margin: 0 auto; }
   .crit-panel-inner { padding: 30px 18px 26px; }
   .gm-overlay--center .gm-panel { width: 94vw; max-height: 90vh; }
 
