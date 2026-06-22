@@ -40,8 +40,8 @@ const COMPARE_COLORS = ['#620d3c', '#f1a222', '#3d6b7d'];
 /* ── Group descriptions (from paper) ──────────────────────── */
 const GROUP_DESCRIPTIONS = {
   1: {
-    tagline: 'Scale defines their criticality, not monopoly leverage.',
-    body: `Every mineral here is consumed in hundreds of thousands to millions of tonnes annually. Supply is comparatively diffuse: no single country monopolises mining, and while China dominates refining for some, none approaches the leverage it holds over rare earths. The binding risk is sheer volume: these minerals power construction, energy, transport, and agriculture so broadly that a sustained shortfall would transmit immediately across the entire economy.\n\nCobalt and lithium sit here despite their high import dependence and price volatility because their defining feature is the same as the others: the criticality arises from the scale of demand, not from a chokepoint that one supplier controls. The policy question for this group is not who controls them but whether India has sufficient industrial processing capacity and strategic reserves to absorb a price spike or temporary disruption.`,
+    tagline: 'Defined by scale, not monopoly leverage.',
+    body: `Every mineral here is consumed in hundreds of thousands to millions of tonnes annually. Supply is comparatively diffuse: no single country monopolises mining, and while China dominates refining for some, none approaches the leverage it holds over rare earths. The binding risk is sheer volume: these minerals power construction, energy, transport, and agriculture so broadly that a sustained shortfall would transmit immediately across the entire economy.\n\nCobalt and lithium sit here despite their high import dependence and price volatility because their defining feature is the same as the others: the risk arises from the scale of demand, not from a chokepoint that one supplier controls. The policy question for this group is not who controls them but whether India has sufficient industrial processing capacity and strategic reserves to absorb a price spike or temporary disruption.`,
     policy: [
       `Aggressively scale up midstream processing infrastructure: target capital-intensive midstream, specifically chemical refining, smelting and precursor manufacturing. Incentivise KABIL and private conglomerates to move beyond upstream mining exploration and invest in overseas processing facilities within resource-rich, friendly nations.`,
       `Diversify supply through international partnerships.`,
@@ -84,7 +84,7 @@ const GROUP_DESCRIPTIONS = {
   },
   6: {
     tagline: 'No single sharp bottleneck; mostly mined as by-products.',
-    body: `These are the least concentrated minerals supply-wise, and also have the lowest scores on the end-use criticality vector. The profile that holds them together is the absence of any extreme: demand is moderate, supply concentration is low to middling, reserves are adequate, and extraction is comparatively undemanding. None presents a single sharp bottleneck that would justify urgent strategic intervention.\n\nSome minerals in this group do have isolated extreme features: antimony and germanium have high price volatility scores, and rhenium has no substitute in fighter engine superalloys, but they still share the defining feature of low overall constraint. Interestingly, a majority are mined as by-products of other major minerals: bismuth, germanium, and cadmium are by-products of lead and zinc; selenium and rhenium are by-products of copper. Their availability is governed less by dedicated supply chains than by the economics of the host metals they accompany.`,
+    body: `These are the least concentrated minerals supply-wise, and also have the lowest scores on the end-use applications vector. The profile that holds them together is the absence of any extreme: demand is moderate, supply concentration is low to middling, reserves are adequate, and extraction is comparatively undemanding. None presents a single sharp bottleneck that would justify urgent strategic intervention.\n\nSome minerals in this group do have isolated extreme features: antimony and germanium have high price volatility scores, and rhenium has no substitute in fighter engine superalloys, but they still share the defining feature of low overall constraint. Interestingly, a majority are mined as by-products of other major minerals: bismuth, germanium, and cadmium are by-products of lead and zinc; selenium and rhenium are by-products of copper. Their availability is governed less by dedicated supply chains than by the economics of the host metals they accompany.`,
     policy: [
       `Tighten "companionability reporting" for base-metal miners to log concentrations of bismuth, germanium and cadmium in their zinc/lead ores, and selenium/rhenium in their copper ores.`,
       `Introduce a "royalty-offset credit" system: if a domestic zinc smelter invests its own capital to install advanced hydrometallurgical circuits to isolate germanium or bismuth, the government offers a matching discount on its primary zinc mining royalties. Processing and recycling of these minerals should also feature in India's international partnerships to insulate against price volatility.`,
@@ -1452,7 +1452,7 @@ function renderCriteria() {
     <p>We are open to feedback on how to make this better.</p>
     <div class="crit-shape">
       <div class="crit-shape-text">
-        <p><strong>No single composite score.</strong> Copper, germanium and cerium can add up to the same total, yet their profiles look nothing alike. A single criticality score is not helpful: it strips the analysis of exactly this nuance.</p>
+        <p><strong>No single composite score.</strong> Copper, germanium and cerium can add up to the same total, yet their profiles look nothing alike. A single composite score is not helpful: it strips the analysis of exactly this nuance.</p>
         <div class="crit-shape-legend">
           <span class="csl-item"><span class="csl-dot" style="background:#620d3c"></span>Copper</span>
           <span class="csl-item"><span class="csl-dot" style="background:#f1a222"></span>Germanium</span>
@@ -1802,7 +1802,7 @@ window.addEventListener('resize', () => {
 const TOUR_STEPS = [
   { page: 'overview', target: '#pt-grid', icon: '01', kicker: 'Start with the list', title: 'India calls 51 elements critical',
     text: "India's critical minerals list is broad. We do a mineral-by-mineral analysis to group these 51 minerals into six groups that can help inform policy choices." },
-  { page: 'methodology', target: '.criteria-picker-grid', icon: '02', kicker: 'Open the method', title: 'How we score criticality',
+  { page: 'methodology', target: '.criteria-picker-grid', icon: '02', kicker: 'Open the method', title: 'How we score each mineral',
     text: "We score each mineral across ten separate questions: demand, supply concentration, substitutes, processing, India's position, and more. We never add them into a single composite score." },
   { page: 'mineral', mineral: 'Copper', target: '.mp-body', icon: '03', kicker: 'Inspect one mineral', title: 'Every score has reasoning',
     text: "On a mineral page, the radar shows how that mineral performs across the ten questions. Each score can expand to show the reasoning, and the Group & policy button connects the mineral to the wider response." },

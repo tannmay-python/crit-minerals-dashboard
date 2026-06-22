@@ -8,7 +8,7 @@
 //   refiningDiv    – refining concentration (1-5)
 //   resTime        – reserve lifetime risk (1-6, shorter life = higher score)
 //   resDiv         – reserve geographic concentration (1-5)
-//   endUseComp     – end-use criticality (1-10)
+//   endUseComp     – end-use applications (1-10)
 //   substitutability – how hard to substitute (1-5)
 //   recyclability  – recycling difficulty (1-5)
 //   extraction     – extraction/processing complexity (1-5)
@@ -24,7 +24,7 @@ window.DIMENSIONS = {
   refiningDiv:      { label: 'Refining Concentration',  description: 'Geographic concentration of refining', min: 1, max: 5, higherMeans: 'More concentrated refining' },
   resTime:          { label: 'Reserve Lifetime Risk',   description: 'Risk from limited reserve lifetime', min: 1, max: 6, higherMeans: 'Shorter reserves' },
   resDiv:           { label: 'Reserve Diversity',       description: 'Concentration of world reserves', min: 1, max: 5, higherMeans: 'More concentrated reserves' },
-  endUseComp:       { label: 'End-Use Criticality',     description: 'Importance across critical applications', min: 1, max: 10, higherMeans: 'More critical end uses' },
+  endUseComp:       { label: 'End-Use Applications',     description: 'Importance across critical applications', min: 1, max: 10, higherMeans: 'More critical end uses' },
   substitutability: { label: 'Substitution Risk',       description: 'Difficulty of substitution', min: 1, max: 5, higherMeans: 'Harder to substitute' },
   recyclability:    { label: 'Recycling Difficulty',    description: 'Difficulty of recycling/circular supply', min: 1, max: 5, higherMeans: 'Harder to recycle' },
   extraction:       { label: 'Processing Complexity',   description: 'Technical difficulty of extraction/processing', min: 1, max: 5, higherMeans: 'More complex processing' },
