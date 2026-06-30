@@ -237,7 +237,22 @@ function navigate(page, mineralName, fromHash) {
       ? `#mineral/${encodeURIComponent(mineralName)}` : `#${page}`;
     if (location.hash !== hash) location.hash = hash;
   }
+
+  trackPageView(page, mineralName);
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* Send a GA4 page_view for the current SPA route (no-op if GA isn't loaded). */
+function trackPageView(page, mineralName) {
+  if (typeof gtag !== 'function') return;
+  const title = page === 'mineral' && mineralName
+    ? `${mineralName} · India Critical Minerals`
+    : `${page.charAt(0).toUpperCase() + page.slice(1)} · India Critical Minerals`;
+  gtag('event', 'page_view', {
+    page_title: title,
+    page_location: location.href,
+    page_path: location.pathname + location.hash,
+  });
 }
 
 /* Parse the current URL hash into a route. */
