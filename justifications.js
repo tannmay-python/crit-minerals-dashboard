@@ -105,7 +105,7 @@ window.MINERAL_JUSTIFICATIONS = {
     extraction: "Tungsten mining uses standard flotation, but refining requires complex chemical processing to yield high-purity ammonium paratungstate (APT) via caustic pressure leaching and crystallization, classifying it as complex and specialized.",
     projects: "The project pipeline is adequate. Imminent restarts of massive brownfield assets like the Sangdong mine in South Korea, alongside active new developments in Australia (Dolphin), are securely capable of adding 10–20% to supply within 3–5 years.",
     india: "Import Dependence: India possesses small, uneconomic occurrences in Rajasthan and is >80% reliant on imported concentrates and refined powders to satisfy its advanced defense and manufacturing tools, pacing at the marginal domestic production band.\n\n\nStrategic Posture: Tungsten is notified on India's critical minerals list with customs duties exempted. However, lacking a dedicated KABIL mandate or foreign equity investments, India's posture reflects declared strategic intent at an early stage.",
-    volatility: "European APT prices exhibited moderate volatility, swinging 48% from $250/t to $370/t following the implementation of US tariffs on Chinese carbides, tracking within a 50–100% price variance band.",
+    volatility: "Tungsten prices exhibited extreme volatility, spiking 8-9 times in H1 2026 due to China's implementation of stringent export controls and reduced mining quotas. This represents a severely weaponized market with >800% variance.",
   },
   "Antimony": {
     demand: "Global antimony consumption is estimated at roughly 110,000 metric tons annually, placing it within the high-demand band of 100,000–1,000,000 tons.",

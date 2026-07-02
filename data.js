@@ -239,7 +239,7 @@ window.MINERALS = [
       supply: "China produces 83% of global tungsten — among the highest mining concentration of any strategic mineral. China also dominates ammonium paratungstate (APT) processing.",
       reserves: "China holds ~52% of 4.6 million tonne global reserves. At 81,000 t/year consumption, reserves last ~57 years. Resources are much larger and geographically widespread.",
       india: "India has limited resources in Rajasthan and Andhra Pradesh but is essentially 100% import-dependent. No KABIL mandate; no domestic APT refinery planned.",
-      priceContext: "APT price rose 48% year-on-year in early 2025. US imposed 25% tariffs on Chinese tungsten carbides in September 2024. No LME listing; opaque bilateral pricing."
+      priceContext: "APT prices exhibited extreme volatility, spiking 8-9 times in H1 2026 due to China's stringent export controls and domestic mining quotas. Market dynamics are decoupling with severe disruptions."
     }
   },
   {
