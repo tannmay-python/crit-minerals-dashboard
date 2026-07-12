@@ -495,3 +495,75 @@ button:focus-visible {
     flex: 1 1 0; display: flex; align-items: center; justify-content: center; gap: 6px;
   }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   MOTION TOKENS + PRE-ANIMATION GATE  (paired with motion.js)
+   ════════════════════════════════════════════════════════════════ */
+:root {
+  --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* Hidden only while JS motion is active. motion.js reveals each element;
+   a load-time failsafe drops .js-anim so content can never stay hidden. */
+
+/* Tactile press feedback on the key interactive surfaces */
+.nav-btn, .pt-mode, .pt-arrow, .mineral-card, .group-picker-card, .crit-picker-card,
+.mp-group-policy-btn, .modal-add-compare, .mp-back-btn, .dendro-cta, .tw-start, .tw-skip,
+.tour-btn {
+  transition-property: transform, background-color, border-color, color, box-shadow;
+  transition-duration: 160ms;
+  transition-timing-function: var(--ease-out);
+}
+.nav-btn:active, .pt-mode:active, .pt-arrow:active, .mp-group-policy-btn:active,
+.modal-add-compare:active, .mp-back-btn:active, .dendro-cta:active,
+.tw-start:active, .tw-skip:active, .tour-btn:active { transform: scale(0.96); }
+.mineral-card:active, .group-picker-card:active, .crit-picker-card:active { transform: scale(0.985); }
+
+/* Steadier numerals + cleaner heading wraps (make-interfaces-feel-better) */
+.pt-readout-num, .ost-value, .gpc-count, .sc-score, .scorecard-val, .mp-fact-val {
+  font-variant-numeric: tabular-nums;
+}
+.problem-headline, .section-title, .groups-section-title, .crit-meth-title,
+.mp-name, .gm-name, .crit-panel-head h2 { text-wrap: balance; }
+
+/* ── CSS entrances (compositor-driven; paired with motion.js) ─────── */
+@keyframes riseIn   { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes riseInSm { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+/* Overview hero + periodic grid — one-time entrance on load */
+.js-anim .problem-eyebrow  { animation: riseIn .60s var(--ease-out) .04s backwards; }
+.js-anim .problem-headline { animation: riseIn .68s var(--ease-out) .10s backwards; }
+.js-anim .problem-byline   { animation: riseIn .60s var(--ease-out) .18s backwards; }
+.js-anim .overview-intro-block > p:nth-of-type(1) { animation: riseIn .60s var(--ease-out) .24s backwards; }
+.js-anim .overview-intro-block > p:nth-of-type(2) { animation: riseIn .60s var(--ease-out) .30s backwards; }
+.js-anim .overview-intro-block > p:nth-of-type(3) { animation: riseIn .60s var(--ease-out) .36s backwards; }
+.js-anim .problem-hero-aside { animation: riseIn .72s var(--ease-out) .26s backwards; }
+.js-anim #pt-grid { animation: riseIn .80s var(--ease-out) .12s backwards; }
+
+/* Per-page entrance — motion.js toggles .anim-enter on navigation */
+.anim-enter .hero > *,
+.anim-enter .mineral-card,
+.anim-enter .group-picker-card,
+.anim-enter .crit-picker-card,
+.anim-enter .dendro-cta,
+.anim-enter .crit-methodology,
+.anim-enter .groups-why,
+.anim-enter .groups-methodology,
+.anim-enter .mp-topbar,
+.anim-enter .mp-header,
+.anim-enter .mp-card { animation: riseInSm .52s var(--ease-out) backwards; }
+
+/* Light repeating stagger across the big card grids */
+.anim-enter .mineral-card:nth-child(5n+2),
+.anim-enter .group-picker-card:nth-child(5n+2),
+.anim-enter .crit-picker-card:nth-child(5n+2) { animation-delay: .05s; }
+.anim-enter .mineral-card:nth-child(5n+3),
+.anim-enter .group-picker-card:nth-child(5n+3),
+.anim-enter .crit-picker-card:nth-child(5n+3) { animation-delay: .10s; }
+.anim-enter .mineral-card:nth-child(5n+4),
+.anim-enter .group-picker-card:nth-child(5n+4),
+.anim-enter .crit-picker-card:nth-child(5n+4) { animation-delay: .15s; }
+.anim-enter .mineral-card:nth-child(5n),
+.anim-enter .group-picker-card:nth-child(5n),
+.anim-enter .crit-picker-card:nth-child(5n) { animation-delay: .20s; }
