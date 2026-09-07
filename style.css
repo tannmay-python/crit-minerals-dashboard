@@ -3837,6 +3837,7 @@ input[type="range"]::-moz-range-thumb {
 .gm-policy-list li { font-size: 0.84rem; color: var(--text-muted); line-height: 1.62; margin-bottom: 9px; }
 .gm-policy-list li::marker { color: var(--gc, var(--accent)); font-weight: 700; }
 .gm-policy-list li:last-child { margin-bottom: 0; }
+.gm-policy-list a { color: var(--gc, var(--accent)); text-decoration: underline; text-underline-offset: 2px; }
 .gm-chip--active { font-weight: 700; }
 
 

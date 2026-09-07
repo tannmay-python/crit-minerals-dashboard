@@ -55,6 +55,7 @@ const GROUP_DESCRIPTIONS = {
       `Aggressively execute the Sintered Rare Earth Permanent Magnet (REPM) scheme.`,
       `Pursue joint stockpiling through international partnerships.`,
       `Ultimately, the way out may be to make these minerals obsolete, specifically via Synchronous Reluctance Motors (SynRM) and induction motors that eliminate rare-earth permanent magnets entirely.`,
+      `We did an explainer and state-of-the-market analysis on rare-earth-free EV motors. <a href="https://tannmay-python.github.io/pmsm-alternatives-visualizations/" target="_blank" rel="noopener noreferrer">Check it out here</a>.`,
     ],
   },
   3: {
