@@ -69,7 +69,7 @@
           "key": "sectoral",
           "name": "Sectoral score",
           "max": 7,
-          "note": "Defence +1.5, Energy/Grid +1.5, Agriculture +1.5, Semiconductors +1, Transport/EV +1, Healthcare +1, Construction +0.5"
+          "note": "Defence +1.5, Energy/Grid +1.5, Agriculture +1.5, Semiconductors +1, Transport/EV +1, Healthcare +1, Construction +0.5; a minor use in a sector earns +0.5"
         },
         {
           "key": "breadth",
@@ -279,7 +279,7 @@
     },
     {
       "id": 2,
-      "name": "Heavy rare earths + Tellurium",
+      "name": "Heavy rare earths",
       "color": "#f1a222"
     },
     {

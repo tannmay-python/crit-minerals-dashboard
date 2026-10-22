@@ -14,12 +14,12 @@
           "reason": "Market research projects a low volume growth (1\u20135% CAGR) through 2030. Structural expansions in 5G/telecom, defense, and aerospace are offset by strict toxicity regulations and environmental usage constraints."
         },
         "supplier_concentration": {
-          "composite": 7.0,
+          "composite": 6.0,
           "max": 10,
-          "reason": "Mining: The US produced ~180 tons out of a 360-ton global total (50%), placing the primary mining concentration within the 30\u201365% band (Score 3). \n\n\nRefining: Processing is highly restricted, with the US managing 50\u201370% of global output via Materion, placing refining diversity within the 50\u201365% band (Score 4).",
+          "reason": "Mining: The US produced 230 of the 430 tons mined in 2025 (53%), placing the primary mining concentration within the 50\u201365% band (Score 3). \n\n\nRefining: Processing is highly restricted, with the US managing 50\u201370% of global output via Materion; the middle of that range sits in the 50\u201365% band (Score 3).",
           "sub": {
             "mining_diversity": 3.0,
-            "refining_diversity": 4.0
+            "refining_diversity": 3.0
           }
         },
         "reserves": {
@@ -32,12 +32,12 @@
           }
         },
         "end_use": {
-          "composite": 8.5,
+          "composite": 8.0,
           "max": 10,
-          "reason": "Defense & National Security (+1.5): critical for missile guidance, fighter jets, satellite optics, and nuclear payloads. Energy Generation & Grid (+1.5): beryllium oxide serves as an essential neutron reflector/moderator in nuclear reactors. Advanced Semiconductors & Computing (+1.0): copper-beryllium alloys are deployed in high-performance connectors and chip heat sinks. Electrification & Transport (+1.0): utilized across automotive sensors, ignition frameworks, and aerospace structures. Healthcare & Biomedical (+1.0): acts as the standard material for X-ray windows in CT scanners due to radiation transparency. \n\n\nSector presence scores total 6.0 across 5 qualifying sectors. The breadth bonus adds +2.5, yielding an objective composite score of 8.5.",
+          "reason": "Defense & National Security (+1.5): critical for missile guidance, fighter jets, satellite optics, and nuclear payloads. Energy Generation & Grid (+1.5): beryllium oxide serves as an essential neutron reflector/moderator in nuclear reactors. Advanced Semiconductors & Computing (+1.0): copper-beryllium alloys are deployed in high-performance connectors and chip heat sinks. Electrification & Transport (+1.0): utilized across automotive sensors, ignition frameworks, and aerospace structures. Healthcare & Biomedical (+1.0): acts as the standard material for X-ray windows in CT scanners due to radiation transparency. \n\n\nSector presence scores total 6.0 across 5 qualifying sectors. The breadth bonus adds +2.0, yielding an objective composite score of 8.0.",
           "sub": {
             "sectoral": 6.0,
-            "breadth": 2.5
+            "breadth": 2.0
           }
         },
         "substitutability_recyclability": {
@@ -60,11 +60,11 @@
           "reason": "The project pipeline is thin but active. While specialized co-product assets like the West Desert asset (Utah) are being evaluated, near-term supply scaling is small and faces multi-year execution barriers, offering 5\u201310% capacity additions."
         },
         "india_position": {
-          "composite": 8.0,
+          "composite": 7.0,
           "max": 10,
-          "reason": "Import Dependence: India possesses zero commercial domestic extraction or resources, rendering its strategic defense and atomic programs 100% import-dependent (Score 5). \n\n\nStrategic Posture: Beryllium is listed on India's critical minerals list with customs duties exempted. However, lacking dedicated KABIL overseas equity stakes or binding procurement contracts, its posture aligns with early strategic intent (Score 3).",
+          "reason": "Import Dependence: India has beryl deposits (exports banned since independence), and BARC's Vashi plant has made beryllium metal and components since 1982, but there is no commercial production. Domestic output is marginal (Score 4). \n\n\nStrategic Posture: Beryllium is listed on India's critical minerals list with customs duties exempted. However, lacking dedicated KABIL overseas equity stakes or binding procurement contracts, its posture aligns with early strategic intent (Score 3).",
           "sub": {
-            "import_dependence": 5.0,
+            "import_dependence": 4.0,
             "strategic_posture": 3.0
           }
         },
@@ -89,21 +89,21 @@
           "reason": "Demand is projected for moderate volume growth (6\u201312% CAGR), driven by flat-panel ITO display surface expansions and high-speed InP laser diodes for 5G telecommunications and AI data centers."
         },
         "supplier_concentration": {
-          "composite": 8.0,
+          "composite": 6.0,
           "max": 10,
-          "reason": "Mining: Indium is a pure byproduct of zinc smelting. China dominates zinc refinery inputs and primary extraction, producing ~760 tons (70.3% of the global total), placing mining diversity in the 65\u201385% band (Score 4). \n\n\nRefining: Downstream refinement into commercial-grade metal follows the zinc metallurgy chain, leaving China as the primary refiner at ~70% global market control, mapping directly to the 65\u201385% band (Score 4).",
+          "reason": "Mining: Indium is a by-product of zinc, so its mining follows zinc mine output, where China is the largest producer at 32% in 2025 (USGS), in the 30\u201350% band (Score 2). China's 69% share of refined indium (760 of 1,100 tons) is scored under refining. \n\n\nRefining: Downstream refinement into commercial-grade metal follows the zinc metallurgy chain, leaving China as the primary refiner at ~70% global market control, mapping directly to the 65\u201385% band (Score 4).",
           "sub": {
-            "mining_diversity": 4.0,
+            "mining_diversity": 2.0,
             "refining_diversity": 4.0
           }
         },
         "reserves": {
-          "composite": 7.0,
+          "composite": 5.0,
           "max": 10,
-          "reason": "Time-frame: Discrete reserves are not quantified by the USGS because indium is a zinc byproduct. Extractable supply from known sphalerite ores is estimated to last 30\u201350 years at current production rates, tracking within the substantial reserve band. \n\n\nDiversification: While zinc ores are globally widespread, the practical ability to recover indium from smelter infrastructure is concentrated heavily in China (~70% share), yielding an HHI between 0.40\u20130.60 (Score 4).",
+          "reason": "Time-frame: Discrete reserves are not quantified by the USGS because indium is a zinc byproduct. Extractable supply from known sphalerite ores is estimated to last 30\u201350 years at current production rates, tracking within the substantial reserve band. \n\n\nDiversification: Indium reserves follow zinc reserves (Australia 27%, China 25%; HHI about 0.16), in the 0.15\u20130.25 band (Score 2), the same method used for cadmium and germanium. Recovery capacity, concentrated in China, is scored under refining.",
           "sub": {
             "timeframe": 3.0,
-            "diversification": 4.0
+            "diversification": 2.0
           }
         },
         "end_use": {
@@ -146,7 +146,7 @@
         "price_volatility": {
           "score": 4.0,
           "max": 5,
-          "reason": "Prices experienced high volatility, surging 111% from $161/kg to a peak of $420/kg over the evaluated window. Short-term quarterly spikes and Chinese export restrictions trigger severe procurement uncertainty (>100% shifts)."
+          "reason": "Prices experienced high volatility, surging about 160% from $161/kg to a peak of $420/kg over the evaluated window. Short-term quarterly spikes and Chinese export restrictions trigger severe procurement uncertainty (>100% shifts)."
         }
       }
     },
@@ -166,19 +166,19 @@
         "supplier_concentration": {
           "composite": 10.0,
           "max": 10,
-          "reason": "Mining: Extraction is highly concentrated. Brazil produced approximately 100,000 tons of niobium content out of the 110,000-ton global total (91.7%), placing primary mining diversity well above the 85% maximum threshold (Score 5). \n\n\nRefining: Downstream ferroniobium processing tracks extraction geography exactly. Brazil acts as the near-monopoly producer, supplying over 83% of high-value oxide blocks and refined alloys, hitting the >85% threshold (Score 5).",
+          "reason": "Mining: Extraction is highly concentrated. Brazil produced 104,000 of the 112,000 tons of niobium mined in 2025 (93%), placing primary mining diversity well above the 85% maximum threshold (Score 5). \n\n\nRefining: Downstream ferroniobium processing tracks extraction geography exactly. Brazil, the near-monopoly producer, converts its output into ferroniobium and oxides at home, so its ~93% share carries through to refining, above the 85% threshold (Score 5).",
           "sub": {
             "mining_diversity": 5.0,
             "refining_diversity": 5.0
           }
         },
         "reserves": {
-          "composite": 6.0,
+          "composite": 5.0,
           "max": 10,
-          "reason": "Time-frame: Global reserves are abundant, estimated at over 19 million tons, meaning known resource structures represent over 170 years of supply, which is effectively limitless (>100 years). \n\n\nDiversification: Brazil geologically controls approximately 94% of the world's declared niobium reserve base. Squared concentration indexes yield an HHI >0.60, matching the highly concentrated maximum score.",
+          "reason": "Time-frame: World reserves are more than 21 million tons, about 190 years of supply at 2025 output of 112,000 tons, which is effectively limitless (>100 years). \n\n\nDiversification: Brazil holds 14 of about 21 million tons of listed reserves (66%) and China 6.5 million tons (30%). The HHI is about 0.52, in the concentrated band (0.40\u20130.60, Score 4).",
           "sub": {
             "timeframe": 1.0,
-            "diversification": 5.0
+            "diversification": 4.0
           }
         },
         "end_use": {
@@ -212,7 +212,7 @@
         "india_position": {
           "composite": 8.0,
           "max": 10,
-          "reason": "Import Dependence: India possesses no commercial domestic extraction or resources, rendering its advanced infrastructure and superalloy fabrication lines 100% import-dependent (Score 5). \n\n\nStrategic Posture: Niobium is listed on India's critical minerals list with customs duties exempted. However, lacking a dedicated KABIL mandate, foreign asset acquisitions, or exploration blocks, the posture represents early strategic intent (Score 3).",
+          "reason": "Import Dependence: India has no niobium production, though niobium\u2013REE\u2013zirconium blocks in Rajasthan were tendered in 2025, rendering its advanced infrastructure and superalloy fabrication lines 100% import-dependent (Score 5). \n\n\nStrategic Posture: Niobium is listed on India's critical minerals list with customs duties exempted. However, lacking a dedicated KABIL mandate or foreign asset acquisitions, and with blocks only at the tender stage, the posture represents early strategic intent (Score 3).",
           "sub": {
             "import_dependence": 5.0,
             "strategic_posture": 3.0
@@ -239,20 +239,20 @@
           "reason": "Demand projects low, steady growth (1-5% CAGR). High-volume bulk markets for TiO2 pigments track baseline GDP, while advanced aerospace and defense sub-sectors pull metal demand up at single-digit rates."
         },
         "supplier_concentration": {
-          "composite": 5.0,
+          "composite": 6.0,
           "max": 10,
-          "reason": "Mining: Primary mine extraction is highly distributed. China is the largest miner of ilmenite at ~33% of global output, followed by Mozambique and South Africa, placing mining diversity in the 30\u201350% band (Score 2). \n\n\nRefining: Downstream processing splits. TiO2 pigments are widely distributed, but high-value titanium metal sponge is concentrated in China (60\u201370% share) and Japan, pacing refining diversity within the 50\u201365% band (Score 3).",
+          "reason": "Mining: Primary mine extraction is highly distributed. China is the largest miner of ilmenite at ~33% of global output, followed by Mozambique and South Africa, placing mining diversity in the 30\u201350% band (Score 2). \n\n\nRefining: Downstream processing splits. TiO2 pigments are widely distributed, but titanium sponge is concentrated in China, which made 260,000 of the 370,000 tons produced in 2025 (70%), ahead of Japan (14%), placing refining concentration in the 65\u201385% band (Score 4).",
           "sub": {
             "mining_diversity": 2.0,
-            "refining_diversity": 3.0
+            "refining_diversity": 4.0
           }
         },
         "reserves": {
-          "composite": 3.0,
+          "composite": 4.0,
           "max": 10,
-          "reason": "Time-frame: Global reserves exceed 750 million tons of contained TiO2, meaning known economic resources represent well over 100 years of supply, which is effectively limitless (>100 years). \n\n\nDiversification: Reserves are geologically well-distributed. Australia holds 31%, China holds 28%, and India holds 21% of global ilmenite, maintaining an HHI under 0.25 for balanced optionality (Score 2).",
+          "reason": "Time-frame: World reserves exceed 540 million tons of TiO2 (ilmenite and rutile), about 55 years of supply at 2025 output of about 9.8 million tons of TiO2, placing it in the 50\u2013100 year band (Score 2). \n\n\nDiversification: Reserves are geologically well-distributed. Australia holds 34% of world ilmenite reserves, China 22% and Canada 10%; India holds about 3%. The HHI is about 0.19\u20130.20, under 0.25 (Score 2).",
           "sub": {
-            "timeframe": 1.0,
+            "timeframe": 2.0,
             "diversification": 2.0
           }
         },
@@ -287,7 +287,7 @@
         "india_position": {
           "composite": 5.0,
           "max": 10,
-          "reason": "Import Dependence: India holds 21% of ilmenite reserves and mines massive feedstock through IREL. However, it lacks commercial aerospace-grade titanium metal infrastructure, creating a 50.6% dependency on processed imports, matching a significant domestic feedstock base but majority refined import picture (Score 3). \n\n\nStrategic Posture: Titanium was removed from atomic lists to enable private blocks, and KMML operates a specialized defense sponge circuit. This establishes concrete plans in motion, with domestic refining projects under construction and active Survey framework integrations with a 3\u20137 year timeline.",
+          "reason": "Import Dependence: India holds about 3% of world ilmenite reserves and mines about 2.6% of world ilmenite through IREL and KMML. However, it lacks commercial aerospace-grade titanium metal infrastructure, creating a 50.6% dependency on processed imports, matching a significant domestic feedstock base but majority refined import picture (Score 3). \n\n\nStrategic Posture: Titanium was removed from atomic lists to enable private blocks, and KMML operates a specialized defense sponge circuit. This establishes concrete plans in motion, with domestic refining projects under construction and active Survey framework integrations with a 3\u20137 year timeline.",
           "sub": {
             "import_dependence": 3.0,
             "strategic_posture": 2.0
@@ -316,7 +316,7 @@
         "supplier_concentration": {
           "composite": 9.0,
           "max": 10,
-          "reason": "Mining: Extraction concentration is high. China produced 1.27 million tons in 2024 (77.9% of the global total), followed by Madagascar (5.5%), placing primary mining diversity in the 65\u201385% band (Score 4). \n\n\nRefining: Downstream spheronization and chemical purification to 99.95% C for battery anodes is heavily concentrated in China, which dictates over 90% of global processing capacity, exceeding the 85% threshold (Score 5).",
+          "reason": "Mining: Extraction concentration is high. China produced 1.4 of the 1.8 million tons mined in 2025 (78%), followed by Madagascar (4%), placing primary mining diversity in the 65\u201385% band (Score 4). \n\n\nRefining: Downstream spheronization and chemical purification to 99.95% C for battery anodes is heavily concentrated in China, which dictates over 90% of global processing capacity, exceeding the 85% threshold (Score 5).",
           "sub": {
             "mining_diversity": 4.0,
             "refining_diversity": 5.0
@@ -325,7 +325,7 @@
         "reserves": {
           "composite": 3.0,
           "max": 10,
-          "reason": "Time-frame: Global reserves are abundant, estimated at 330 million tons. Measured against current extraction rates, known economic resources represent over 170 years of supply, which is effectively limitless (>100 years). \n\n\nDiversification: Known reserve structures are well-distributed. China holds 28% and Brazil holds 26% of the global reserve base, maintaining a balanced HHI index between 0.15\u20130.25 (Score 2).",
+          "reason": "Time-frame: Global reserves are abundant, estimated at 310 million tons. Measured against current extraction rates, known economic resources represent over 170 years of supply, which is effectively limitless (>100 years). \n\n\nDiversification: Known reserve structures are well-distributed. China holds 32% and Brazil holds 24% of the global reserve base, maintaining a balanced HHI index between 0.15\u20130.25 (Score 2).",
           "sub": {
             "timeframe": 1.0,
             "diversification": 2.0
@@ -360,12 +360,12 @@
           "reason": "The project pipeline is adequate. Driven by EV battery localization policies, a healthy wave of integrated mine-to-anode builds is under advanced development across Tanzania, Mozambique, and Canada, capable of adding 10\u201320% to supply within 3\u20135 years."
         },
         "india_position": {
-          "composite": 6.0,
+          "composite": 5.0,
           "max": 10,
-          "reason": "Import Dependence: India extracts ~27,800 tons ranking 6th globally, but internal capacity falls short of its 150,000-ton battery node targets, leaving the nation ~42% dependent on Chinese imports, matching a significant domestic feedstock base but majority refined import picture. \n\n\nStrategic Posture: Graphite is on India's critical list with customs duties reduced. While domestic mining block auctions are active and Coal India is entering the extraction market, the lack of commercial overseas assets or processing plants matches early strategic intent (Score 3).",
+          "reason": "Import Dependence: India mined about 17,000 tons in 2025, seventh globally (USGS), but internal capacity falls short of its 150,000-ton battery node targets, leaving the nation ~42% dependent on Chinese imports, matching a significant domestic feedstock base but majority refined import picture. \n\n\nStrategic Posture: Graphite is on India's critical list with customs duties reduced. While domestic mining block auctions are active and Coal India is entering the extraction market, India has large synthetic-graphite electrode makers and battery-anode plants under construction (TACC, Epsilon), and although there are no overseas assets, the anode plants put concrete plans in motion (Score 2).",
           "sub": {
             "import_dependence": 3.0,
-            "strategic_posture": 3.0
+            "strategic_posture": 2.0
           }
         },
         "price_volatility": {
@@ -381,7 +381,7 @@
         "demand": {
           "score": 2.0,
           "max": 5,
-          "reason": "Global tellurium consumption is estimated at roughly 640 metric tons annually, placing it securely within the modest-demand band of 500\u201310,000 tons."
+          "reason": "Global tellurium consumption is about 1,000 metric tons of refined output in 2025, placing it securely within the modest-demand band of 500\u201310,000 tons."
         },
         "growth": {
           "score": 5.0,
@@ -389,21 +389,21 @@
           "reason": "Demand is projected for high growth (12%+ CAGR) because solar cells now represent 70% of global tellurium consumption, driven by First Solar expanding US utility capacity to 14 GW/year. This rapid expansion in a major energy sector satisfies the maximum framework projection."
         },
         "supplier_concentration": {
-          "composite": 6.0,
+          "composite": 5.0,
           "max": 10,
-          "reason": "Mining: Tellurium has no primary mines and is recovered purely as a byproduct of copper anode slimes. Copper mine production is globally distributed, with no single nation exceeding 30% of global output (Score 1).\n\n\nRefining: Downstream chemical separation is heavily concentrated. China accounts for 75\u201380% of global refined tellurium output, tracking directly as the largest single processor well above the 65% threshold (Score 5).",
+          "reason": "Mining: Tellurium has no primary mines and is recovered purely as a byproduct of copper anode slimes. Copper mine production is globally distributed, with no single nation exceeding 30% of global output (Score 1).\n\n\nRefining: Downstream chemical separation is heavily concentrated. China refined 800 of about 1,000 tons in 2025 (80%), placing refining concentration in the 65\u201385% band (Score 4).",
           "sub": {
             "mining_diversity": 1.0,
-            "refining_diversity": 5.0
+            "refining_diversity": 4.0
           }
         },
         "reserves": {
-          "composite": 8.0,
+          "composite": 4.0,
           "max": 10,
-          "reason": "Time-frame: Global economic reserves are estimated at 38,000 tons. At current consumption rates, these reserves represent approximately 50 years of supply, placing it within the 30\u201350 year substantial reserve band.\n\n\nDiversification: Tellurium reserves track electrolytic copper refining circuits, which are overwhelmingly concentrated in China. China controls 60\u201375% of this capacity, yielding an HHI above 0.40 (Score 5).",
+          "reason": "Time-frame: Global economic reserves are estimated at 38,000 tons. At about 1,000 tons a year of refined output, these reserves represent about 38 years of supply, within the 30\u201350 year band. (USGS no longer quantifies tellurium reserves; 38,000 tons is an older estimate.)\n\n\nDiversification: Tellurium is recovered from copper anode slime, so its reserves follow copper reserves, which are widely spread (Chile holds 18% of the world total; HHI about 0.08\u20130.12), below 0.15 (Score 1). China's 80% share of refined tellurium is scored under supplier concentration.",
           "sub": {
             "timeframe": 3.0,
-            "diversification": 5.0
+            "diversification": 1.0
           }
         },
         "end_use": {
@@ -437,7 +437,7 @@
         "india_position": {
           "composite": 8.0,
           "max": 10,
-          "reason": "Import Dependence: India has zero commercial domestic extraction or recovery of tellurium, rendering its expanding solar and advanced component industries 100% import-dependent (Score 5).\n\n\nStrategic Posture: Tellurium is recognized on India's critical minerals list with customs duties exempted. However, lacking foreign asset equity holdings or specific KABIL mandates, India's posture aligns with declared strategic intent at an early stage (Score 3).",
+          "reason": "Import Dependence: India has no confirmed commercial tellurium output (Hindalco lists CSIR-IMMT's slime-recovery process as implemented, but publishes no volumes), rendering its expanding solar and advanced component industries 100% import-dependent (Score 5).\n\n\nStrategic Posture: Tellurium is recognized on India's critical minerals list with customs duties exempted. However, lacking foreign asset equity holdings or specific KABIL mandates, India's posture aligns with declared strategic intent at an early stage (Score 3).",
           "sub": {
             "import_dependence": 5.0,
             "strategic_posture": 3.0
@@ -464,30 +464,30 @@
           "reason": "Demand is projected to remain flat to stagnant. Following the legacy collapse of CRT television glass, its core modern applications in ferrite ceramic magnets, drilling fluids, and pyrotechnics are stable but lack growth drivers, placing it in the flatlining/stagnation band."
         },
         "supplier_concentration": {
-          "composite": 5.0,
+          "composite": 6.0,
           "max": 10,
-          "reason": "Mining: China and Mexico dominate primary extraction, controlling 35\u201340% and 30\u201335% respectively. The largest country sits within the 30\u201350% band, placing mining diversity at Score 2.\n\n\nRefining: Downstream strontium carbonate processing is concentrated across China and Germany, with the single largest producer commanding between 50\u201365% of global output (Score 3).",
+          "reason": "Mining: Iran produced about 250,000 of the 450,000 tons of celestite mined in 2025 (56%), ahead of Spain (22%) and China (18%), placing mining diversity in the 50\u201365% band (Score 3).\n\n\nRefining: Downstream strontium carbonate processing is concentrated across China and Germany, with the single largest producer commanding between 50\u201365% of global output (Score 3).",
           "sub": {
-            "mining_diversity": 2.0,
+            "mining_diversity": 3.0,
             "refining_diversity": 3.0
           }
         },
         "reserves": {
           "composite": 3.0,
           "max": 10,
-          "reason": "Time-frame: Global strontium resources exceed 1 billion tons. At current consumption rates of a few hundred thousand tons, known economic reserves represent hundreds of years of supply, which is effectively limitless (>100 years).\n\n\nDiversification: Celestite reserves are geographically well-distributed. No single country holds more than 35% of global reserves, generating an HHI between 0.15\u20130.25 (Score 2).",
+          "reason": "Time-frame: Global strontium resources exceed 1 billion tons. At current consumption rates of a few hundred thousand tons, known economic reserves represent hundreds of years of supply, which is effectively limitless (>100 years).\n\n\nDiversification: USGS lists reserves only for China (12 million tons) and Iran (2 million tons) and calls world reserves large, so an HHI cannot be computed; the score is kept at 2 as a judgement.",
           "sub": {
             "timeframe": 1.0,
             "diversification": 2.0
           }
         },
         "end_use": {
-          "composite": 4.0,
+          "composite": 3.5,
           "max": 10,
-          "reason": "Defense & National Security (+1.5): strontium nitrate is the irreplaceable chemical input for military pyrotechnics, signal flares, and tracer rounds requiring high brilliance. Healthcare & Biomedical (+0.5): used in strontium ranelate for osteoporosis and strontium-89 for bone cancer radiotherapy. Construction & Heavy Industry (+0.5): utilized as celestite in drilling fluids and heavy pigments.\n\n\nSector presence scores total 2.5 across 3 qualifying sectors. The breadth bonus adds +1.5, yielding an objective composite score of 4.0.",
+          "reason": "Defense & National Security (+1.5): strontium nitrate is the irreplaceable chemical input for military pyrotechnics, signal flares, and tracer rounds requiring high brilliance. Healthcare & Biomedical (+0.5): used in strontium ranelate for osteoporosis and strontium-89 for bone cancer radiotherapy. Construction & Heavy Industry (+0.5): utilized as celestite in drilling fluids and heavy pigments.\n\n\nSector presence scores total 2.5 across 3 qualifying sectors. The breadth bonus adds +1.0, yielding an objective composite score of 3.5.",
           "sub": {
             "sectoral": 2.5,
-            "breadth": 1.5
+            "breadth": 1.0
           }
         },
         "substitutability_recyclability": {
@@ -512,16 +512,16 @@
         "india_position": {
           "composite": 8.0,
           "max": 10,
-          "reason": "Import Dependence: India possesses zero commercial domestic extraction of strontium minerals, rendering its localized fireworks and magnet industries 100% import-dependent (Score 5).\n\n\nStrategic Posture: Strontium is officially listed on India's critical minerals framework with customs duties exempted. However, lacking a dedicated KABIL mandate or foreign equity investments, its posture aligns with early-stage declared strategic intent (Score 3).",
+          "reason": "Import Dependence: India mines no celestite, so its ore is imported (Score 5). Strontium carbonate itself is made in India: Vishnu Chemicals has close to 10,000 tonnes of capacity, about half of it in use in mid-2026, selling mainly to flexible-magnet makers.\n\n\nStrategic Posture: Strontium is officially listed on India's critical minerals framework with customs duties exempted. However, lacking a dedicated KABIL mandate or foreign equity investments, its posture aligns with early-stage declared strategic intent (Score 3).",
           "sub": {
             "import_dependence": 5.0,
             "strategic_posture": 3.0
           }
         },
         "price_volatility": {
-          "score": 2.0,
+          "score": 4.0,
           "max": 5,
-          "reason": "Strontium commodity prices showed low volatility, tracking historical baselines before temporary supply tightness caused a minor upward fluctuation within a 20\u201350% baseline band."
+          "reason": "The unit value of celestite imports fell from $210/t (2021) to $82/t (2023) and was $160/t in 2025 (USGS), a swing of more than 100% in a thin market (Score 4)."
         }
       }
     },
@@ -541,7 +541,7 @@
         "supplier_concentration": {
           "composite": 9.0,
           "max": 10,
-          "reason": "Mining: China produced approximately 68% of global ferrosilicon and 85% of global silicon metal in 2024, placing primary mining diversity in the concentrated 65\u201385% band (Score 4).\n\n\nRefining: Downstream refinement into high-purity solar and semiconductor-grade polysilicon is heavily concentrated in China, which controls 85\u201390% of global production capacity (Score 5).",
+          "reason": "Mining: China produced about 70% of global ferrosilicon and 87% of silicon metal in 2025 (almost 80% of all silicon materials), placing primary mining diversity in the concentrated 65\u201385% band (Score 4).\n\n\nRefining: Downstream refinement into high-purity solar and semiconductor-grade polysilicon is heavily concentrated in China, which controls 85\u201390% of global production capacity (Score 5).",
           "sub": {
             "mining_diversity": 4.0,
             "refining_diversity": 5.0
@@ -557,11 +557,11 @@
           }
         },
         "end_use": {
-          "composite": 8.0,
+          "composite": 7.0,
           "max": 10,
-          "reason": "Advanced Semiconductors & Computing (+1.0): the absolute foundational substrate material for all micro-electronic chip fabrication and logic wafers. Energy Generation & Grid (+1.5): essential for solar cells and grid power electronics infrastructure. Electrification & Transport (+1.0): utilized widely across EV battery management systems, inverters, and automotive electronics. Healthcare & Biomedical (+1.0): deployed pervasively in medical implants, diagnostic laboratory devices, and MRI components. Construction & Heavy Industry (+0.5): silicones function as bulk inputs for high-performance building sealants and structural coatings.\n\n\nSector presence scores total 6.0 across 5 qualifying sectors. The breadth bonus adds +2.0, yielding a composite score of 8.0.",
+          "reason": "Advanced Semiconductors & Computing (+1.0): the absolute foundational substrate material for all micro-electronic chip fabrication and logic wafers. Energy Generation & Grid (+1.5): essential for solar cells and grid power electronics infrastructure. Electrification & Transport (+1.0): utilized widely across EV battery management systems, inverters, and automotive electronics. Healthcare & Biomedical (+1.0): deployed pervasively in medical implants, diagnostic laboratory devices, and MRI components. Construction & Heavy Industry (+0.5): silicones function as bulk inputs for high-performance building sealants and structural coatings.\n\n\nSector presence scores total 5.0 across 5 qualifying sectors. The breadth bonus adds +2.0, yielding a composite score of 7.0.",
           "sub": {
-            "sectoral": 6.0,
+            "sectoral": 5.0,
             "breadth": 2.0
           }
         },
@@ -614,29 +614,29 @@
           "reason": "Demand projects low growth (1-5% CAGR), driven by stable volume expansions in cemented carbides for industrial machine cutting, mining drills, and heavy infrastructure, supplemented by rearmament spikes in military kinetic ammunition."
         },
         "supplier_concentration": {
-          "composite": 9.0,
+          "composite": 8.0,
           "max": 10,
-          "reason": "Mining: Extraction is highly concentrated. China produced 67,000 tons out of the 81,000-ton global total (82.7%), placing primary mining diversity in the 65\u201385% band (Score 4).\n\n\nRefining: Downstream processing of ore into ammonium paratungstate (APT) and carbide powder is overwhelmingly dominated by China, which controls an estimated 83% of the refining market share (Score 5).",
+          "reason": "Mining: Extraction is highly concentrated. China produced 67,000 of the 85,000 tons mined in 2025 (79%), placing primary mining diversity in the 65\u201385% band (Score 4).\n\n\nRefining: Downstream processing of ore into ammonium paratungstate (APT) and carbide powder is overwhelmingly dominated by China, which controls an estimated 83% of the refining market share, in the 65\u201385% band (Score 4).",
           "sub": {
             "mining_diversity": 4.0,
-            "refining_diversity": 5.0
+            "refining_diversity": 4.0
           }
         },
         "reserves": {
-          "composite": 4.0,
+          "composite": 5.0,
           "max": 10,
-          "reason": "Time-frame: Global reserves are estimated at 4.6 million tons. Measured against current extraction rates, known resources represent roughly 57 years of supply, tracking within the 50\u2013100 year abundant reserve band.\n\n\nDiversification: China holds 52% of global reserves alongside Australia (12.4%) and Russia (8.7%). The calculated HHI evaluates to approximately 0.30, placing the geographic endowment in the moderately concentrated band.",
+          "reason": "Time-frame: World reserves are more than 4.7 million tons, about 55 years of supply at 2025 mine output of 85,000 tons, in the 50\u2013100 year band (Score 2).\n\n\nDiversification: China holds 53% of world reserves alongside Australia (12%) and Russia (9%). The calculated HHI is about 0.31, placing the geographic endowment in the moderately concentrated band.",
           "sub": {
-            "timeframe": 1.0,
+            "timeframe": 2.0,
             "diversification": 3.0
           }
         },
         "end_use": {
-          "composite": 6.0,
+          "composite": 5.5,
           "max": 10,
-          "reason": "Defense & National Security (+1.5): essential for armor-piercing kinetic energy penetrators, anti-tank munitions, and heavy missile alloys. Electrification & Transport (+1.0): required for high-performance aerospace structural alloys and machine tool manufacturing. Construction & Heavy Industry (+0.5): cemented tungsten carbides form the structural backbone for global mining and construction machinery. Healthcare & Biomedical (+1.0): utilized widely for medical radiation shielding in X-ray systems and precise dental tools.\n\n\nSector presence scores total 4.5 across 4 qualifying sectors. The breadth bonus adds +1.5, yielding an objective composite score of 6.0.",
+          "reason": "Defense & National Security (+1.5): essential for armor-piercing kinetic energy penetrators, anti-tank munitions, and heavy missile alloys. Electrification & Transport (+1.0): required for high-performance aerospace structural alloys and machine tool manufacturing. Construction & Heavy Industry (+0.5): cemented tungsten carbides form the structural backbone for global mining and construction machinery. Healthcare & Biomedical (+1.0): utilized widely for medical radiation shielding in X-ray systems and precise dental tools.\n\n\nSector presence scores total 4.0 across 4 qualifying sectors. The breadth bonus adds +1.5, yielding an objective composite score of 5.5.",
           "sub": {
-            "sectoral": 4.5,
+            "sectoral": 4.0,
             "breadth": 1.5
           }
         },
@@ -660,18 +660,18 @@
           "reason": "The project pipeline is adequate. Imminent restarts of massive brownfield assets like the Sangdong mine in South Korea, alongside active new developments in Australia (Dolphin), are securely capable of adding 10\u201320% to supply within 3\u20135 years."
         },
         "india_position": {
-          "composite": 7.0,
+          "composite": 6.0,
           "max": 10,
-          "reason": "Import Dependence: India possesses small, uneconomic occurrences in Rajasthan and is >80% reliant on imported concentrates and refined powders to satisfy its advanced defense and manufacturing tools, pacing at the marginal domestic production band.\n\n\nStrategic Posture: Tungsten is notified on India's critical minerals list with customs duties exempted. However, lacking a dedicated KABIL mandate or foreign equity investments, India's posture reflects declared strategic intent at an early stage.",
+          "reason": "Import Dependence: India possesses small, uneconomic occurrences in Rajasthan and is >80% reliant on imported concentrates and refined powders to satisfy its advanced defense and manufacturing tools, pacing at the marginal domestic production band.\n\n\nStrategic Posture: Tungsten is notified on India's critical minerals list with customs duties exempted. Hindustan Zinc won a tungsten block in Andhra Pradesh in November 2025, putting a concrete domestic plan in motion, though there is no KABIL mandate or foreign equity investment (Score 2).",
           "sub": {
             "import_dependence": 4.0,
-            "strategic_posture": 3.0
+            "strategic_posture": 2.0
           }
         },
         "price_volatility": {
           "score": 5.0,
           "max": 5,
-          "reason": "Tungsten prices exhibited extreme volatility, spiking 8-9 times in H1 2026 due to China's implementation of stringent export controls and reduced mining quotas. This represents a severely weaponized market with >800% variance."
+          "reason": "Tungsten prices exhibited extreme volatility after China's February 2025 export controls and reduced mining quotas. Chinese scheelite concentrate rose from 142,750 yuan/t at the end of 2024 to 680,500 yuan/t in February 2026, about 4.8 times, and domestic APT passed 1 million yuan/t (SMM). USGS's annual average concentrate price rose from $252 (2024) to about $380 per metric ton unit (2025). This meets the extreme band (Score 5)."
         }
       }
     },
@@ -689,21 +689,21 @@
           "reason": "Demand is projected for moderate growth (6\u201312% CAGR), driven by military procurement spikes for ammunition and an emerging, high-capacity clean energy vector in antimony-based solid-state batteries (ASSBs) for utility storage."
         },
         "supplier_concentration": {
-          "composite": 7.0,
+          "composite": 6.0,
           "max": 10,
-          "reason": "Mining: China produced 60,000 tons out of a 100,000-ton global total (60%), followed by Tajikistan (17%), placing primary mining diversity in the 50\u201365% band (Score 3).\n\n\nRefining: Downstream processing into antimony oxide and metal is heavily concentrated. China accounts for 70\u201380% of refined output, tracking securely within the concentrated 65\u201385% band (Score 4).",
+          "reason": "Mining: China produced 40,000 of the 110,000 tons mined in 2025 (36%), followed by Russia (29%) and Tajikistan (20%), placing primary mining diversity in the 30\u201350% band (Score 2).\n\n\nRefining: Downstream processing into antimony oxide and metal is heavily concentrated. China accounts for 70\u201380% of refined output, tracking securely within the concentrated 65\u201385% band (Score 4).",
           "sub": {
-            "mining_diversity": 3.0,
+            "mining_diversity": 2.0,
             "refining_diversity": 4.0
           }
         },
         "reserves": {
           "composite": 6.0,
           "max": 10,
-          "reason": "Time-frame: Identified reserves stand at 2 million tons, representing 20 years of lifespans. However, total global resources across Australia, Bolivia, and Russia extend availability to a substantial 30\u201350 year planning horizon.\n\n\nDiversification: Total global reserves yield a calculated HHI of approximately 0.32, with the US holding 43% (probable project reserves), China holding 33%, and Bolivia holding 15%. This places the geographic endowment in the moderately concentrated band.",
+          "reason": "Time-frame: World reserves are more than 2 million tons (about 2.4 million tons summed across countries), roughly 20 years of supply at 2025 mine output of 110,000 tons, placing it in the 15\u201330 year band (Score 4).\n\n\nDiversification: China holds about 35% of listed reserves (830,000 tons), followed by Russia (15%), Bolivia (13%) and Kyrgyzstan (11%); US reserves are 60,000 tons (the Stibnite project). The HHI is about 0.18, in the well-distributed band (0.15\u20130.25, Score 2).",
           "sub": {
-            "timeframe": 3.0,
-            "diversification": 3.0
+            "timeframe": 4.0,
+            "diversification": 2.0
           }
         },
         "end_use": {
@@ -737,7 +737,7 @@
         "india_position": {
           "composite": 7.0,
           "max": 10,
-          "reason": "Import Dependence: India possesses no large-scale active antimony mines, relying almost completely on imported oxides and refined products to satisfy its core ammunition and industrial needs (>80% dependent, Score 4).\n\n\nStrategic Posture: Antimony is officially recognized on India's critical minerals list with customs duties exempted. However, lacking a dedicated KABIL mandate or foreign asset acquisitions, India's strategy reflects early-stage declared strategic intent (Score 3).",
+          "reason": "Import Dependence: India has no antimony mine output, but its smelters run on imported concentrate and India exports antimony metal, supplying 22% of US imports of unwrought antimony in 2021\u201324 (USGS). With no ore of its own but a refining base, India sits in the marginal domestic production band (Score 4).\n\n\nStrategic Posture: Antimony is officially recognized on India's critical minerals list with customs duties exempted. However, lacking a dedicated KABIL mandate or foreign asset acquisitions, India's strategy reflects early-stage declared strategic intent (Score 3).",
           "sub": {
             "import_dependence": 4.0,
             "strategic_posture": 3.0
@@ -746,7 +746,7 @@
         "price_volatility": {
           "score": 5.0,
           "max": 5,
-          "reason": "Antimony prices experienced extreme market breakdown, nearly doubling from $8.91/lb to $17.50/lb (+96%) within months of China's August 2024 export restrictions, capped by a total export ban to the US in December 2024. Weaponized supply constraints trigger Score 5."
+          "reason": "Antimony prices experienced extreme market breakdown, rising from $5.31/lb in 2021 to about $25/lb in 2025 (USGS) after China's August 2024 export restrictions and its December 2024 ban on sales to the US (suspended in November 2025 until 27 November 2026). Weaponized supply constraints trigger Score 5."
         }
       }
     },
@@ -766,19 +766,19 @@
         "supplier_concentration": {
           "composite": 6.0,
           "max": 10,
-          "reason": "Mining: Primary mine extraction is highly distributed. Australia is the largest primary producer at roughly 33%, followed by South Africa (20%), placing mining diversity firmly in the 30\u201350% band (Score 2).\n\n\nRefining: Downstream processing into unwrought zirconium metal and high-purity concentrates is dominated by China, which accounts for 65\u201385% of global market supply and 88% of US imports, tracking securely within the concentrated 65\u201385% band (Score 4).",
+          "reason": "Mining: Primary mine extraction is highly distributed. Australia is the largest primary producer at roughly 33%, followed by South Africa (23%), placing mining diversity firmly in the 30\u201350% band (Score 2).\n\n\nRefining: Downstream processing into unwrought zirconium metal and high-purity concentrates is dominated by China, which accounts for 65\u201385% of global market supply and 88% of US imports, tracking securely within the concentrated 65\u201385% band (Score 4).",
           "sub": {
             "mining_diversity": 2.0,
             "refining_diversity": 4.0
           }
         },
         "reserves": {
-          "composite": 7.0,
+          "composite": 6.0,
           "max": 10,
-          "reason": "Time-frame: Global reserves are estimated at >70 million tons of contained ZrO2. Against current production rates, known resources represent roughly 72 years of supply, tracking within the 50\u2013100 year abundant reserve band.\n\n\nDiversification: Total global reserves yield a calculated HHI of approximately 0.62. Australia holds a massive 79% of the global reserve base, exceeding the 75% threshold and placing the geographic endowment in the highly concentrated maximum band (Score 5).",
+          "reason": "Time-frame: Global reserves are estimated at >70 million tons of contained ZrO2. Against current production rates, known resources represent roughly 72 years of supply, tracking within the 50\u2013100 year abundant reserve band.\n\n\nDiversification: Australia holds 55 of the 77 million tons of listed reserves (71%; the USGS world total is given only as more than 70 million tons). The HHI is about 0.51, in the concentrated band (0.40\u20130.60, Score 4).",
           "sub": {
             "timeframe": 2.0,
-            "diversification": 5.0
+            "diversification": 4.0
           }
         },
         "end_use": {
@@ -839,12 +839,12 @@
           "reason": "Demand projects a low, steady growth trajectory (1-5% CAGR), driven incrementally by its adoption as a non-toxic replacement for lead in plumbing and industrial solders."
         },
         "supplier_concentration": {
-          "composite": 6.0,
+          "composite": 7.0,
           "max": 10,
-          "reason": "Mining: Extracted entirely as a byproduct of lead and tungsten. China is the largest producer of the primary lead hosts, capturing roughly 40\u201345% of the extraction baseline (Score 2).\n\n\nRefining: Downstream refinement into commercial bismuth is highly concentrated in China, which produces ~13,000 tons of the 16,000-ton global total, placing the refining market share firmly in the 65\u201385% band (Score 4).",
+          "reason": "Mining: Extracted entirely as a byproduct of lead and tungsten. China is the largest producer of the primary lead hosts, capturing roughly 40\u201345% of the extraction baseline (Score 2).\n\n\nRefining: Downstream refinement into commercial bismuth is highly concentrated in China, which produced 14,000 of the 16,000 tons refined in 2025 (88%), placing refining concentration above the 85% threshold (Score 5).",
           "sub": {
             "mining_diversity": 2.0,
-            "refining_diversity": 4.0
+            "refining_diversity": 5.0
           }
         },
         "reserves": {
@@ -896,7 +896,7 @@
         "price_volatility": {
           "score": 5.0,
           "max": 5,
-          "reason": "Pricing remained stable until severe supply shocks triggered extreme market breakdown. Driven by Chinese export restrictions in 2024, prices spiked from ~$3.00/lb baselines to over $10.00/lb (exceeding 200%). Active trade restrictions validate the maximum volatility score."
+          "reason": "Pricing remained stable until severe supply shocks triggered extreme market breakdown. Driven by Chinese export controls from February 2025, prices rose from $3.74/lb in 2021 to about $20/lb in 2025 (USGS), far above 200%. Active trade restrictions validate the maximum volatility score."
         }
       }
     },
@@ -916,7 +916,7 @@
         "supplier_concentration": {
           "composite": 8.0,
           "max": 10,
-          "reason": "Mining: The Democratic Republic of the Congo (DRC) produces roughly 76% of global primary extraction, placing primary mining diversity in the 65\u201385% band (Score 4).\n\n\nRefining: Downstream chemical refinement into cobalt sulfate and high-purity metal is heavily concentrated in China, which controls approximately 80% of global processing capacity, mapping to the 65\u201385% band (Score 4).",
+          "reason": "Mining: The Democratic Republic of the Congo (DRC) produced 230,000 of the 310,000 tons mined in 2025 (74%), placing primary mining diversity in the 65\u201385% band (Score 4).\n\n\nRefining: Downstream chemical refinement into cobalt sulfate and high-purity metal is heavily concentrated in China, which controls approximately 80% of global processing capacity, mapping to the 65\u201385% band (Score 4).",
           "sub": {
             "mining_diversity": 4.0,
             "refining_diversity": 4.0
@@ -925,7 +925,7 @@
         "reserves": {
           "composite": 6.0,
           "max": 10,
-          "reason": "Time-frame: Identified global reserves stand at 11,000,000 tons. Against annual extraction volumes, these resources represent roughly 38 years of supply, tracking cleanly within the 30\u201350 year band.\n\n\nDiversification: The DRC holds 55% of reported reserves alongside Australia (15%). The resulting HHI of 0.33 places the geographic endowment in the moderately concentrated band.",
+          "reason": "Time-frame: World reserves are about 12,000,000 tons. At 2025 mine output of 310,000 tons, they represent roughly 39 years of supply, tracking cleanly within the 30\u201350 year band.\n\n\nDiversification: The DRC holds about half of world reserves (6.0 of 12 million tons) alongside Australia (14%). The resulting HHI of about 0.28 places the geographic endowment in the moderately concentrated band.",
           "sub": {
             "timeframe": 3.0,
             "diversification": 3.0
@@ -991,19 +991,19 @@
         "supplier_concentration": {
           "composite": 3.0,
           "max": 10,
-          "reason": "Mining: Primary mine extraction is highly distributed. Chile is the largest primary producer at roughly 23%, followed by the DRC (14%) and Peru (11%), placing the diversity firmly in the <30% band (Score 1).\n\n\nRefining: Downstream smelting and refining concentrates in China, which controls approximately 44% of global refined output, placing refining diversity within the 30\u201350% band (Score 2).",
+          "reason": "Mining: Primary mine extraction is highly distributed. Chile is the largest primary producer at roughly 23%, followed by the DRC (14%) and Peru (11%), placing the diversity firmly in the <30% band (Score 1).\n\n\nRefining: Downstream smelting and refining concentrates in China, which refined 14.0 of 29 million tons in 2025 (48%), placing refining diversity within the 30\u201350% band (Score 2).",
           "sub": {
             "mining_diversity": 1.0,
             "refining_diversity": 2.0
           }
         },
         "reserves": {
-          "composite": 5.0,
+          "composite": 4.0,
           "max": 10,
-          "reason": "Time-frame: Known economic global reserves are estimated at roughly 1 billion tons. Against current consumption rates, these reserves represent approximately 38 years of supply, tracking within the 30\u201350 year substantial reserve band.\n\n\nDiversification: Total global reserves yield a calculated HHI of approximately 0.15\u20130.25, with Chile holding 20% and numerous other nations holding meaningful shares. This places the geographic endowment in the well-distributed index band.",
+          "reason": "Time-frame: World reserves are about 980 million tons. At 2025 mine output of 23 million tons, these reserves represent about 43 years of supply, tracking within the 30\u201350 year substantial reserve band.\n\n\nDiversification: Chile holds 18% of world reserves (180 of 980 million tons), followed by Australia (10%), Peru (9%), and the DRC and Russia (8% each). The HHI is about 0.08\u20130.12, below 0.15 (Score 1).",
           "sub": {
             "timeframe": 3.0,
-            "diversification": 2.0
+            "diversification": 1.0
           }
         },
         "end_use": {
@@ -1056,7 +1056,7 @@
         "demand": {
           "score": 1.0,
           "max": 5,
-          "reason": "Global germanium consumption is estimated at roughly 30\u201340 metric tons annually, placing it deep within the negligible-demand band of \u2264500 tons."
+          "reason": "Global germanium output is small (USGS does not publish a world total; China's metal exports were 7.5 tons in January\u2013September 2025), placing it deep within the negligible-demand band of \u2264500 tons."
         },
         "growth": {
           "score": 4.0,
@@ -1066,7 +1066,7 @@
         "supplier_concentration": {
           "composite": 6.0,
           "max": 10,
-          "reason": "Mining: Germanium is entirely a byproduct of zinc mining. Zinc mine extraction is distributed with China acting as the largest producer at 34%, pacing primary extraction in the 30\u201350% band (Score 2).\n\n\nRefining: China dictates 70\u201380% of global high-purity refined germanium production, placing refining diversity securely within the concentrated 65\u201385% band (Score 4).",
+          "reason": "Mining: Germanium is entirely a byproduct of zinc mining. Zinc mine extraction is distributed with China acting as the largest producer at 32% (2025), pacing primary extraction in the 30\u201350% band (Score 2).\n\n\nRefining: China dictates 70\u201380% of global high-purity refined germanium production, placing refining diversity securely within the concentrated 65\u201385% band (Score 4).",
           "sub": {
             "mining_diversity": 2.0,
             "refining_diversity": 4.0
@@ -1121,7 +1121,7 @@
         "price_volatility": {
           "score": 5.0,
           "max": 5,
-          "reason": "Germanium pricing experienced severe market breakdown following China's enactment of complete export bans to the US in December 2024. Weaponized supply chain actions caused prices to double rapidly near $3,000/kg, generating extreme volatility and maximum procurement uncertainty."
+          "reason": "Germanium pricing experienced severe market breakdown following China's enactment of complete export bans to the US in December 2024. Prices rose from $1,187/kg in 2021 to about $4,100/kg in 2025 (USGS), generating extreme volatility and maximum procurement uncertainty. China suspended its December 2024 ban on germanium exports to the US in November 2025, until 27 November 2026."
         }
       }
     },
@@ -1141,7 +1141,7 @@
         "supplier_concentration": {
           "composite": 4.0,
           "max": 10,
-          "reason": "Mining: Rhenium is recovered entirely as a byproduct of molybdenum roasting. Chile produces roughly 47% of global primary extraction, placing primary mining diversity in the 30\u201350% band (Score 2).\n\n\nRefining: Downstream processing is geopolitically well-distributed across Chile, Poland, the US, and Germany. The largest processing share sits near 44%, pacing refining diversity within the 30\u201350% band (Score 2).",
+          "reason": "Mining: Rhenium is recovered entirely as a byproduct of molybdenum roasting. Chile produced about 30 of the 81 tons recovered in 2025 (37%), placing primary mining diversity in the 30\u201350% band (Score 2).\n\n\nRefining: Downstream processing is geopolitically well-distributed across Chile, Poland, the US, and Germany. The largest processing share sits near 44%, pacing refining diversity within the 30\u201350% band (Score 2).",
           "sub": {
             "mining_diversity": 2.0,
             "refining_diversity": 2.0
@@ -1150,7 +1150,7 @@
         "reserves": {
           "composite": 5.0,
           "max": 10,
-          "reason": "Time-frame: Global reserves are estimated to last roughly 50\u2013100 years at current extraction rates, directly tied to undeveloped porphyry copper-molybdenum deposits worldwide.\n\n\nDiversification: Total global reserves yield a calculated HHI of approximately 0.25, with Chile holding 46% of the identified reserve base. This places the geographic endowment in the moderately concentrated band.",
+          "reason": "Time-frame: USGS lists about 2,500 tons of country reserves, equal to about 31 years of 2025 output (81 tons), but describes world reserves as large, because most rhenium sits in undeveloped porphyry copper-molybdenum deposits. The score is kept in the 50\u2013100 year band as a judgement.\n\n\nDiversification: Listed reserves yield an HHI of about 0.33, with Chile holding about half (1,300 of ~2,500 tons). This places the geographic endowment in the moderately concentrated band.",
           "sub": {
             "timeframe": 2.0,
             "diversification": 3.0
@@ -1194,9 +1194,9 @@
           }
         },
         "price_volatility": {
-          "score": 2.0,
+          "score": 4.0,
           "max": 5,
-          "reason": "Rhenium prices maintained a steady, managed upward trajectory. Metal prices moved from ~$1,030/kg to $1,370/kg (a 33% increase over 4 years), demonstrating low volatility within the 20\u201350% baseline threshold without supply-side breakdown."
+          "reason": "Rhenium metal prices rose from $977/kg in 2021 to about $2,600/kg in 2025 (USGS), a 166% increase in a thin, opaque market (>100%, Score 4)."
         }
       }
     },
@@ -1214,21 +1214,21 @@
           "reason": "Demand is expanding moderately (6\u201312% CAGR), driven by surging requirements for tantalum capacitors in smartphones, EVs, and AI data centers, alongside increasing applications in aerospace superalloys."
         },
         "supplier_concentration": {
-          "composite": 4.0,
+          "composite": 5.0,
           "max": 10,
-          "reason": "Mining: The DRC produces approximately 42% of global primary extraction, placing primary mining diversity in the 30\u201350% band (Score 2).\n\n\nRefining: Metal processing is distributed across China, Germany, and Kazakhstan. China is the largest processor at 43%, matching the 30\u201350% band (Score 2).",
+          "reason": "Mining: The DRC produced about 1,300 of the 2,500 tons mined in 2025 (52%), placing primary mining diversity in the 50\u201365% band (Score 3).\n\n\nRefining: Metal processing is distributed across China, Germany, and Kazakhstan. China is the largest processor at 43%, matching the 30\u201350% band (Score 2).",
           "sub": {
-            "mining_diversity": 2.0,
+            "mining_diversity": 3.0,
             "refining_diversity": 2.0
           }
         },
         "reserves": {
-          "composite": 4.0,
+          "composite": 5.0,
           "max": 10,
-          "reason": "Time-frame: Identified global reserves represent over 200 years of supply at current production rates, meaning reserves are effectively limitless (>100 years).\n\n\nDiversification: China holds 57% of reported reserves alongside Australia (26%) and Brazil (10%). The resulting HHI of 0.38 places the geographic endowment in the moderately concentrated band.",
+          "reason": "Time-frame: Identified global reserves represent over 200 years of supply at current production rates, meaning reserves are effectively limitless (>100 years).\n\n\nDiversification: China holds 60% of reported reserves (240,000 tons), Australia 30% (120,000) and Brazil 10% (40,000). The HHI is about 0.46, in the concentrated band (0.40\u20130.60, Score 4).",
           "sub": {
             "timeframe": 1.0,
-            "diversification": 3.0
+            "diversification": 4.0
           }
         },
         "end_use": {
@@ -1289,29 +1289,29 @@
           "reason": "Demand features low, steady growth (1-5% CAGR), driven by compounding baseline agricultural requirements alongside incremental high-purity phosphoric acid demands for LFP battery cathodes."
         },
         "supplier_concentration": {
-          "composite": 7.0,
+          "composite": 6.0,
           "max": 10,
-          "reason": "Mining: China produces roughly 46% of global phosphate rock output, placing primary extraction in the 30\u201350% band (Score 2).\n\n\nRefining: The separation and refinement of critical, high-purity battery-grade phosphoric acid (LFP) is heavily concentrated in China, which controls >90% of global production (Score 5).",
+          "reason": "Mining: China produced 110 of the 250 million tons of phosphate rock mined in 2025 (44%), placing primary extraction in the 30\u201350% band (Score 2).\n\n\nRefining: The separation and refinement of critical, high-purity battery-grade phosphoric acid (LFP) is concentrated in China, which produces 75% of the world's purified phosphoric acid (IEA), placing refining concentration in the 65\u201385% band (Score 4).",
           "sub": {
             "mining_diversity": 2.0,
-            "refining_diversity": 5.0
+            "refining_diversity": 4.0
           }
         },
         "reserves": {
           "composite": 5.0,
           "max": 10,
-          "reason": "Time-frame: Global reserves are estimated at 74 billion tonnes. Against annual extraction volumes, these resources represent over 300 years of supply, which is effectively limitless (>100 years).\n\n\nDiversification: Morocco holds approximately 67.6% of global reserves, generating an HHI of ~0.457. This places the geographic endowment strictly within the concentrated 55\u201375% band (Score 4).",
+          "reason": "Time-frame: World reserves are about 73 billion tonnes. Against annual extraction volumes, these resources represent over 300 years of supply, which is effectively limitless (>100 years).\n\n\nDiversification: Morocco holds about 68% of world reserves (50 of 73 billion tons), generating an HHI of about 0.48. This places the geographic endowment strictly within the concentrated 55\u201375% band (Score 4).",
           "sub": {
             "timeframe": 1.0,
             "diversification": 4.0
           }
         },
         "end_use": {
-          "composite": 5.5,
+          "composite": 6.5,
           "max": 10,
-          "reason": "Agriculture & Food Security (+0.5): acts as an irreplaceable macronutrient underpinning global food production. Energy Generation & Grid (+1.5): high-purity phosphoric acid is the chemical foundation for LFP (lithium iron phosphate) grid storage and EV batteries. Defense & National Security (+1.5): deployed heavily in incendiary munitions, smoke screens, and tracer rounds. Healthcare & Biomedical (+0.5): acts as a critical intermediary in pharmaceutical DNA/bone structure treatments.\n\n\nSector presence scores total 4 across 4 qualifying sectors. The breadth bonus adds +1.5, yielding an objective composite score of 5.5",
+          "reason": "Agriculture & Food Security (+1.5): acts as an irreplaceable macronutrient underpinning global food production. Energy Generation & Grid (+1.5): high-purity phosphoric acid is the chemical foundation for LFP (lithium iron phosphate) grid storage and EV batteries. Defense & National Security (+1.5): deployed heavily in incendiary munitions, smoke screens, and tracer rounds. Healthcare & Biomedical (+0.5): acts as a critical intermediary in pharmaceutical DNA/bone structure treatments.\n\n\nSector presence scores total 5 across 4 qualifying sectors. The breadth bonus adds +1.5, yielding an objective composite score of 6.5",
           "sub": {
-            "sectoral": 4.0,
+            "sectoral": 5.0,
             "breadth": 1.5
           }
         },
@@ -1335,12 +1335,12 @@
           "reason": "The project pipeline is adequate. Extensive brownfield and greenfield expansions are actively advancing in Morocco (OCP Group) and Saudi Arabia, capable of adding 10\u201320% to global supply within 3\u20135 years."
         },
         "india_position": {
-          "composite": 7.0,
+          "composite": 5.0,
           "max": 10,
-          "reason": "Import Dependence: India possesses marginal phosphorite deposits in Rajasthan and Madhya Pradesh, producing ~1,600,000 tons. This output satisfies <20% of its massive agricultural demands, leaving the nation heavily reliant on 5 million tons of imported rock, pacing within the marginal domestic production band.\n\n\nStrategic Posture: Phosphorus falls under India's critical minerals list with active GSI exploration underway. However, lacking specific foreign equity offtakes, India remains at a stage of declared strategic intent without specific operational supply agreements.",
+          "reason": "Import Dependence: India possesses marginal phosphorite deposits in Rajasthan and Madhya Pradesh, producing ~1,600,000 tons. This output satisfies <20% of its massive agricultural demands, leaving the nation heavily reliant on 5 million tons of imported rock, pacing within the marginal domestic production band.\n\n\nStrategic Posture: Indian fertiliser makers co-own phosphoric acid plants abroad, among them IMACID in Morocco (Chambal Fertilisers with OCP, being expanded from 500,000 to 700,000 tons a year) and JIFCO in Jordan (IFFCO with JPMC). In July 2025 IPL, KRIBHCO and CIL signed five-year agreements with Saudi Arabia's Ma'aden for 3.1 million tons of DAP a year. Equity in processing abroad plus long-term offtakes matches the secured band (Score 1).",
           "sub": {
             "import_dependence": 4.0,
-            "strategic_posture": 3.0
+            "strategic_posture": 1.0
           }
         },
         "price_volatility": {
@@ -1375,27 +1375,27 @@
         "reserves": {
           "composite": 3.0,
           "max": 10,
-          "reason": "Time-frame: Global reserves are estimated at >4.8 billion tons of K2O equivalent. At current consumption, known resources represent over 100 years of supply, which is effectively limitless.\n\n\nDiversification: Total global reserves yield a calculated HHI of approximately 0.19, with Canada holding 23% alongside Russia (19%) and Belarus (16%). This places the geographic endowment in the well-distributed index band (0.15\u20130.25).",
+          "reason": "Time-frame: Global reserves are estimated at >5.9 billion tons of K2O equivalent. At current consumption, known resources represent over 100 years of supply, which is effectively limitless.\n\n\nDiversification: Total global reserves yield a calculated HHI of approximately 0.19, with Russia holding 34% alongside Canada (19%), Laos (17%) and Belarus (13%). This places the geographic endowment in the well-distributed index band (0.15\u20130.25).",
           "sub": {
             "timeframe": 1.0,
             "diversification": 2.0
           }
         },
         "end_use": {
-          "composite": 5.5,
+          "composite": 6.5,
           "max": 10,
-          "reason": "Agriculture & Food Security (+0.5): acts as an irreplaceable macronutrient and foundational pillar of mass fertilizer production. Energy Generation & Grid (+1.5): utilized in emerging commercial potassium-ion battery (KIB) architectures. Defense & National Security (+1.0): incorporated into gunpowder formulations, pyrotechnics, and military food rations. Healthcare & Biomedical (+1.0): deployed widely in intravenous fluids and pharmaceutical manufacturing.\n\n\nSector presence scores total 4.0 across 4 qualifying sectors. The breadth bonus adds +1.5, yielding an objective composite score of 5.5",
+          "reason": "Agriculture & Food Security (+1.5): acts as an irreplaceable macronutrient and foundational pillar of mass fertilizer production. Energy Generation & Grid (+1.5): utilized in emerging commercial potassium-ion battery (KIB) architectures. Defense & National Security (+1.0): incorporated into gunpowder formulations, pyrotechnics, and military food rations. Healthcare & Biomedical (+1.0): deployed widely in intravenous fluids and pharmaceutical manufacturing.\n\n\nSector presence scores total 5.0 across 4 qualifying sectors. The breadth bonus adds +1.5, yielding an objective composite score of 6.5",
           "sub": {
-            "sectoral": 4.0,
+            "sectoral": 5.0,
             "breadth": 1.5
           }
         },
         "substitutability_recyclability": {
-          "composite": 7.0,
+          "composite": 10.0,
           "max": 10,
-          "reason": "Substitutability: No practical chemical substitute exists for plant nutrition. However, in non-agricultural contexts like drilling fluids, barium sulfate has already commercially replaced potash with minimal penalties, matching Score 2.\n\n\nRecyclability: Potassium applied to agriculture dissipates entirely into the environment. Commercial recovery from waste streams is practically impossible, confirming the effectively zero (<5%) recycling tier.",
+          "reason": "Substitutability: There is no substitute for potassium as a plant nutrient (USGS), and fertiliser takes about 85% of potash use. Barium sulfate has replaced potash only in niche uses such as drilling fluids, so it scores the same as phosphorus (Score 5).\n\n\nRecyclability: Potassium applied to agriculture dissipates entirely into the environment. Commercial recovery from waste streams is practically impossible, confirming the effectively zero (<5%) recycling tier.",
           "sub": {
-            "substitutability": 2.0,
+            "substitutability": 5.0,
             "recyclability": 5.0
           }
         },
@@ -1412,7 +1412,7 @@
         "india_position": {
           "composite": 7.0,
           "max": 10,
-          "reason": "Import Dependence: India possesses no commercial domestic potash production, importing 100% of its massive agricultural demands from Canada, Russia, and Belarus, yielding the maximum import-dependency score.\n\n\nStrategic Posture: India has executed concrete plans in motion by signing a binding 3-year MoU with Canpotex (Canada) to secure millions of tons of supply, alongside retaining long-term frameworks with international suppliers, matching Score 2.",
+          "reason": "Import Dependence: India possesses no commercial domestic potash production, importing 100% of its massive agricultural demands from Canada, Russia, and Belarus, yielding the maximum import-dependency score.\n\n\nStrategic Posture: India has executed concrete plans in motion by signing a 3-year MoU with Canpotex (Canada) to secure millions of tons of supply, alongside retaining long-term frameworks with international suppliers, matching Score 2.",
           "sub": {
             "import_dependence": 5.0,
             "strategic_posture": 2.0
@@ -1431,7 +1431,7 @@
         "demand": {
           "score": 2.0,
           "max": 5,
-          "reason": "Global gallium consumption is estimated at roughly 800 metric tons annually, placing it deep within the modest-demand band of 500\u201310,000 tons."
+          "reason": "Global gallium consumption is about 900 metric tons of primary gallium in 2025, placing it deep within the modest-demand band of 500\u201310,000 tons."
         },
         "growth": {
           "score": 5.0,
@@ -1439,21 +1439,21 @@
           "reason": "Demand is accelerating rapidly, driven by the massive expansion of GaN power semiconductors in 5G base stations, EV chargers, and AI hyperscale data centers, forcing growth rates well above 12% CAGR."
         },
         "supplier_concentration": {
-          "composite": 10.0,
+          "composite": 7.0,
           "max": 10,
-          "reason": "Mining: Extracted entirely as a trace byproduct. China produces 99% of global low-purity primary gallium from domestic operations, pacing primary extraction well above the 85% threshold (Score 5).\n\n\nRefining: Because China dominates the upstream, non-Chinese refiners rely on Chinese feedstock or recycled scrap. China's direct ban on gallium exports to the US structurally confirms refining dominance >85% (Score 5).",
+          "reason": "Mining: Gallium is a trace by-product of bauxite, so its mining follows bauxite mine output, where Guinea is the largest producer at 34% in 2025 (USGS), in the 30\u201350% band (Score 2). China's 99% share of primary gallium is scored under refining.\n\n\nRefining: Because China dominates the upstream, non-Chinese refiners rely on Chinese feedstock or recycled scrap. China produces about 99% of the world's primary gallium (USGS), well above the 85% threshold (Score 5); its ban on gallium exports to the US was lifted for one year in November 2025.",
           "sub": {
-            "mining_diversity": 5.0,
+            "mining_diversity": 2.0,
             "refining_diversity": 5.0
           }
         },
         "reserves": {
-          "composite": 4.0,
+          "composite": 2.0,
           "max": 10,
-          "reason": "Time-frame: Gallium resources are tied to vast global bauxite deposits. Over 100,000 tons are potentially recoverable, representing centuries of supply against current 800-ton consumption rates (>100 years).\n\n\nDiversification: While bauxite deposits are globally dispersed, effectively all economically exploitable gallium recovery circuits exist solely within Chinese Bayer-process alumina plants. Factoring in secondary accessibility blocks globally yields an HHI consistent with moderately-concentrated geographic diversification.",
+          "reason": "Time-frame: Gallium resources are tied to vast global bauxite deposits. Over 100,000 tons are potentially recoverable, representing centuries of supply against current 800-ton consumption rates (>100 years).\n\n\nDiversification: Gallium reserves follow bauxite reserves, which are widely spread (Guinea 26%, Australia 13%, Vietnam 11%, Indonesia 10%; HHI about 0.11), below 0.15 (Score 1), the same method used for cadmium and germanium. Recovery circuits, almost all in China, are scored under refining.",
           "sub": {
             "timeframe": 1.0,
-            "diversification": 3.0
+            "diversification": 1.0
           }
         },
         "end_use": {
@@ -1485,18 +1485,18 @@
           "reason": "The project pipeline is adequate. Driven by Chinese export bans, the US is launching feasibility studies to integrate gallium recovery into domestic zinc operations, while joint-ventures tap tailings in the DRC, capable of adding 10\u201320% to global supply within 3\u20135 years."
         },
         "india_position": {
-          "composite": 8.0,
+          "composite": 7.0,
           "max": 10,
-          "reason": "Import Dependence: Despite housing a massive domestic bauxite/alumina industry, India possesses no operational gallium recovery circuits, rendering its semiconductor mission 100% import-dependent (Score 5).\n\n\nStrategic Posture: Gallium is heavily tracked under the India Semiconductor Mission and national critical minerals list. However, lacking specific foreign equity structures or KABIL mandates, India maintains declared strategic intent at an early stage.",
+          "reason": "Import Dependence: Despite housing a massive domestic bauxite/alumina industry, India has no operating gallium recovery circuit yet (a Heavy Water Board\u2013BARC ion-exchange demonstration plant at NALCO's Damanjodi refinery broke ground in November 2025), rendering its semiconductor mission 100% import-dependent (Score 5).\n\n\nStrategic Posture: Gallium is heavily tracked under the India Semiconductor Mission and national critical minerals list. There are no foreign equity structures or KABIL mandates, but the NALCO demonstration plant puts a concrete domestic recovery plan in motion (Score 2).",
           "sub": {
             "import_dependence": 5.0,
-            "strategic_posture": 3.0
+            "strategic_posture": 2.0
           }
         },
         "price_volatility": {
           "score": 5.0,
           "max": 5,
-          "reason": "Following China's export restrictions, gallium prices experienced extreme structural market failure, surging over 200% from ~$300/kg to peak near $1,000/kg due to weaponized supply chain bans, confirming maximum extreme volatility."
+          "reason": "Following China's export restrictions, gallium prices experienced extreme structural market failure, surging over 200% from ~$300/kg to peak near $1,000/kg due to weaponized supply chain bans, confirming maximum extreme volatility. USGS's import unit values rose from $277/kg in 2021 to about $580/kg in 2025; China lifted its ban on gallium exports to the US for one year in November 2025."
         }
       }
     },
@@ -1516,19 +1516,19 @@
         "supplier_concentration": {
           "composite": 5.0,
           "max": 10,
-          "reason": "Mining: Global extraction is distributed across China, Peru, Chile, and the US. China is the largest primary producer with approximately 42% of global output, placing primary mining diversity in the 30\u201350% band (Score 2).\n\n\nRefining: Downstream processing into ferromolybdenum is heavily managed by Chinese output and geopolitics, with active export restrictions triggering a concentrated processing supplier diversity in the 50\u201365% band (Score 3).",
+          "reason": "Mining: Global extraction is distributed across China, Peru, Chile, and the US. China is the largest primary producer with 97,000 of the 260,000 tons mined in 2025 (37%), placing primary mining diversity in the 30\u201350% band (Score 2).\n\n\nRefining: Downstream processing into ferromolybdenum is heavily managed by Chinese output and geopolitics, with active export restrictions triggering a concentrated processing supplier diversity in the 50\u201365% band (Score 3).",
           "sub": {
             "mining_diversity": 2.0,
             "refining_diversity": 3.0
           }
         },
         "reserves": {
-          "composite": 4.0,
+          "composite": 5.0,
           "max": 10,
-          "reason": "Time-frame: Global reserves are estimated at 15 million tons. Against current consumption, known resources represent approximately 58 years of supply, tracking within the 50\u2013100 year band.\n\n\nDiversification: Total global reserves yield a calculated HHI of approximately 0.23, with China holding 39% alongside the US (23%) and Peru (13%). This places the geographic endowment in the well-distributed index band (0.15\u20130.25).",
+          "reason": "Time-frame: World reserves are about 17 million tons. At 2025 mine output of 260,000 tons, they represent about 65 years of supply, tracking within the 50\u2013100 year band.\n\n\nDiversification: China holds 46% of world reserves (7.8 of 17 million tons), followed by the US (21%) and Chile (15%). The HHI is about 0.29, in the moderately concentrated band (0.25\u20130.40, Score 3).",
           "sub": {
             "timeframe": 2.0,
-            "diversification": 2.0
+            "diversification": 3.0
           }
         },
         "end_use": {
@@ -1562,7 +1562,7 @@
         "india_position": {
           "composite": 7.0,
           "max": 10,
-          "reason": "Import Dependence: India possesses minor occurrences in Rajasthan yielding under 300 tons annually. This meets <20% of the immense metallurgical demand required for domestic steelworks, pacing India within the marginal domestic production band.\n\n\nStrategic Posture: Molybdenum is officially listed under India's critical minerals framework, and the crucial Mo-99 medical isotope program triggers strategic monitoring. However, lacking specific foreign equity offtakes, India maintains declared strategic intent at an early stage.",
+          "reason": "Import Dependence: India has no significant mine output (the earlier figure of under 300 tons a year has no source); Rubamin recovers about 1,500 tons a year from spent catalysts. Domestic supply meets <20% of the immense metallurgical demand required for domestic steelworks, pacing India within the marginal domestic production band.\n\n\nStrategic Posture: Molybdenum is officially listed under India's critical minerals framework, and the crucial Mo-99 medical isotope program triggers strategic monitoring. However, lacking specific foreign equity offtakes, India maintains declared strategic intent at an early stage.",
           "sub": {
             "import_dependence": 4.0,
             "strategic_posture": 3.0
@@ -1591,19 +1591,19 @@
         "supplier_concentration": {
           "composite": 4.0,
           "max": 10,
-          "reason": "Mining: Mine production is highly distributed. China is the largest primary producer with approximately 23% of the global total, followed by Indonesia (17%), placing the primary extraction diversity firmly in the <30% band (Score 1).\n\n\nRefining: Processing concentration increases downstream. China imports raw concentrates and accounts for approximately 50% of global smelting and refining output, placing refining diversity within the 50\u201365% band (Score 3).",
+          "reason": "Mining: Mine production is highly distributed. China is the largest primary producer with 71,000 of the 290,000 tons mined in 2025 (24%), followed by Indonesia (21%), placing the primary extraction diversity firmly in the <30% band (Score 1).\n\n\nRefining: Processing concentration increases downstream. China imports raw concentrates and accounts for approximately 50% of global smelting and refining output, placing refining diversity within the 50\u201365% band (Score 3).",
           "sub": {
             "mining_diversity": 1.0,
             "refining_diversity": 3.0
           }
         },
         "reserves": {
-          "composite": 7.0,
+          "composite": 5.0,
           "max": 10,
-          "reason": "Time-frame: Known economic global reserves are estimated at roughly 4.2 million tons. Against current consumption rates, these reserves would last for only ~14 years, tracking squarely within the highly limited (<15 years) maximum risk tier.\n\n\nDiversification: Total global reserves yield a calculated HHI of approximately 0.15, with China holding 23.8% and Myanmar holding 16.7%. This places the geographic endowment in the well-distributed index band (0.15\u20130.25).",
+          "reason": "Time-frame: World reserves are about 6.0 million tons, roughly 21 years of supply at 2025 mine output of 290,000 tons, placing it in the 15\u201330 year band (Score 4).\n\n\nDiversification: Indonesia holds 23% of world reserves, China 20%, and Brazil and Burma 12% each. The HHI is about 0.14, below 0.15 (Score 1).",
           "sub": {
-            "timeframe": 5.0,
-            "diversification": 2.0
+            "timeframe": 4.0,
+            "diversification": 1.0
           }
         },
         "end_use": {
@@ -1664,18 +1664,18 @@
           "reason": "Demand growth is projected at a low but steady 4-5% CAGR, underpinned by mature base-load expansions in stainless steel and supplemented by rapid adoption rates in Class I battery chemistries for electric vehicles."
         },
         "supplier_concentration": {
-          "composite": 7.0,
+          "composite": 8.0,
           "max": 10,
-          "reason": "Mining: Indonesia dominates primary mine extraction, producing 2,200,000 tons (approximately 59.5% of global output), placing primary mining diversity securely within the 50\u201365% band (Score 3).\n\n\nRefining: Downstream refinement into battery-grade nickel sulfate and cathode is heavily concentrated. Chinese firms process approximately 65\u201375% of global high-purity battery-grade material (including via Indonesian joint ventures), placing refining supplier diversity in the concentrated 65\u201385% band (Score 4).",
+          "reason": "Mining: Indonesia dominates primary mine extraction, producing 2,600,000 of the 3,900,000 tons mined in 2025 (about 67%), placing primary mining diversity in the 65\u201385% band (Score 4).\n\n\nRefining: Downstream refinement into battery-grade nickel sulfate and cathode is heavily concentrated. Chinese firms process approximately 65\u201375% of global high-purity battery-grade material (including via Indonesian joint ventures), placing refining supplier diversity in the concentrated 65\u201385% band (Score 4).",
           "sub": {
-            "mining_diversity": 3.0,
+            "mining_diversity": 4.0,
             "refining_diversity": 4.0
           }
         },
         "reserves": {
           "composite": 6.0,
           "max": 10,
-          "reason": "Time-frame: Global reserves are estimated at roughly 130,000,000 tons of nickel content. At current production rates of 3.7 million tons per year, known resources represent approximately 35.1 years of supply, tracking within the 30\u201350 year substantial reserve band.\n\n\nDiversification: Total global reserves yield a calculated HHI of approximately 0.380, with Indonesia holding 42.3% of listed reserves. Because one country holds 35\u201355% of the total, this places the geographic endowment in the moderately concentrated band (0.25\u20130.40).",
+          "reason": "Time-frame: World reserves are more than 140,000,000 tons of nickel content. At 2025 mine output of 3.9 million tons, they represent about 36 years of supply, tracking within the 30\u201350 year substantial reserve band.\n\n\nDiversification: Indonesia holds 44% of listed reserves (62 of ~140 million tons), followed by Australia (18%) and Brazil (11%). The HHI is about 0.25, on the boundary of the 0.15\u20130.25 and 0.25\u20130.40 bands; the score is kept at 3.",
           "sub": {
             "timeframe": 3.0,
             "diversification": 3.0
@@ -1729,9 +1729,9 @@
       "mineral": "Vanadium",
       "vectors": {
         "demand": {
-          "score": 3.0,
+          "score": 4.0,
           "max": 5,
-          "reason": "Global vanadium consumption is estimated on the order of ~100,000 metric tons annually, positioning it within the moderate-demand band of 10,000\u2013100,000 tons."
+          "reason": "Global vanadium mine production was about 110,000 metric tons in 2025, placing it in the high-demand band of 100,000\u20131,000,000 tons."
         },
         "growth": {
           "score": 4.0,
@@ -1741,7 +1741,7 @@
         "supplier_concentration": {
           "composite": 9.0,
           "max": 10,
-          "reason": "Mining: Global output is highly concentrated, with China producing 70,000 tons (67.3% of the 104,000-ton total), putting the primary mining concentration within the 65\u201385% band (Score 4). \n\n\nRefining: Production of high-purity vanadium pentoxide and specialized chemical conversion into VRFB electrolyte fluids is concentrated overwhelmingly in China, exceeding the 85% threshold (Score 5).",
+          "reason": "Mining: Global output is highly concentrated, with China producing 82,000 of the 110,000 tons in 2025 (about 75%), putting the primary mining concentration within the 65\u201385% band (Score 4). \n\n\nRefining: Production of high-purity vanadium pentoxide and specialized chemical conversion into VRFB electrolyte fluids is concentrated overwhelmingly in China, exceeding the 85% threshold (Score 5).",
           "sub": {
             "mining_diversity": 4.0,
             "refining_diversity": 5.0
@@ -1750,7 +1750,7 @@
         "reserves": {
           "composite": 4.0,
           "max": 10,
-          "reason": "Time-frame: Global reserves stand at 18,000,000 tons of vanadium content. Measured against annual consumption, known resources represent 180 years of supply, which is effectively limitless (>100 years). \n\n\nDiversification: Total global reserves yield a calculated HHI of approximately 0.25, with Russia holding 28% and China holding 23% alongside a long tail of smaller holders, placing it in the moderately-concentrated band.",
+          "reason": "Time-frame: World reserves are about 21,000,000 tons of vanadium content, about 190 years of 2025 output, which is effectively limitless (>100 years). \n\n\nDiversification: Total global reserves yield a calculated HHI of about 0.35, with Australia holding 47%, China 27% and Russia 23% alongside a long tail of smaller holders, placing it in the moderately-concentrated band.",
           "sub": {
             "timeframe": 1.0,
             "diversification": 3.0
@@ -1806,7 +1806,7 @@
         "demand": {
           "score": 4.0,
           "max": 5,
-          "reason": "Global lithium annual consumption is estimated at approximately 170,000 metric tons, positioning it within the high-demand framework band of 100,000\u20131,000,000 tons."
+          "reason": "Global lithium annual consumption is estimated at about 263,000 metric tons in 2025, positioning it within the high-demand framework band of 100,000\u20131,000,000 tons."
         },
         "growth": {
           "score": 5.0,
@@ -1816,19 +1816,19 @@
         "supplier_concentration": {
           "composite": 6.0,
           "max": 10,
-          "reason": "Mining: Primary extraction is distributed, with Australia accounting for 36.7% of global mine output, placing the mining concentration within the well-distributed 30\u201350% band (Score 2). \n\n\nRefining: Downstream chemical conversion is heavily concentrated. China processes 65\u201375% of all lithium into battery-grade chemicals, placing refining supplier diversity in the concentrated 65\u201385% band (Score 4).",
+          "reason": "Mining: Primary extraction is distributed, with Australia accounting for 92,000 of the 290,000 tons mined in 2025 (32%), placing the mining concentration within the well-distributed 30\u201350% band (Score 2). \n\n\nRefining: Downstream chemical conversion is heavily concentrated. China processes 65\u201375% of all lithium into battery-grade chemicals, placing refining supplier diversity in the concentrated 65\u201385% band (Score 4).",
           "sub": {
             "mining_diversity": 2.0,
             "refining_diversity": 4.0
           }
         },
         "reserves": {
-          "composite": 5.0,
+          "composite": 3.0,
           "max": 10,
-          "reason": "Time-frame: Global reserves are estimated at 30,000,000 tons of lithium content. Measured against current global production, known resources represent over 120 years of supply, which is effectively limitless (>100 years). \n\n\nDiversification: Total global reserves yield a calculated HHI of approximately 0.52, with Australia holding 71.2% of listed reserves, matching the concentrated index band (0.40\u20130.60) where one country holds 55\u201375%.",
+          "reason": "Time-frame: World reserves are about 37,000,000 tons of lithium content. At 2025 mine output of 290,000 tons, they represent about 128 years of supply, which is effectively limitless (>100 years). \n\n\nDiversification: Chile holds 25% of world reserves (9.2 of 37 million tons), followed by Australia (23%), China (12%), and Argentina and the US (12% each). The HHI is about 0.16, in the well-distributed band (0.15\u20130.25, Score 2).",
           "sub": {
             "timeframe": 1.0,
-            "diversification": 4.0
+            "diversification": 2.0
           }
         },
         "end_use": {
@@ -2116,19 +2116,19 @@
         "supplier_concentration": {
           "composite": 5.0,
           "max": 10,
-          "reason": "Mining: Hafnium is entirely co-extracted from zircon mineral concentrates. Australia is the largest zircon producer, accounting for approximately 33% of global output, placing primary mining diversity in the 30\u201350% band (Score 2).\n\n\nRefining: Hafnium separation is integrated into specialized nuclear-grade zirconium processing. Germany and France process the majority of Western nuclear-grade hafnium. Using import data as a proxy, the largest producer accounts for roughly 50%, placing refining diversity in the 50\u201365% band (Score 3).",
+          "reason": "Mining: Hafnium is entirely co-extracted from zircon mineral concentrates. Australia is the largest zircon producer, accounting for approximately 33% of global output, placing primary mining diversity in the 30\u201350% band (Score 2).\n\n\nRefining: Hafnium separation is integrated into specialized nuclear-grade zirconium processing. Hafnium is produced where nuclear-grade zirconium is made, mainly in France, the US, Russia and China. Using import data as a proxy, the largest producer accounts for roughly 50%, placing refining diversity in the 50\u201365% band (Score 3).",
           "sub": {
             "mining_diversity": 2.0,
             "refining_diversity": 3.0
           }
         },
         "reserves": {
-          "composite": 6.0,
+          "composite": 5.0,
           "max": 10,
-          "reason": "Time-frame: Global hafnium resources are tied directly to global zircon reserves exceeding 70,000,000 tons. Given the ~50:1 Zr:Hf ratio and tiny annual hafnium consumption, embedded hafnium resources represent centuries of supply, which is effectively limitless (>100 years).\n\n\nDiversification: Hafnium reserves mirror zircon reserves, which are overwhelmingly concentrated in Australia. Australia holds approximately 78% of declared world reserves (HHI roughly 0.608). With one country holding >75%, it sits at the highly concentrated maximum score.",
+          "reason": "Time-frame: Global hafnium resources are tied directly to global zircon reserves exceeding 70,000,000 tons. Given the ~50:1 Zr:Hf ratio and tiny annual hafnium consumption, embedded hafnium resources represent centuries of supply, which is effectively limitless (>100 years).\n\n\nDiversification: Hafnium reserves mirror zircon reserves, which are overwhelmingly concentrated in Australia. Australia holds about 71% of listed zircon reserves (HHI about 0.51), in the concentrated band (0.40\u20130.60, Score 4).",
           "sub": {
             "timeframe": 1.0,
-            "diversification": 5.0
+            "diversification": 4.0
           }
         },
         "end_use": {
@@ -2160,18 +2160,18 @@
           "reason": "Hafnium supply is structurally linked to zircon processing expansions. Existing producers in France (Jarrie plant) and the US possess permitted capacities to expand output by an estimated 50\u201365 tons. Coupled with a healthy zircon mining pipeline across Australia and Africa, the project pipeline is adequate and capable of adding 10\u201320% to supply within 3\u20135 years."
         },
         "india_position": {
-          "composite": 7.0,
+          "composite": 6.0,
           "max": 10,
-          "reason": "Import Dependence: India possesses domestic nuclear-grade zirconium capabilities through the Nuclear Fuel Complex (NFC), which requires removing hafnium from zirconium streams. IREL has successfully developed a flowsheet to produce 99% pure hafnium oxide from NFC raffinate, confirming latent domestic capability. However, commercial-scale production remains token relative to potential industrial and defense demand, placing India in the marginal domestic production band.\n\n\nStrategic Posture: Hafnium is listed on India's critical minerals list, and the Department of Atomic Energy maintains institutional processing awareness. However, no specific KABIL mandates, exploration blocks, or foreign equity stakes exist, aligning with declared strategic intent at an early stage.",
+          "reason": "Import Dependence: India possesses domestic nuclear-grade zirconium capabilities through the Nuclear Fuel Complex (NFC), which requires removing hafnium from zirconium streams. IREL has successfully developed a flowsheet to produce 99% pure hafnium oxide from NFC raffinate, confirming latent domestic capability, and C-MET runs a 320 kg/yr hafnium sponge pilot for ISRO. However, commercial-scale production remains token relative to potential industrial and defense demand, placing India in the marginal domestic production band.\n\n\nStrategic Posture: Hafnium is listed on India's critical minerals list, and the Department of Atomic Energy maintains institutional processing awareness. There are no KABIL mandates, exploration blocks or foreign equity stakes, but NFC's zirconium chain and C-MET's sponge pilot put concrete domestic plans in motion (Score 2).",
           "sub": {
             "import_dependence": 4.0,
-            "strategic_posture": 3.0
+            "strategic_posture": 2.0
           }
         },
         "price_volatility": {
-          "score": 4.0,
+          "score": 5.0,
           "max": 5,
-          "reason": "Hafnium prices are highly sensitive to single-actor output shifts in a very thin, opaque market. Average prices surged from $781/kg in 2021 to $6,150/kg in 2023\u2014a near 700% increase\u2014driven by a fire at a major French facility and surging semiconductor demand. Prices subsequently eased to $4,600/kg in 2024. Multiple spikes exceeding \u00b1100% validate the high volatility rating."
+          "reason": "Hafnium prices are highly sensitive to single-actor output shifts in a very thin, opaque market. Average prices surged from $781/kg in 2021 to $6,150/kg in 2023\u2014a near 700% increase\u2014driven by a fire at a major French facility and surging semiconductor demand. Prices eased to $4,560/kg in 2024 and about $3,800/kg in 2025. A rise of more than 200% within the window meets the extreme band (Score 5)."
         }
       }
     },
@@ -2189,12 +2189,12 @@
           "reason": "Demand is projected to experience low growth (1-5% CAGR). Steady, mature industrial and agricultural uses are expanding slowly, driving a balanced but slow upward trajectory."
         },
         "supplier_concentration": {
-          "composite": 3.0,
+          "composite": 4.0,
           "max": 10,
-          "reason": "Mining: Selenium is recovered as a byproduct of copper anode slimes. Copper mine production is distributed across many countries, with the largest producer (Chile) at 23%. With no single country exceeding 30%, mining tracks at Score 1.\n\n\nRefining: Refined selenium output tracks the copper metallurgical chain. China was the leading producer of refined selenium in 2024, accounting for 1,800 tons out of a 3,700-ton global total (48.6%), placing refining diversity in the 30\u201350% band (Score 2).",
+          "reason": "Mining: Selenium is recovered as a byproduct of copper anode slimes. Copper mine production is distributed across many countries, with the largest producer (Chile) at 23%. With no single country exceeding 30%, mining tracks at Score 1.\n\n\nRefining: Refined selenium output tracks the copper metallurgical chain. China was the leading producer of refined selenium in 2025, accounting for 2,000 of about 3,800 tons (53%), placing refining concentration in the 50\u201365% band (Score 3). The world total excludes US output, which USGS withholds, so China's true share is probably close to 50%.",
           "sub": {
             "mining_diversity": 1.0,
-            "refining_diversity": 2.0
+            "refining_diversity": 3.0
           }
         },
         "reserves": {
@@ -2237,7 +2237,7 @@
         "india_position": {
           "composite": 8.0,
           "max": 10,
-          "reason": "Import Dependence: India's sole domestic commercial producer (Hindalco) recovers selenium as a byproduct of copper refining, yielding roughly 14 tons in 2024 against industrial consumption of several hundred tons. Production accounts for <20% of domestic consumption, placing India in the marginal domestic production band.\n\n\nStrategic Posture: Selenium is notified on India's official 30 critical minerals list. However, there is no active KABIL mandate, no specific signed offtake agreements, and no targeted government-backed capacity expansions, aligning with passive awareness and no institutional action.",
+          "reason": "Import Dependence: India refined about 88 tons of selenium in 2024 and 90 tons in 2025 (USGS), recovered from copper anode slime at Hindalco and Kutch Copper (which has 150 tons a year of capacity), against consumption of several hundred tons. Production accounts for <20% of domestic consumption, placing India in the marginal domestic production band.\n\n\nStrategic Posture: Selenium is notified on India's official 30 critical minerals list. However, there is no active KABIL mandate, no specific signed offtake agreements, and no targeted government-backed capacity expansions, aligning with passive awareness and no institutional action.",
           "sub": {
             "import_dependence": 4.0,
             "strategic_posture": 4.0
@@ -2275,7 +2275,7 @@
         "reserves": {
           "composite": 4.0,
           "max": 10,
-          "reason": "Time-frame: Lanthanum comprises roughly 25-30% of total light rare earth oxide mass. Against annual demand, global rare earth reserves exceeding 90,000,000 tons represent over 700 years of supply, which is effectively limitless (>100 years).\n\n\nDiversification: Total rare earth reserves yield a calculated HHI of 0.307, with China holding 48.9% of the reserve base alongside a long tail of smaller holders, placing it in the moderately-concentrated band.",
+          "reason": "Time-frame: Lanthanum comprises roughly 25-30% of total light rare earth oxide mass. Against annual demand, global rare earth reserves exceeding 85,000,000 tons represent over 700 years of supply, which is effectively limitless (>100 years).\n\n\nDiversification: Total rare earth reserves yield a calculated HHI of about 0.34, with China holding about 52% of the reserve base alongside a long tail of smaller holders, placing it in the moderately-concentrated band.",
           "sub": {
             "timeframe": 1.0,
             "diversification": 3.0
@@ -2319,9 +2319,9 @@
           }
         },
         "price_volatility": {
-          "score": 2.0,
+          "score": 3.0,
           "max": 5,
-          "reason": "Lanthanum oxide prices maintained a flat, stable baseline at $1\u2013$2/kg over the five-year window. The market is continuously oversupplied due to structural magnet-driven mining ratios, preventing independent upward spikes and demonstrating low volatility within a 20\u201350% band."
+          "reason": "Lanthanum oxide prices ranged from $0.96/kg (2023) to $1.51/kg (2021) over 2021\u20132025 (USGS), a 57% swing despite a structurally oversupplied market (50\u2013100%, Score 3)."
         }
       }
     },
@@ -2331,7 +2331,7 @@
         "demand": {
           "score": 3.0,
           "max": 5,
-          "reason": "Global cadmium refinery production is estimated at approximately 24,000 metric tons annually, positioning it squarely within the moderate-demand band of 10,000\u2013100,000 tons."
+          "reason": "Global cadmium refinery production is about 23,000 metric tons in 2025, positioning it squarely within the moderate-demand band of 10,000\u2013100,000 tons."
         },
         "growth": {
           "score": 3.0,
@@ -2341,7 +2341,7 @@
         "supplier_concentration": {
           "composite": 4.0,
           "max": 10,
-          "reason": "Mining: Cadmium is entirely a byproduct of zinc mining. Zinc mine distribution is distributed with China as the largest country at 34%, followed by Australia (12%) and Peru (11%), placing it in the 30\u201350% band (Score 2).\n\n\nRefining: Refined cadmium output tracks the zinc metallurgical chain. China is the largest refined producer at 38.75% (9,300 tons), followed by South Korea at 18.75%, placing refining supplier diversity in the 30\u201350% band (Score 2).",
+          "reason": "Mining: Cadmium is entirely a byproduct of zinc mining. Zinc mine distribution is distributed with China as the largest country at 32% in 2025 (4.1 of 13 million tons), followed by Peru (12%) and Australia (8%), placing it in the 30\u201350% band (Score 2).\n\n\nRefining: Refined cadmium output tracks the zinc metallurgical chain. China is the largest refined producer at 41% (9,500 of 23,000 tons in 2025), followed by South Korea at 19%, placing refining supplier diversity in the 30\u201350% band (Score 2).",
           "sub": {
             "mining_diversity": 2.0,
             "refining_diversity": 2.0
@@ -2350,7 +2350,7 @@
         "reserves": {
           "composite": 5.0,
           "max": 10,
-          "reason": "Time-frame: Global reserves are tied to zinc reserves. Recoverable cadmium metal content within zinc reserves represents approximately 750,000 tons, which equates to a substantial 30\u201350 year supply horizon at current consumption rates.\n\n\nDiversification: Reserves track global sphalerite zinc ores, yielding a calculated HHI of approximately 0.173 with Australia holding 28% and China holding 18%. This positions the geographic endowment in the well-distributed index band (0.15\u20130.25).",
+          "reason": "Time-frame: Global reserves are tied to zinc reserves. Recoverable cadmium metal content within zinc reserves represents approximately 750,000 tons, which equates to a substantial 30\u201350 year supply horizon at current consumption rates.\n\n\nDiversification: Reserves track global sphalerite zinc ores, yielding a calculated HHI of about 0.16\u20130.17 with Australia holding 27% and China 25% of zinc reserves. This positions the geographic endowment in the well-distributed index band (0.15\u20130.25).",
           "sub": {
             "timeframe": 3.0,
             "diversification": 2.0
@@ -2385,18 +2385,18 @@
           "reason": "The project pipeline is adequate. Cadmium capacity is structurally linked to global zinc mine expansions. Multiple active zinc projects in Australia, Canada, and South Africa have completed feasibility stages, ensuring a 10\u201320% supply addition within 3\u20135 years."
         },
         "india_position": {
-          "composite": 6.0,
+          "composite": 8.0,
           "max": 10,
-          "reason": "Import Dependence: India is the leading global importer of refined cadmium metal, importing over 11,400 tons. While Hindustan Zinc produces significant quantities of intermediate cadmium sponge as a zinc byproduct, India lacks the domestic refining infrastructure to convert it to commercial-grade metal, matching a significant domestic feedstock base but majority refined import picture.\n\n\nStrategic Posture: Cadmium is notified on India's official 30 critical minerals list, and domestic utility solar expansions have driven policy focus. However, no specific international joint ventures, KABIL mandates, or foreign asset equity holdings exist, aligning with declared strategic intent at an early stage.",
+          "reason": "Import Dependence: India imported 6,374 tons of cadmium in 2021-22 (7,570 tons in 2020-21), mainly from Korea, Japan and Russia, and the Indian Bureau of Mines recorded nil domestic production in both years, even though Hindustan Zinc's zinc smelting carries cadmium (Score 5).\n\n\nStrategic Posture: Cadmium is notified on India's official 30 critical minerals list, and domestic utility solar expansions have driven policy focus. However, no specific international joint ventures, KABIL mandates, or foreign asset equity holdings exist, aligning with declared strategic intent at an early stage.",
           "sub": {
-            "import_dependence": 3.0,
+            "import_dependence": 5.0,
             "strategic_posture": 3.0
           }
         },
         "price_volatility": {
-          "score": 2.0,
+          "score": 3.0,
           "max": 5,
-          "reason": "Refined cadmium prices followed a gradual upward trend, moving from $2.29/kg to $4.10/kg over the five-year window. The market lacks extreme supply shocks or sudden disruptions, with pricing movements transparently tracking raw zinc mining rates and clean energy demand within a 20\u201350% band."
+          "reason": "Refined cadmium prices rose from $2.56/kg in 2021 to $4.12/kg in 2024 (USGS), a 61% move without extreme supply shocks (50\u2013100%, Score 3)."
         }
       }
     },
@@ -2425,7 +2425,7 @@
         "reserves": {
           "composite": 4.0,
           "max": 10,
-          "reason": "Time-frame: Cerium comprises roughly half of the mass in major bastnaesite deposits. Against annual demand, global rare earth reserves exceeding 90,000,000 tons represent more than 1,000 years of supply, which is effectively limitless (>100 years).\n\n\nDiversification: Total rare earth reserves yield a calculated HHI of 0.307, with China holding 48.9% of the reserve base alongside a long tail of smaller holders, placing it in the moderately-concentrated band.",
+          "reason": "Time-frame: Cerium comprises roughly half of the mass in major bastnaesite deposits. Against annual demand, global rare earth reserves exceeding 85,000,000 tons represent more than 1,000 years of supply, which is effectively limitless (>100 years).\n\n\nDiversification: Total rare earth reserves yield a calculated HHI of about 0.34, with China holding about 52% of the reserve base alongside a long tail of smaller holders, placing it in the moderately-concentrated band.",
           "sub": {
             "timeframe": 1.0,
             "diversification": 3.0
@@ -2469,9 +2469,9 @@
           }
         },
         "price_volatility": {
-          "score": 2.0,
+          "score": 3.0,
           "max": 5,
-          "reason": "Cerium oxide prices maintained a flat, stable baseline at $1\u2013$2/kg over the five-year window. The market is continuously oversupplied due to structural magnet-driven mining ratios, preventing independent upward spikes and demonstrating low volatility within a 20\u201350% band."
+          "reason": "Cerium oxide prices ranged from $1.03/kg (2023) to $1.71/kg (2025) over 2021\u20132025 (USGS), a 66% swing despite a structurally oversupplied market (50\u2013100%, Score 3)."
         }
       }
     },
@@ -2481,7 +2481,7 @@
         "demand": {
           "score": 1.0,
           "max": 5,
-          "reason": "Global scandium oxide consumption is estimated at 30\u201340 tons per year against total production of 40 tons, placing it far below the 500-ton threshold for negligible absolute demand."
+          "reason": "Global scandium oxide production was about 80 tons in 2025, placing it far below the 500-ton threshold for negligible absolute demand."
         },
         "growth": {
           "score": 5.0,
@@ -2491,7 +2491,7 @@
         "supplier_concentration": {
           "composite": 10.0,
           "max": 10,
-          "reason": "Mining: Scandium is not mined as a primary product. It is extracted exclusively as a trace byproduct from titanium, zirconium, iron ore, and rare earth streams where China's dominant output controls over 85% of global mine supply (Score 5).\n\n\nRefining: Refining circuits are fully integrated with primary byproduct processing plants. China dominates the chemical recovery and refinement of high-purity scandium oxide, exceeding the 85% global threshold with zero Western commercial refining active in the study window (Score 5).",
+          "reason": "Mining: Scandium is not mined as a primary product. It is extracted exclusively as a trace byproduct from titanium, zirconium, iron ore, and rare earth streams where China's dominant output controls over 85% of global mine supply (Score 5).\n\n\nRefining: Refining circuits are fully integrated with primary byproduct processing plants. China dominates the chemical recovery and refinement of high-purity scandium oxide, exceeding the 85% global threshold (Score 5). Small volumes are also refined in Japan (from Philippine HPAL feed) and Canada (Rio Tinto, from titanium dioxide waste).",
           "sub": {
             "mining_diversity": 5.0,
             "refining_diversity": 5.0
@@ -2546,7 +2546,7 @@
         "price_volatility": {
           "score": 2.0,
           "max": 5,
-          "reason": "Scandium oxide prices followed a gradual downward trend from $890\u2013$1,000/kg to $640/kg as new byproduct operations steadily entered the thin market. The absence of volatile market spikes or abrupt supply-driven restrictions places price movements within a predictable 20\u201350% baseline band."
+          "reason": "Scandium oxide prices drifted down from $890\u20131,000/kg in 2021 to $640/kg in 2025 as new by-product supply entered the thin market (USGS), a 20\u201350% move on mid-range prices (Score 2). China, the leading producer, added scandium metal, alloys, oxides and compounds to its export controls in April 2025."
         }
       }
     },
@@ -2575,7 +2575,7 @@
         "reserves": {
           "composite": 4.0,
           "max": 10,
-          "reason": "Time-frame: Total global rare-earth reserves exceed 90,000,000 tons, meaning the embedded samarium fraction represents hundreds of years of supply, which is effectively limitless (>100 years).\n\n\nDiversification: Based on global rare-earth reserves, the HHI is approximately 0.31 with China holding roughly 48.9% of the reserve base alongside a long tail of smaller holders, placing it in the moderately-concentrated band.",
+          "reason": "Time-frame: Total global rare-earth reserves exceed 85,000,000 tons, meaning the embedded samarium fraction represents hundreds of years of supply, which is effectively limitless (>100 years).\n\n\nDiversification: Based on global rare-earth reserves, the HHI is about 0.34 with China holding about 52% of the reserve base alongside a long tail of smaller holders, placing it in the moderately-concentrated band.",
           "sub": {
             "timeframe": 1.0,
             "diversification": 3.0
@@ -2610,12 +2610,12 @@
           "reason": "Non-Chinese light-rare-earth mining projects are advancing, but dedicated samarium separation capacity outside China is expanding slowly. The pipeline remains thin because samarium is a co-product whose recovery is dependent on operators choosing to build specialized circuits, offering potential 5\u201310% supply additions with high execution risk."
         },
         "india_position": {
-          "composite": 7.0,
+          "composite": 6.0,
           "max": 10,
-          "reason": "Import Dependence: India possesses domestic samarium-extraction capability through IREL's monazite processing chain. However, separated-oxide output remains token relative to total industrial demand, meaning domestic production yields <20% of consumption and sits in the marginal domestic production band.\n\n\nStrategic Posture: Samarium is included under India's National Critical Mineral Mission and permanent-magnet PLI frameworks. Active domestic exploration is underway, but no specific overseas assets, binding foreign offtakes, or joint ventures exist, matching declared strategic intent at an early stage.",
+          "reason": "Import Dependence: India possesses domestic samarium-extraction capability through IREL's monazite processing chain. However, separated-oxide output remains token relative to total industrial demand, meaning domestic production yields <20% of consumption and sits in the marginal domestic production band.\n\n\nStrategic Posture: Samarium is included under India's National Critical Mineral Mission and permanent-magnet PLI frameworks. IREL runs a 3 t/yr samarium-cobalt magnet plant at Vizag for DAE, defence and space, but no specific overseas assets, binding foreign offtakes, or joint ventures exist; the running magnet plant and the magnet scheme put concrete plans in motion (Score 2).",
           "sub": {
             "import_dependence": 4.0,
-            "strategic_posture": 3.0
+            "strategic_posture": 2.0
           }
         },
         "price_volatility": {
@@ -2650,7 +2650,7 @@
         "reserves": {
           "composite": 4.0,
           "max": 10,
-          "reason": "Time-frame: Europium occurs within the world's >90,000,000 tons of total rare-earth reserves. Compared against global consumption of a few hundred tons per year, known resources represent centuries of supply, making the time-frame effectively limitless (>100 years).\n\n\nDiversification: Europium co-occurs with light and middle rare earth deposits, following the standard rare-earth reserve distribution. The calculated reserve base HHI is roughly 0.31, with China holding 35\u201355% of total reserves alongside a long tail of smaller global holders, placing it in the moderately-concentrated band.",
+          "reason": "Time-frame: Europium occurs within the world's >85,000,000 tons of total rare-earth reserves. Compared against global consumption of a few hundred tons per year, known resources represent centuries of supply, making the time-frame effectively limitless (>100 years).\n\n\nDiversification: Europium co-occurs with light and middle rare earth deposits, following the standard rare-earth reserve distribution. The calculated reserve base HHI is about 0.34, with China holding about 52% of total reserves alongside a long tail of smaller global holders, placing it in the moderately-concentrated band.",
           "sub": {
             "timeframe": 1.0,
             "diversification": 3.0
@@ -2687,16 +2687,16 @@
         "india_position": {
           "composite": 7.0,
           "max": 10,
-          "reason": "Import Dependence: India's monazite sands contain europium, but IREL's commercial separation lines focus heavily on other light and middle rare earth oxides, leaving europium unmarketed as a standalone product. Total domestic output accounts for <20% of consumption, tracking the marginal domestic production band.\n\n\nStrategic Posture: Europium is noted on India's critical minerals list and covered within broader monazite exploration frameworks by the GSI and AMD. However, there are no specific domestic extraction projects, signed foreign offtakes, or KABIL mandates targeting the element, reflecting declared strategic intent at an early stage.",
+          "reason": "Import Dependence: India's monazite sands contain europium, and IREL lists europium oxide among its products, but output is small. Total domestic output accounts for <20% of consumption, tracking the marginal domestic production band.\n\n\nStrategic Posture: Europium is noted on India's critical minerals list and covered within broader monazite exploration frameworks by the GSI and AMD. However, there are no specific domestic extraction projects, signed foreign offtakes, or KABIL mandates targeting the element, reflecting declared strategic intent at an early stage.",
           "sub": {
             "import_dependence": 4.0,
             "strategic_posture": 3.0
           }
         },
         "price_volatility": {
-          "score": 4.0,
+          "score": 1.0,
           "max": 5,
-          "reason": "Europium pricing is thin, opaque, and highly sensitive to single-actor quota shifts, showing a history of large percentage swings. Over recent five-year windows, price movements have exceeded more than \u00b1100% due to Chinese quota policies and the volatility of the legacy lighting phosphor sector, introducing severe procurement uncertainty for industrial buyers."
+          "reason": "Europium oxide prices were flat over 2021\u20132025 at $27\u201331/kg (USGS), a 15% range, within the stable band (Score 1). China added europium to its export controls in October 2025 and suspended them for a year in November 2025."
         }
       }
     },
@@ -2725,7 +2725,7 @@
         "reserves": {
           "composite": 4.0,
           "max": 10,
-          "reason": "Time-frame: Gadolinium is a minor constituent of the >90,000,000 tons of total rare-earth reserves, and against consumption in the hundreds-to-low-thousands of tons per year the contained gadolinium represents centuries of supply, which is effectively limitless (>100 years).\n\n\nDiversification: As a middle rare earth co-occurring with both light rare earths and in ion-adsorption clays, gadolinium's reserve distribution lies between the light-rare-earth pattern and the more China-concentrated heavy-rare-earth pattern. Using total rare-earth reserves as the proxy, the HHI is approximately 0.31, with China holding 35\u201355% alongside a long tail of smaller holders, placing it in the moderately-concentrated band.",
+          "reason": "Time-frame: Gadolinium is a minor constituent of the >85,000,000 tons of total rare-earth reserves, and against consumption in the hundreds-to-low-thousands of tons per year the contained gadolinium represents centuries of supply, which is effectively limitless (>100 years).\n\n\nDiversification: As a middle rare earth co-occurring with both light rare earths and in ion-adsorption clays, gadolinium's reserve distribution lies between the light-rare-earth pattern and the more China-concentrated heavy-rare-earth pattern. Using total rare-earth reserves as the proxy, the HHI is about 0.34, with China holding about 52% alongside a long tail of smaller holders, placing it in the moderately-concentrated band.",
           "sub": {
             "timeframe": 1.0,
             "diversification": 3.0
@@ -2835,18 +2835,18 @@
           "reason": "The heavy rare earth pipeline outside China is minimal and early-stage. Separation circuits at MP Materials (USA) and developments in Brazil remain pre-commercial and lack dedicated erbium scaling. New non-Chinese supply remains years away and will add <5% to the global matrix (Score 4)."
         },
         "india_position": {
-          "composite": 7.0,
+          "composite": 8.0,
           "max": 10,
-          "reason": "Import Dependence: India possesses latent erbium traces within xenotime sands, but IREL yields zero commercial quantities of separated erbium oxide, leaving the nation heavily reliant on imports (>80% dependent, Score 4).\n\n\nStrategic Posture: Erbium is formally recognized under India's critical minerals framework with targeted xenotime exploration by the AMD. However, lacking specific KABIL mandates or binding foreign offtakes, India maintains declared strategic intent at an early stage (Score 3).",
+          "reason": "Import Dependence: India possesses latent erbium traces within xenotime sands, but IREL yields zero commercial quantities of separated erbium oxide, leaving the nation fully reliant on imports (no domestic production, Score 5).\n\n\nStrategic Posture: Erbium is formally recognized under India's critical minerals framework with targeted xenotime exploration by the AMD. However, lacking specific KABIL mandates or binding foreign offtakes, India maintains declared strategic intent at an early stage (Score 3).",
           "sub": {
-            "import_dependence": 4.0,
+            "import_dependence": 5.0,
             "strategic_posture": 3.0
           }
         },
         "price_volatility": {
           "score": 2.0,
           "max": 5,
-          "reason": "Erbium oxide prices maintained a steady, highly predictable trajectory, fluctuating gradually between $36/kg and $53/kg. Erbium was expressly excluded from China's April 2025 heavy-rare-earth export bans, allowing it to bypass weaponized supply shocks and demonstrate low volatility within the 20\u201350% baseline threshold."
+          "reason": "Erbium oxide prices maintained a steady, highly predictable trajectory, fluctuating gradually between $36/kg and $53/kg. Erbium was not in China's April 2025 controls; it was added in October 2025, but those controls were suspended for a year in November 2025. Prices show low volatility within the 20\u201350% band."
         }
       }
     },
@@ -2912,7 +2912,7 @@
         "india_position": {
           "composite": 6.0,
           "max": 10,
-          "reason": "Import Dependence: IREL produces minor volumes of NdPr oxalate from monazite. However, this satisfies <20% of the rapidly growing domestic EV and wind sector demand, leaving India highly import-dependent within the marginal domestic production band.\n\n\nStrategic Posture: Neodymium is heavily targeted by India's National Critical Mineral Mission and a \u20b97,350 crore PLI scheme for sintered-magnet manufacturing. This signifies concrete plans in motion, with domestic refining and magnet capacity under construction with a 3\u20137 year timeline.",
+          "reason": "Import Dependence: IREL produces minor volumes of NdPr oxalate from monazite. However, this satisfies <20% of the rapidly growing domestic EV and wind sector demand, leaving India highly import-dependent within the marginal domestic production band.\n\n\nStrategic Posture: Neodymium is heavily targeted by India's National Critical Mineral Mission and the \u20b97,280 crore scheme for sintered rare earth permanent magnets (6,000 t/yr, approved November 2025; 20 bids in August 2026). This signifies concrete plans in motion, with domestic refining and magnet capacity under construction with a 3\u20137 year timeline.",
           "sub": {
             "import_dependence": 4.0,
             "strategic_posture": 2.0
@@ -2987,7 +2987,7 @@
         "india_position": {
           "composite": 6.0,
           "max": 10,
-          "reason": "Import Dependence: IREL produces minor volumes of NdPr oxalate, satisfying <20% of domestic demand. India remains heavily reliant on imports, placing it in the marginal domestic production band.\n\n\nStrategic Posture: As the co-equal partner in NdPr magnet feedstock, praseodymium is targeted by the National Critical Mineral Mission and \u20b97,350 crore sintered-magnet PLI scheme. This establishes concrete plans in motion with a 3\u20137 year timeline.",
+          "reason": "Import Dependence: IREL produces minor volumes of NdPr oxalate, satisfying <20% of domestic demand. India remains heavily reliant on imports, placing it in the marginal domestic production band.\n\n\nStrategic Posture: As the co-equal partner in NdPr magnet feedstock, praseodymium is targeted by the National Critical Mineral Mission and \u20b97,280 crore sintered-magnet scheme (6,000 t/yr; 20 bids in August 2026). This establishes concrete plans in motion with a 3\u20137 year timeline.",
           "sub": {
             "import_dependence": 4.0,
             "strategic_posture": 2.0
@@ -3135,18 +3135,18 @@
           "reason": "The non-Chinese pipeline is minimal. Broader heavy-rare-earth separation plants are under early-stage development, but holmium serves as a negligible co-product with <5% dedicated capacity expansions expected."
         },
         "india_position": {
-          "composite": 7.0,
+          "composite": 8.0,
           "max": 10,
-          "reason": "Import Dependence: India's IREL yields no separated holmium. The nation remains reliant on imports, pacing within the <20% marginal domestic production band.\n\n\nStrategic Posture: Holmium falls under India's broader rare-earth exploration strategy, but lacks specific offtake agreements or KABIL mandates, matching declared intent at an early stage.",
+          "reason": "Import Dependence: India's IREL yields no separated holmium. The nation relies fully on imports (no domestic production, Score 5).\n\n\nStrategic Posture: Holmium falls under India's broader rare-earth exploration strategy, but lacks specific offtake agreements or KABIL mandates, matching declared intent at an early stage.",
           "sub": {
-            "import_dependence": 4.0,
+            "import_dependence": 5.0,
             "strategic_posture": 3.0
           }
         },
         "price_volatility": {
           "score": 4.0,
           "max": 5,
-          "reason": "Holmium oxide prices swung from $67/kg to $180/kg, a 168% surge that vastly exceeds the 100% threshold, demonstrating high volatility."
+          "reason": "Holmium oxide prices swung from $67/kg to $180/kg, a 168% surge that vastly exceeds the 100% threshold, demonstrating high volatility. China added holmium to its export controls in October 2025 and suspended them for a year in November 2025."
         }
       }
     },
@@ -3210,18 +3210,18 @@
           "reason": "The non-Chinese pipeline is minimal, offering <5% dedicated capacity expansions via generalized heavy-rare-earth projects still years away from scale."
         },
         "india_position": {
-          "composite": 7.0,
+          "composite": 8.0,
           "max": 10,
-          "reason": "Import Dependence: India possesses latent xenotime deposits, but IREL yields no separated ytterbium, leaving India reliant on imports (<20% domestic production).\n\n\nStrategic Posture: Monitored under India's critical minerals frameworks, but lacking specific offtake agreements or KABIL mandates, matching declared intent at an early stage.",
+          "reason": "Import Dependence: India possesses latent xenotime deposits, but IREL yields no separated ytterbium, leaving India fully reliant on imports (no domestic production, Score 5).\n\n\nStrategic Posture: Monitored under India's critical minerals frameworks, but lacking specific offtake agreements or KABIL mandates, matching declared intent at an early stage.",
           "sub": {
-            "import_dependence": 4.0,
+            "import_dependence": 5.0,
             "strategic_posture": 3.0
           }
         },
         "price_volatility": {
           "score": 1.0,
           "max": 5,
-          "reason": "Ytterbium oxide prices exhibited the lowest volatility of the heavy rare earths, fluctuating between $13/kg and $15/kg. This 15.3% variance sits securely in the <20% Very Low Volatility band."
+          "reason": "Ytterbium oxide prices exhibited the lowest volatility of the heavy rare earths, fluctuating between $13/kg and $15/kg. This 15.3% variance sits in the <20% band. China added ytterbium to its October 2025 export controls, which were suspended for a year in November 2025."
         }
       }
     },
@@ -3285,11 +3285,11 @@
           "reason": "The non-Chinese pipeline is minimal, with broad heavy-rare-earth projects remaining years away from scale and offering <5% dedicated lutetium capacity expansion."
         },
         "india_position": {
-          "composite": 7.0,
+          "composite": 8.0,
           "max": 10,
-          "reason": "Import Dependence: IREL yields no separated lutetium, leaving India reliant on imports (<20% domestic production).\n\n\nStrategic Posture: Monitored under India's critical minerals frameworks, but lacking specific offtake agreements or KABIL mandates, matching declared intent at an early stage.",
+          "reason": "Import Dependence: IREL yields no separated lutetium, leaving India fully reliant on imports for lutetium (no domestic production, Score 5). BARC does make the Lu-177 isotope from imported targets.\n\n\nStrategic Posture: Monitored under India's critical minerals frameworks, but lacking specific offtake agreements or KABIL mandates, matching declared intent at an early stage.",
           "sub": {
-            "import_dependence": 4.0,
+            "import_dependence": 5.0,
             "strategic_posture": 3.0
           }
         },
@@ -3360,11 +3360,11 @@
           "reason": "The non-Chinese pipeline is minimal. While generalized international heavy rare earth separation facilities are under development, thulium receives negligible dedicated investment as a low-abundance co-product, promising <5% near-term supply additions with long timelines."
         },
         "india_position": {
-          "composite": 7.0,
+          "composite": 8.0,
           "max": 10,
-          "reason": "Import Dependence: India's coastal monazite and xenotime resources contain minute thulium fractions, but IREL produces zero commercial quantities of separated thulium oxide. India satisfies <20% of its specialized electronic and medical needs internally, tracking in the marginal domestic production band.\n\n\nStrategic Posture: Thulium falls within India's broader National Critical Mineral Mission and national exploration frameworks. However, lacking thulium-specific overseas joint ventures, binding offtakes, or domestic separation plants, its posture aligns with early strategic intent (Score 3).",
+          "reason": "Import Dependence: India's coastal monazite and xenotime resources contain minute thulium fractions, but IREL produces zero commercial quantities of separated thulium oxide. India has no domestic production (Score 5).\n\n\nStrategic Posture: Thulium falls within India's broader National Critical Mineral Mission and national exploration frameworks. However, lacking thulium-specific overseas joint ventures, binding offtakes, or domestic separation plants, its posture aligns with early strategic intent (Score 3).",
           "sub": {
-            "import_dependence": 4.0,
+            "import_dependence": 5.0,
             "strategic_posture": 3.0
           }
         },
@@ -3379,9 +3379,9 @@
       "mineral": "Platinum",
       "vectors": {
         "demand": {
-          "score": 2.0,
+          "score": 1.0,
           "max": 5,
-          "reason": "Global platinum mine production is estimated at roughly 170 metric tons annually, placing it securely within the modest-demand band of 500\u201310,000 tons."
+          "reason": "Global platinum mine production was about 170 metric tons in 2025, placing it within the negligible-demand band of \u2264500 tons."
         },
         "growth": {
           "score": 3.0,
@@ -3400,7 +3400,7 @@
         "reserves": {
           "composite": 6.0,
           "max": 10,
-          "reason": "Time-frame: Global PGM resources exceed 81,000 metric tons. Against current extraction rates, known reserves represent centuries of supply, which is effectively limitless (>100 years).\n\n\nDiversification: Total global reserves yield a calculated HHI of approximately 0.63. Because South Africa controls ~77% of the reserve base, the geographic endowment matches the highly concentrated maximum score.",
+          "reason": "Time-frame: Global PGM resources exceed 81,000 metric tons. Against current extraction rates, known reserves represent centuries of supply, which is effectively limitless (>100 years).\n\n\nDiversification: Total global reserves yield a calculated HHI of about 0.70. Because South Africa controls about 83% of the reserve base, the geographic endowment matches the highly concentrated maximum score.",
           "sub": {
             "timeframe": 1.0,
             "diversification": 5.0
@@ -3437,7 +3437,7 @@
         "india_position": {
           "composite": 8.0,
           "max": 10,
-          "reason": "Import Dependence: India possesses no commercial domestic extraction of platinum, leaving its automotive and industrial catalytic sectors 100% import-dependent (Score 5).\n\n\nStrategic Posture: Platinum is recognized on India's critical minerals list, and a joint PGM beneficiation pilot plant actively operates with Mintek. Lacking binding overseas KABIL equity stakes, the posture aligns with early-stage declared strategic intent (Score 3).",
+          "reason": "Import Dependence: India possesses no commercial domestic extraction of platinum, leaving its automotive and industrial catalytic sectors 100% import-dependent (Score 5).\n\n\nStrategic Posture: Platinum is recognized on India's critical minerals list, and Hindustan Platinum (an LBMA/LPPM good-delivery refiner) and others recover PGMs from spent catalysts; the \u20b91,500 crore recycling scheme (2025) covers catalytic converters. Lacking binding overseas KABIL equity stakes, the posture aligns with early-stage declared strategic intent (Score 3).",
           "sub": {
             "import_dependence": 5.0,
             "strategic_posture": 3.0
@@ -3454,9 +3454,9 @@
       "mineral": "Palladium",
       "vectors": {
         "demand": {
-          "score": 2.0,
+          "score": 1.0,
           "max": 5,
-          "reason": "Global palladium mine production is estimated at roughly 190 metric tons annually, placing it securely within the modest-demand band of 500\u201310,000 tons."
+          "reason": "Global palladium mine production was about 190 metric tons in 2025, placing it within the negligible-demand band of \u2264500 tons."
         },
         "growth": {
           "score": 2.0,
@@ -3466,7 +3466,7 @@
         "supplier_concentration": {
           "composite": 4.0,
           "max": 10,
-          "reason": "Mining: Primary extraction is distributed across Russia (39.5%) and South Africa. Because Russia is the largest single producer, mining diversity aligns with the 30\u201350% band (Score 2).\n\n\nRefining: Downstream refinement mirrors primary extraction, with Russia retaining domestic processing of its output. The largest processor paces strictly within the 30\u201350% band (Score 2).",
+          "reason": "Mining: Primary extraction is split between Russia (84 of 190 tons in 2025, 44%) and South Africa (37%). Because Russia is the largest single producer, mining diversity aligns with the 30\u201350% band (Score 2).\n\n\nRefining: Downstream refinement mirrors primary extraction, with Russia retaining domestic processing of its output. The largest processor paces strictly within the 30\u201350% band (Score 2).",
           "sub": {
             "mining_diversity": 2.0,
             "refining_diversity": 2.0
@@ -3475,7 +3475,7 @@
         "reserves": {
           "composite": 6.0,
           "max": 10,
-          "reason": "Time-frame: Global PGM resources represent centuries of supply. Against current extraction volumes, the embedded palladium fraction is effectively limitless (>100 years).\n\n\nDiversification: Total global reserves yield a calculated HHI of approximately 0.63, with South Africa holding ~77% of the PGM resource base. The geographic endowment matches the highly concentrated maximum score.",
+          "reason": "Time-frame: Global PGM resources represent centuries of supply. Against current extraction volumes, the embedded palladium fraction is effectively limitless (>100 years).\n\n\nDiversification: Total global reserves yield a calculated HHI of about 0.70, with South Africa holding about 83% of the PGM reserve base (63,000 of >76,000 tons). The geographic endowment matches the highly concentrated maximum score.",
           "sub": {
             "timeframe": 1.0,
             "diversification": 5.0
@@ -3512,7 +3512,7 @@
         "india_position": {
           "composite": 8.0,
           "max": 10,
-          "reason": "Import Dependence: India possesses zero commercial domestic extraction of palladium, leaving its vast catalytic and electronics sectors 100% import-dependent (Score 5).\n\n\nStrategic Posture: Palladium is formally tracked on India's critical minerals list with active joint pilot programs in Odisha. Lacking KABIL mandates or binding foreign equity agreements, India's posture aligns with early-stage declared strategic intent (Score 3).",
+          "reason": "Import Dependence: India possesses zero commercial domestic extraction of palladium, leaving its vast catalytic and electronics sectors 100% import-dependent (Score 5).\n\n\nStrategic Posture: Palladium is formally tracked on India's critical minerals list and is recovered from spent catalysts by Indian refiners such as Hindustan Platinum; the \u20b91,500 crore recycling scheme (2025) covers catalytic converters. Lacking KABIL mandates or binding foreign equity agreements, India's posture aligns with early-stage declared strategic intent (Score 3).",
           "sub": {
             "import_dependence": 5.0,
             "strategic_posture": 3.0
@@ -3550,7 +3550,7 @@
         "reserves": {
           "composite": 6.0,
           "max": 10,
-          "reason": "Time-frame: Global PGM resources represent centuries of supply. Against a micro-scale 30-ton annual extraction, the embedded rhodium fraction is effectively limitless (>100 years).\n\n\nDiversification: Total global reserves yield a calculated HHI of approximately 0.63, with South Africa holding ~77% of the PGM resource base. The geographic endowment matches the highly concentrated maximum score.",
+          "reason": "Time-frame: Global PGM resources represent centuries of supply. Against a micro-scale 30-ton annual extraction, the embedded rhodium fraction is effectively limitless (>100 years).\n\n\nDiversification: Total global reserves yield a calculated HHI of about 0.70, with South Africa holding about 83% of the PGM reserve base (63,000 of >76,000 tons). The geographic endowment matches the highly concentrated maximum score.",
           "sub": {
             "timeframe": 1.0,
             "diversification": 5.0
@@ -3587,7 +3587,7 @@
         "india_position": {
           "composite": 8.0,
           "max": 10,
-          "reason": "Import Dependence: India possesses zero commercial domestic extraction of rhodium, rendering its rapidly expanding automotive and chemical catalysts 100% import-dependent (Score 5).\n\n\nStrategic Posture: Rhodium is formally recognized on India's critical minerals list, supported by joint local processing pilots. Lacking binding KABIL overseas equity agreements, the posture remains at an early stage of declared strategic intent (Score 3).",
+          "reason": "Import Dependence: India possesses zero commercial domestic extraction of rhodium, rendering its rapidly expanding automotive and chemical catalysts 100% import-dependent (Score 5).\n\n\nStrategic Posture: Rhodium is formally recognized on India's critical minerals list, and Indian refiners such as Hindustan Platinum recover it from spent catalysts. Lacking binding KABIL overseas equity agreements, the posture remains at an early stage of declared strategic intent (Score 3).",
           "sub": {
             "import_dependence": 5.0,
             "strategic_posture": 3.0
@@ -3614,7 +3614,7 @@
           "reason": "Demand is accelerating exponentially due to explosive requirements in AI data center hard-disk drives and sub-5nm logic chip interconnect liners, driving an aggressive high-growth trajectory (>12% CAGR)."
         },
         "supplier_concentration": {
-          "composite": 9.0,
+          "composite": 10.0,
           "max": 10,
           "reason": "Mining: South Africa dominates extraction, producing over 85% of primary global output from the UG2 reef, placing primary mining diversity at the highly concentrated maximum (Score 5).\n\n\nRefining: Downstream refinement mirrors primary extraction. South Africa retains >85% of the processing baseline via integrated domestic metallurgical circuits (Score 5).",
           "sub": {
@@ -3625,7 +3625,7 @@
         "reserves": {
           "composite": 6.0,
           "max": 10,
-          "reason": "Time-frame: Global PGM resources represent centuries of supply. Against a micro-scale 30-ton annual extraction, the embedded ruthenium fraction is effectively limitless (>100 years).\n\n\nDiversification: Total global reserves yield a calculated HHI of approximately 0.63, with South Africa holding ~77% of the PGM resource base. The geographic endowment matches the highly concentrated maximum score.",
+          "reason": "Time-frame: Global PGM resources represent centuries of supply. Against a micro-scale 30-ton annual extraction, the embedded ruthenium fraction is effectively limitless (>100 years).\n\n\nDiversification: Total global reserves yield a calculated HHI of about 0.70, with South Africa holding about 83% of the PGM reserve base (63,000 of >76,000 tons). The geographic endowment matches the highly concentrated maximum score.",
           "sub": {
             "timeframe": 1.0,
             "diversification": 5.0
@@ -3669,9 +3669,9 @@
           }
         },
         "price_volatility": {
-          "score": 4.0,
+          "score": 5.0,
           "max": 5,
-          "reason": "Ruthenium prices experienced severe structural market swings, spiking over 200% from $272/oz baselines before later surging towards $1,750/oz on AI data storage shifts. Variance consistently exceeds the 100% threshold, generating high volatility."
+          "reason": "Ruthenium averaged $451\u2013690/oz over 2021\u20132025 (USGS), then reached a record of about $1,750/oz in March 2026 (Johnson Matthey), roughly triple its level a year earlier, on demand from AI-driven data storage and falling South African output. A rise of more than 200% within five years meets the extreme band (Score 5)."
         }
       }
     },
@@ -3700,7 +3700,7 @@
         "reserves": {
           "composite": 6.0,
           "max": 10,
-          "reason": "Time-frame: Global PGM resources represent centuries of supply. Against a micro-scale 10-ton annual extraction, the embedded iridium fraction is effectively limitless (>100 years).\n\n\nDiversification: Total global reserves yield a calculated HHI of approximately 0.63, with South Africa holding ~77% of the PGM resource base. The geographic endowment matches the highly concentrated maximum score.",
+          "reason": "Time-frame: Global PGM resources represent centuries of supply. Against a micro-scale 10-ton annual extraction, the embedded iridium fraction is effectively limitless (>100 years).\n\n\nDiversification: Total global reserves yield a calculated HHI of about 0.70, with South Africa holding about 83% of the PGM reserve base (63,000 of >76,000 tons). The geographic endowment matches the highly concentrated maximum score.",
           "sub": {
             "timeframe": 1.0,
             "diversification": 5.0
@@ -3737,16 +3737,16 @@
         "india_position": {
           "composite": 8.0,
           "max": 10,
-          "reason": "Import Dependence: India possesses zero commercial domestic extraction of iridium, rendering its critical green hydrogen missions and semiconductor ambitions 100% import-dependent (Score 5).\n\n\nStrategic Posture: Iridium is formally tracked on India's critical minerals list, alongside pilot processing programs. Lacking binding KABIL overseas equity agreements, the posture remains at an early stage of declared strategic intent (Score 3).",
+          "reason": "Import Dependence: India possesses zero commercial domestic extraction of iridium, rendering its critical green hydrogen missions and semiconductor ambitions 100% import-dependent (Score 5).\n\n\nStrategic Posture: Iridium is formally tracked on India's critical minerals list. Lacking binding KABIL overseas equity agreements, the posture remains at an early stage of declared strategic intent (Score 3).",
           "sub": {
             "import_dependence": 5.0,
             "strategic_posture": 3.0
           }
         },
         "price_volatility": {
-          "score": 4.0,
+          "score": 2.0,
           "max": 5,
-          "reason": "Iridium prices experienced severe structural market swings, surging over 200% from roughly $1,634/oz to $5,158/oz. Due to hydrogen demands and a structurally thin broker market, the >100% price movements confirm high volatility."
+          "reason": "Iridium's big move, from about $1,634/oz to $5,158/oz, came in 2019\u20132021, before the five-year window. Over 2021\u20132025, USGS annual averages ranged from $4,400 to $5,158/oz (17%); because the market is thin and broker-priced, monthly swings are wider, placing it in the low band (Score 2)."
         }
       }
     },
@@ -3775,7 +3775,7 @@
         "reserves": {
           "composite": 6.0,
           "max": 10,
-          "reason": "Time-frame: Global PGM resources represent centuries of supply. Against a micro-scale sub-tonne annual extraction, the embedded osmium fraction is effectively limitless (>100 years).\n\n\nDiversification: Total global reserves yield a calculated HHI of approximately 0.63, with South Africa holding ~77% of the PGM resource base. The geographic endowment matches the highly concentrated maximum score.",
+          "reason": "Time-frame: Global PGM resources represent centuries of supply. Against a micro-scale sub-tonne annual extraction, the embedded osmium fraction is effectively limitless (>100 years).\n\n\nDiversification: Total global reserves yield a calculated HHI of about 0.70, with South Africa holding about 83% of the PGM reserve base (63,000 of >76,000 tons). The geographic endowment matches the highly concentrated maximum score.",
           "sub": {
             "timeframe": 1.0,
             "diversification": 5.0
@@ -3812,7 +3812,7 @@
         "india_position": {
           "composite": 8.0,
           "max": 10,
-          "reason": "Import Dependence: India possesses zero commercial domestic extraction of osmium, rendering its forensic, medical, and specialized industrial sectors 100% import-dependent (Score 5).\n\n\nStrategic Posture: Osmium is formally recognized on India's critical minerals list, alongside pilot processing programs. Lacking binding KABIL overseas equity agreements, the posture remains at an early stage of declared strategic intent (Score 3).",
+          "reason": "Import Dependence: India possesses zero commercial domestic extraction of osmium, rendering its forensic, medical, and specialized industrial sectors 100% import-dependent (Score 5).\n\n\nStrategic Posture: Osmium is formally recognized on India's critical minerals list. Lacking binding KABIL overseas equity agreements, the posture remains at an early stage of declared strategic intent (Score 3).",
           "sub": {
             "import_dependence": 5.0,
             "strategic_posture": 3.0
